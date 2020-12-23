@@ -6,7 +6,7 @@ Jibran's Idea for the encode hackathon
 ## Introduction
 
 An Initial Coin Offering (ICO) is the first time that a company that utilizes their own native cryptocurrency or token releases their token for ownership to the public. They can be likened to a traditional IPO in which a company issues shares of the company to the public. 
-Currently, there are multiple methods to conduct an ICO. Direct listing, this involves floating the cryptocurrency on an exchange such as Uniswap ([hyperlinks](https://tokenmint.io/blog/how-to-list-your-custom-erc20-token-to-uniswap.html) or directing funds to a contract address ([hyperlinks](e.g. https://token.exchase.top/). Alternatively, a project may conduct an ICO on their own website, a few examples include: Initial Bonding Curve offering (e.g. [hyperlinks](https://medium.com/hegic/join-hegic-initial-bonding-curve-offering-d1746a32a552), Reversible ICO (e.g. [hyperlinks](https://rico.lukso.network/faq), Dutch auction ([hyperlinks](https://algorand.foundation/algo-auctions), the airdrop strategy, and many more…
+Currently, there are multiple methods to conduct an ICO. Direct listing, this involves floating the cryptocurrency on an exchange such as Uniswap ([uniswap-listing](https://tokenmint.io/blog/how-to-list-your-custom-erc20-token-to-uniswap.html) or directing funds to a contract address (e.g. [direct-funding-contract-example](https://token.exchase.top/). Alternatively, a project may conduct an ICO on their own website, a few examples include: Initial Bonding Curve offering (e.g. [IBCO](https://medium.com/hegic/join-hegic-initial-bonding-curve-offering-d1746a32a552), Reversible ICO (e.g. [Reversible ICO](https://rico.lukso.network/faq), Dutch auction [Algorand Dutch Auction](https://algorand.foundation/algo-auctions), the airdrop strategy, and many more…
 
 ## Problem and Solution
 
@@ -15,11 +15,11 @@ The proposed solution involves providing a platform on which a project can execu
 
 ## Existing Platforms
 
-Coinlist – the most similar existing platform. A platform that allows people to invest in ICOs and buy cryptocurrencies, an example of a listing: [hyperlinks](https://coinlist.co/flow). Whilst a great product, the solution is NOT decentralized and furthermore, its tools are quite exclusive and expensive. Only very high-profile projects will have access to the suite of tools. 
+Coinlist – the most similar existing platform. A platform that allows people to invest in ICOs and buy cryptocurrencies, an example of a listing: [coinlist-flow](https://coinlist.co/flow). Whilst a great product, the solution is NOT decentralized and furthermore, its tools are quite exclusive and expensive. Only very high-profile projects will have access to the suite of tools. 
 
 ## Envisioned creation process and functionality
 
-The project should be built on an EVM compatible solution such that ERC20 tokens can be managed. In the context of the hackathon the most ideal solution would be on Polkadot (Moonbeam or potentially Acala) or a standalone Ethereum project. For this hackathon, one ICO style should be focused on, I propose the dutch auction style. [hyperlinks](https://medium.com/hackernoon/big-crypto-projects-are-using-dutch-auctions-for-their-token-sale-heres-why-c28c0d47ad1d). The project should include a great frontend which contains an investor and developer section.
+The project should be built on an EVM compatible solution such that ERC20 tokens can be managed. In the context of the hackathon the most ideal solution would be on Polkadot (Moonbeam or potentially Acala) or a standalone Ethereum project. For this hackathon, one ICO style should be focused on, I propose the dutch auction style. [dutch auction definition](https://medium.com/hackernoon/big-crypto-projects-are-using-dutch-auctions-for-their-token-sale-heres-why-c28c0d47ad1d). The project should include a great frontend which contains an investor and developer section.
 Investor section: Contains the projects that users can invest in, along with clear explanations on the project and the ICO style adopted. Allows a user to participate in ICO of the project if they have a metamask wallet and the funds!
 Developer section: Contains the tools and interfaces to allow a developer to list their project on the platform, then the tools to manage the ICO henceforth. In the future the platform could also provide governance services.
 Advice on how the backend will work will be appreciated but I imagine there will at least be a smart contract required to facilitate any ICO’s.
