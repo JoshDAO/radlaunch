@@ -28,6 +28,7 @@ A continuous bonding curve offering is simply an IBCO with no end and may have a
 
 ## Example smart contracts
 
-[HEGIC contract, linear bonding curve](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol), 
-[Fairmint contract, continuous bonding curve](https://github.com/Fairmint/c-org/blob/master/contracts/ContinuousOffering.sol) [fairming bonding curve release](https://medium.com/fairmint/fairmint-releases-its-bonding-curve-contract-in-open-source-1d142b9baaa8),
-Octo performed one with a sigmoidal bonding curve but have been unable to find the contract [bonding-curve-release](https://octo.fi/blog/bond-curve-sale)
+- [HEGIC contract, linear bonding curve](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol), 
+- [Fairmint contract, continuous bonding curve](https://github.com/Fairmint/c-org/blob/master/contracts/ContinuousOffering.sol)
+- [fairmint bonding curve release](https://medium.com/fairmint/fairmint-releases-its-bonding-curve-contract-in-open-source-1d142b9baaa8)
+- Octo performed one with a sigmoidal bonding curve but have been unable to find the contract [bonding-curve-release](https://octo.fi/blog/bond-curve-sale)
