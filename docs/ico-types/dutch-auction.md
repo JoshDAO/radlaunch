@@ -36,6 +36,11 @@ Algorand introduced a refund policy whereby if you commit above a certain price 
 7. end date
 8. seller's ethereum address
 
+## Inputs by an invester for a Dutch Auction
+
+1. token
+2. bidding price
+
 ## Example smart contracts
 
 [Dutchswap contracts](https://github.com/deepyr/DutchSwap/tree/master/contracts),
