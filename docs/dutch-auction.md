@@ -27,14 +27,16 @@ Algorand introduced a refund policy whereby if you commit above a certain price 
 
 ## Inputs by a developer for a Dutch Auction
 
-token
-token quantity to sell
-payment currency
-starting price
-reserve price
-start date 
-end date
-seller's ethereum address
+1. token
+2. token quantity to sell
+3. payment currency
+4. starting price
+5. reserve price
+6. start date 
+7. end date
+8. seller's ethereum address
 
 ## Example smart contracts
-[hyperlink](https://github.com/deepyr/DutchSwap/tree/master/contracts)
+
+[Dutchswap contracts](https://github.com/deepyr/DutchSwap/tree/master/contracts)
+[Gnosis dutch auction (old 2017)](https://github.com/maurelian/dutch-auction/tree/master/contracts)
