@@ -43,6 +43,6 @@ Algorand introduced a refund policy whereby if you commit above a certain price 
 
 ## Example smart contracts
 
-[Dutchswap contracts](https://github.com/deepyr/DutchSwap/tree/master/contracts),
-[Gnosis dutch auction (old 2017)](https://github.com/maurelian/dutch-auction/tree/master/contracts)
+- [Dutchswap contracts](https://github.com/deepyr/DutchSwap/tree/master/contracts),
+- [Gnosis dutch auction (old 2017)](https://github.com/maurelian/dutch-auction/tree/master/contracts)
 
