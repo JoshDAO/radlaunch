@@ -15,7 +15,11 @@ A continuous bonding curve offering is simply an IBCO with no end and may have a
 Important parameters:
 
 1. The type of token, e.g. ERC20, ERC721 etc. and the Supply, e.g. finite, infinite etc.
-2. The bond - collateral, i.e. which currency is used to back the bonding curve (ETH, DAI etc.)
+2. The bond - collateral, i.e. which currency is used to back the bonding curve (ETH, DAI etc.) and the traded asset (the asset that represents the value).
+3. The curve, the curve function arguably the most interesting.
+4. Pricing - how buying and selling is structured, is there going to be a taxation system or different buy in and sell prices in order to allow someone to take finances out of a continuous function, for a timed function this may not be necessary similar to the hegic contract, i.e. a staged bonding curve.
+
+[Provides an in depth look into bonding curve maths including the bancor formula](https://blog.relevant.community/bonding-curves-in-depth-intuition-parametrization-d3905a681e0a)
 
 
 ## Inputs by a developer for an IBCO
@@ -35,7 +39,8 @@ Important parameters:
 
 ## Example smart contracts
 
-- [HEGIC contract, linear bonding curve](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol), 
+- [HEGIC contract, linear bonding curve](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol)
+- [Example bonding curves based on bancor](https://github.com/relevant-community/contracts/tree/bondingCurves/contracts)
 - [DEUS, uses parts of BANCOR](https://github.com/deusfinance/Automatic-market-maker-AMM/blob/master/AutomaticMarketMaker.sol)
 - [Fairmint contract, continuous bonding curve](https://github.com/Fairmint/c-org/blob/master/contracts/ContinuousOffering.sol)
 - [fairmint bonding curve release](https://medium.com/fairmint/fairmint-releases-its-bonding-curve-contract-in-open-source-1d142b9baaa8)
