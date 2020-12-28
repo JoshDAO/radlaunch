@@ -39,7 +39,7 @@ Important parameters:
 
 ## Example smart contracts
 
-- [HEGIC contract, linear bonding curve](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol)
+- [HEGIC contract, linear bonding curve](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol) with hegic very unclear on where the price increment comes from, it doesnt seem to be in the linked contract, so unsure on how an increment is made.
 - [Example bonding curves based on bancor](https://github.com/relevant-community/contracts/tree/bondingCurves/contracts)
 - [DEUS, uses parts of BANCOR](https://github.com/deusfinance/Automatic-market-maker-AMM/blob/master/AutomaticMarketMaker.sol)
 - [Fairmint contract, continuous bonding curve](https://github.com/Fairmint/c-org/blob/master/contracts/ContinuousOffering.sol)
