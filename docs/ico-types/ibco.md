@@ -6,7 +6,9 @@ Initial Bonding Curve Offering (continuous bonding curve offering also included)
 2. After each contribution the price of a token will increase for a fixed value of x amount of ETH (for HEGIC this was 0.00000000001 ETH per token sold, but other bonding curve functions are possible).
 3. Contributors liquidity will be pooled during the offering and the price of the token for all bidders will be the same as the settlement price will be set as the final price of the curve.
 4. Then contributors can claim their tokens.
+
 [Amazing tool for showing different bonding curves](https://bondingplayground.netlify.app/)
+
 With a non-linear bonding curve [bonding curve types](https://medium.com/linum-labs/intro-to-bonding-curves-and-shapes-bf326bc4e11a) (unlike HEGIC which follows a linear relationship) it is possible for early investors to receive proportionally more tokens than later investors, meaning that they can profit if more investors join.
 The problem with non-linear bonding curves are front-running, a practise by which traders may identify a large order from an investor and submit a buy order with a higher gas fee (so it processes first) and then profit from the larger subsequent trade from the investor. This can be mitigated with gas limits.
 A continuous bonding curve offering is simply an IBCO with no end and may have an exponential curve for the bonding curve i.e. current price = tokenSupply^2.
