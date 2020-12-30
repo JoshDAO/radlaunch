@@ -1,5 +1,5 @@
 // This connects to the ICO contract templates, will potentially have a seperate factory for each ICO type, alternatively, one factory can contain all of the templateAddresses in a list. The ICO templates will be used from elsewhere and adapted if necessary, links to certain contracts have been provided.
-// The pseudocode is written such that it could apply to any ICO type. emits havent been included yet
+// The pseudocode is written such that it could apply to any ICO type. emits havent been included yet, interfaces will be taken from ICO contracts.
 
 import CloneFactory.sol [Clone Factory contract](https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol)  
 import Ownable  
