@@ -43,7 +43,9 @@ uint256 endDate
 uint public constant MINIMIAL_PROVIDE_AMOUNT (the amount provided by the owner to ensure the price doesnt start at 0)  
 
 public payable returns(address newAddress){
-// check for reentrancy
+
+// need to have a look at reentrancy
+
 ICO = createClone(templateAddress)
 require(IERC20(token).transferFrom(msg.sender, address(this), tokenSupply))
 require(IERC20(token).approve(ICO, tokenSupply))
