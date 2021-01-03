@@ -40,12 +40,30 @@ contract ICBO is Ownable {
     uint256 public TOTAL_DISTRIBUTE_AMOUNT;
     uint256 public MINIMAL_PROVIDE_AMOUNT;
     uint public totalProvided = 0;
+    bool private initialised;
     mapping(address => uint) public provided;
-    IERC20 public immutable HEGIC;
+    IERC20 public token;
 
-    constructor(IERC20 hegic) public {
-        HEGIC = hegic;
-    }
+    function initIBCO(
+        address _funder,
+        IERC20 _token,
+        uint256 _totalSupply,
+        uint256 _startDate,
+        uint256 _endDate,
+        uint256 _minimalProvide)
+    external {
+        require(!initialised);
+        require(_endDate > _startDate);
+        require(_minimalProvide > 0);
+
+        token = _token;
+        TOTAL_DISTRIBUTE_AMOUNT = _totalSupply;
+        START = _startDate;
+        END = _endDate;
+        MINIMAL_PROVIDE_AMOUNT = _minimalProvide;
+        token.safeTransferFrom(_funder, address(this), _totalSupply);
+        initialised = true;}
+
 
     receive() external payable {
         require(START <= block.timestamp, "The offering has not started yet");
@@ -63,11 +81,11 @@ contract ICBO is Ownable {
         provided[msg.sender] = 0;
 
         if(totalProvided >= MINIMAL_PROVIDE_AMOUNT) {
-            uint hegicAmount = TOTAL_DISTRIBUTE_AMOUNT
+            uint tokenAmount = TOTAL_DISTRIBUTE_AMOUNT
                 .mul(userShare)
                 .div(totalProvided);
-            HEGIC.safeTransfer(msg.sender, hegicAmount);
-            emit Claimed(msg.sender, userShare, hegicAmount);
+            token.safeTransfer(msg.sender, tokenAmount);
+            emit Claimed(msg.sender, userShare, tokenAmount);
         } else {
             msg.sender.transfer(userShare);
             emit Claimed(msg.sender, userShare, 0);
@@ -83,17 +101,17 @@ contract ICBO is Ownable {
         payable(owner()).transfer(address(this).balance);
     }
 
-    function withdrawHEGIC() external onlyOwner {
+    function withdrawToken() external onlyOwner {
         require(END < block.timestamp, "The offering must be completed");
         require(
             totalProvided < MINIMAL_PROVIDE_AMOUNT,
             "The required amount has been provided!"
         );
-        HEGIC.safeTransfer(owner(), HEGIC.balanceOf(address(this)));
+        token.safeTransfer(owner(), token.balanceOf(address(this)));
     }
 
-    function withdrawUnclaimedHEGIC() external onlyOwner {
+    function withdrawUnclaimedToken() external onlyOwner {
         require(END + 30 days < block.timestamp, "Withdrawal unavailable yet");
-        HEGIC.safeTransfer(owner(), HEGIC.balanceOf(address(this)));
+        token.safeTransfer(owner(), token.balanceOf(address(this)));
     }
 }
