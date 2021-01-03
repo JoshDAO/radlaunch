@@ -6,5 +6,5 @@
 - [brownie tutorial](https://medium.com/@iamdefinitelyahuman)
 
 ## Frontend stuff
--[Rimble, dapp components and figma](https://rimble.consensys.design/)
--[Brownie react setup](https://github.com/brownie-mix/react-mix)
+- [Rimble, dapp components and figma](https://rimble.consensys.design/)
+- [Brownie react setup](https://github.com/brownie-mix/react-mix)
