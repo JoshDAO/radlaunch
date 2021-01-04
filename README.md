@@ -29,3 +29,8 @@ Advice on how the backend will work will be appreciated but I imagine there will
  
 * Dutch Auction, “is a public offering auction structure in which the price of the offering is set after taking in all bids to determine the highest price at which the total offering can be sold. In this type of auction, investors place a bid for the amount they are willing to buy in terms of quantity and price.”
 In this type of auction, instead of buyers purchasing an offering at a fixed price, the process allows anyone to bid their own chosen quantity and price they are willing to pay. Unlike traditional auctions, the price of the asset continues to fall until the winning bid is made.
+
+Roadmap
+1. Develop Ethereum prototype including IBCO and dutch auction.
+2. Develop fairlaunch ICO mechanisms and private presales
+3. Deploy to Polkadot Moonbeam for crosschain interoperability.
