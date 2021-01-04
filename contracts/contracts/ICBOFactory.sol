@@ -7,21 +7,39 @@ pragma solidity ^0.6.9;
 //import SafeMath
 //import interfaces
 //
+import "./utils/CloneFactory.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../interfaces/IICBO.sol";
+
 //contract Factory is Ownable, CloneFactory
-//
+
+contract ICBOFactory is Ownable, CloneFactory {
+    using SafeMath for uint256;
+    using SafeERC20 for IERC20;
+
 //templateAddress = address of ICO template to be replicated
 //newAddress = address for the new ICO template
-//
+    address public templateAddress;
+
 ////(could change this to constructor instead, thoughts?)
 //function initFactory{
 //  initialise owner
 //  set the template
 //  //(maybe a fee?)}
 //
+    constructor(address template) public{
+        templateAddress = template;
+    }
 //function setTemplate(address _templateAddress){
 //  require(owner)
 //  templateAddress = _templateAddress}
 //
+    function setICBOTemplate(address _templateAddress) external onlyOwner {
+        templateAddress = _templateAddress;
+    }
 //function deploy(
 //
 ////params for dutch auction  (thinking of using this one [dutchswap](https://github.com/deepyr/DutchSwap/blob/master/contracts/DutchSwapAuction.sol), (not audited) but may change to another after further review
@@ -53,6 +71,28 @@ pragma solidity ^0.6.9;
 //ICOInterface(ICO).initICO(address(this) and all params passed into this function)
 //}
 //
+    function deployICBO(
+        IERC20 _token,
+        uint256 _tokenSupply,
+        uint256 _startDate,
+        uint256 _endDate,
+        uint256 _minimalProvide) public payable returns (address ICO)
+    {
+        ICO = createClone(templateAddress);
+        require(_token.transferFrom(msg.sender, address(this), _tokenSupply));
+        require(_token.approve(ICO, _tokenSupply));
+        IICBO(ICO).initICBO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide);
+
+    }
+
+
+    function transferAnyERC20Token(address tokenAddress, uint256 tokens) public onlyOwner returns (bool success) {
+        return IERC20(tokenAddress).transfer(owner(), tokens);
+    }
 //receive () external payable {
 //      revert();
 //   }
+    receive () external payable {
+        revert();
+    }
+}
