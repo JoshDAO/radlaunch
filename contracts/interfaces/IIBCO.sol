@@ -7,9 +7,9 @@ pragma solidity ^0.6.9;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
-interface IICBO {
+interface IIBCO {
 
-    function initICBO (
+    function initIBCO (
             address _funder,
             IERC20 _token,
             uint256 _tokenSupply,

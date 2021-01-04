@@ -12,11 +12,11 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IICBO.sol";
+import "../interfaces/IIBCO.sol";
 
 //contract Factory is Ownable, CloneFactory
 
-contract ICBOFactory is Ownable, CloneFactory {
+contract IBCOFactory is Ownable, CloneFactory {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -37,7 +37,7 @@ contract ICBOFactory is Ownable, CloneFactory {
 //  require(owner)
 //  templateAddress = _templateAddress}
 //
-    function setICBOTemplate(address _templateAddress) external onlyOwner {
+    function setIBCOTemplate(address _templateAddress) external onlyOwner {
         templateAddress = _templateAddress;
     }
 //function deploy(
@@ -71,7 +71,7 @@ contract ICBOFactory is Ownable, CloneFactory {
 //ICOInterface(ICO).initICO(address(this) and all params passed into this function)
 //}
 //
-    function deployICBO(
+    function deployIBCO(
         IERC20 _token,
         uint256 _tokenSupply,
         uint256 _startDate,
@@ -81,7 +81,7 @@ contract ICBOFactory is Ownable, CloneFactory {
         ICO = createClone(templateAddress);
         require(_token.transferFrom(msg.sender, address(this), _tokenSupply));
         require(_token.approve(ICO, _tokenSupply));
-        IICBO(ICO).initICBO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide);
+        IIBCO(ICO).initIBCO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide);
 
     }
 

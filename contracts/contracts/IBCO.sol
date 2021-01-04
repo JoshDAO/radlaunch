@@ -28,7 +28,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @title Hegic Initial Offering
  * @notice some description
  */
-contract ICBO is Ownable {
+contract IBCO is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint;
 
