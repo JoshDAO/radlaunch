@@ -23,7 +23,7 @@ contract IBCOFactory is Ownable, CloneFactory {
 //templateAddress = address of ICO template to be replicated
 //newAddress = address for the new ICO template
     address public templateAddress;
-
+    event IBCODeployed(address indexed owner, address indexed addr, address ICOaddress);
 ////(could change this to constructor instead, thoughts?)
 //function initFactory{
 //  initialise owner
@@ -82,7 +82,7 @@ contract IBCOFactory is Ownable, CloneFactory {
         require(_token.transferFrom(msg.sender, address(this), _tokenSupply));
         require(_token.approve(ICO, _tokenSupply));
         IIBCO(ICO).initIBCO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide);
-
+        emit IBCODeployed(msg.sender, address(ICO), templateAddress);
     }
 
 
