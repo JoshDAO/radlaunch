@@ -17,6 +17,9 @@ The proposed solution involves providing a platform on which a project can execu
 
 Coinlist – the most similar existing platform. A platform that allows people to invest in ICOs and buy cryptocurrencies, an example of a listing: [coinlist-flow](https://coinlist.co/flow). Whilst a great product, the solution is NOT decentralized and furthermore, its tools are quite exclusive and expensive. Only very high-profile projects will have access to the suite of tools. 
 
+Polkastarter  
+Bounce
+
 ## Envisioned creation process and functionality
 
 The project should be built on an EVM compatible solution such that ERC20 tokens can be managed. In the context of the hackathon the most ideal solution would be on Polkadot (Moonbeam or potentially Acala) or a standalone Ethereum project. For this hackathon, one ICO style should be focused on, I propose the dutch auction style. [dutch auction definition](https://medium.com/hackernoon/big-crypto-projects-are-using-dutch-auctions-for-their-token-sale-heres-why-c28c0d47ad1d). The project should include a great frontend which contains an investor and developer section.
@@ -26,3 +29,8 @@ Advice on how the backend will work will be appreciated but I imagine there will
  
 * Dutch Auction, “is a public offering auction structure in which the price of the offering is set after taking in all bids to determine the highest price at which the total offering can be sold. In this type of auction, investors place a bid for the amount they are willing to buy in terms of quantity and price.”
 In this type of auction, instead of buyers purchasing an offering at a fixed price, the process allows anyone to bid their own chosen quantity and price they are willing to pay. Unlike traditional auctions, the price of the asset continues to fall until the winning bid is made.
+
+Roadmap
+1. Develop Ethereum prototype including IBCO and dutch auction.
+2. Develop fairlaunch ICO mechanisms and private presales
+3. Deploy to Polkadot Moonbeam for crosschain interoperability.
