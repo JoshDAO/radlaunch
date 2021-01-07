@@ -15,7 +15,8 @@ interface IIBCO {
             uint256 _tokenSupply,
             uint256 _startDate,
             uint256 _endDate,
-            uint256 _minimalProvide
+            uint256 _minimalProvide,
+            address _newOwner
         ) external ;
 //    function tokensClaimed(address user) external view returns (uint256);
 //    function tokenSupply() external view returns(uint256);

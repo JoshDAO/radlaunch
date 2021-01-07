@@ -20,7 +20,12 @@ pragma solidity 0.6.12;
  */
 
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "./utils/CloneFactory.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../interfaces/IIBCO.sol";
+
 
 
 /**
@@ -28,9 +33,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @title Hegic Initial Offering
  * @notice some description
  */
-contract IBCO is Ownable {
+contract IBCOTemplate is Ownable {
     using SafeERC20 for IERC20;
-    using SafeMath for uint;
+    using SafeMath for uint256;
 
     event Claimed(address indexed account, uint userShare, uint hegicAmount);
     event Received(address indexed account, uint amount);
@@ -38,8 +43,8 @@ contract IBCO is Ownable {
     uint256 public START;
     uint256 public END;
     uint256 public TOTAL_DISTRIBUTE_AMOUNT;
-    uint256 public MINIMAL_PROVIDE_AMOUNT;
-    uint public totalProvided = 0;
+    uint256 public MINIMAL_PROVIDE_AMOUNT = 0 ether;
+    uint256 public totalProvided = 0;
     bool private initialised;
     mapping(address => uint) public provided;
     IERC20 public token;
@@ -56,7 +61,6 @@ contract IBCO is Ownable {
         require(!initialised);
         require(_endDate > _startDate);
         require(_minimalProvide > 0);
-
 
         token = _token;
         TOTAL_DISTRIBUTE_AMOUNT = _totalSupply;
@@ -80,11 +84,11 @@ contract IBCO is Ownable {
         require(block.timestamp > END);
         require(provided[msg.sender] > 0);
 
-        uint userShare = provided[msg.sender];
+        uint256 userShare = provided[msg.sender];
         provided[msg.sender] = 0;
 
         if(totalProvided >= MINIMAL_PROVIDE_AMOUNT) {
-            uint tokenAmount = TOTAL_DISTRIBUTE_AMOUNT
+            uint256 tokenAmount = TOTAL_DISTRIBUTE_AMOUNT
                 .mul(userShare)
                 .div(totalProvided);
             token.safeTransfer(msg.sender, tokenAmount);
@@ -116,5 +120,55 @@ contract IBCO is Ownable {
     function withdrawUnclaimedToken() external onlyOwner {
         require(END + 30 days < block.timestamp, "Withdrawal unavailable yet");
         token.safeTransfer(owner(), token.balanceOf(address(this)));
+    }
+}
+
+
+//// This connects to the ICO contract templates, will potentially have a seperate factory for each ICO type, alternatively, one factory can contain all of the templateAddresses in a list. The ICO templates will be used from elsewhere and adapted if necessary, links to certain contracts have been provided.
+//// The pseudocode is written such that it could apply to any ICO type. emits havent been included yet, interfaces will be taken from ICO contracts.
+
+
+contract DynPoolFactory is Ownable, CloneFactory {
+    using SafeMath for uint256;
+    using SafeERC20 for IERC20;
+
+    address public templateAddress;
+    event IBCODeployed(address indexed owner, address indexed addr, address ICOaddress);
+
+//    constructor(address template) public{
+//        templateAddress = template;
+//    }
+
+    function setIBCOTemplate(address _templateAddress) external onlyOwner {
+        templateAddress = _templateAddress;
+    }
+
+////params for dutch auction  (thinking of using this one [dutchswap](https://github.com/deepyr/DutchSwap/blob/master/contracts/DutchSwapAuction.sol), (not audited) but may change to another after further review
+
+////params for [Hegic linear IBCO](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol) (will need to modify the IBCO contract slightly to utilise the replication, will alter such that it has an init function that passes the variables into the contract)
+
+//// need to have a look at reentrancy
+//
+    function deployIBCO(
+        IERC20 _token,
+        uint256 _tokenSupply,
+        uint256 _startDate,
+        uint256 _endDate,
+        uint256 _minimalProvide) public payable returns (IBCOTemplate ICO)
+    {
+        ICO = new IBCOTemplate();
+        require(_token.transferFrom(msg.sender, address(this), _tokenSupply));
+        require(_token.approve(address(ICO), _tokenSupply));
+        IBCOTemplate(ICO).initIBCO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide, msg.sender);
+        emit IBCODeployed(msg.sender, address(ICO), templateAddress);
+    }
+
+
+    function transferAnyERC20Token(address tokenAddress, uint256 tokens) public onlyOwner returns (bool success) {
+        return IERC20(tokenAddress).transfer(owner(), tokens);
+    }
+
+    receive () external payable {
+        revert();
     }
 }
