@@ -1,17 +1,13 @@
 import './App.css'
 import React from 'react'
 import NavBar from './NavBar'
+import Landing from './Landing'
 
 function App() {
   return (
-    <div className='App'>
+    <div style={{ width: '60%', margin: 'auto', height: '100vh' }} className='App'>
       <NavBar />
-      <p>
-        Edit <code>src/App.js</code> and save to reload
-      </p>
-      <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-        Learn React
-      </a>
+      <Landing />
     </div>
   )
 }

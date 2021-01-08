@@ -1,0 +1,11 @@
+.developer-panel:hover {
+  background-color: hsl(271, 85%, 50%);
+  color: white;
+  transition: 0.5s;
+}
+
+.investor-panel:hover {
+  background-color: hsl(343, 94%, 35%);
+  color: white;
+  transition: 0.5s;
+}
