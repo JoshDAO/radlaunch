@@ -22,12 +22,6 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-
-/**
- * @author 0mllwntrmt3
- * @title Hegic Initial Offering
- * @notice some description
- */
 contract IBCO is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint;

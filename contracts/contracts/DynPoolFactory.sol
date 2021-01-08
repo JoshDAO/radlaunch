@@ -26,13 +26,6 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IIBCO.sol";
 
-
-
-/**
- * @author 0mllwntrmt3
- * @title Hegic Initial Offering
- * @notice some description
- */
 contract IBCOTemplate is Ownable {
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
@@ -43,7 +36,7 @@ contract IBCOTemplate is Ownable {
     uint256 public START;
     uint256 public END;
     uint256 public TOTAL_DISTRIBUTE_AMOUNT;
-    uint256 public MINIMAL_PROVIDE_AMOUNT = 0 ether;
+    uint256 public MINIMAL_PROVIDE_AMOUNT;
     uint256 public totalProvided = 0;
     bool private initialised;
     mapping(address => uint) public provided;
