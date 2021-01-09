@@ -81,7 +81,7 @@ contract IBCOFactory is Ownable, CloneFactory {
         ICO = createClone(templateAddress);
         require(_token.transferFrom(msg.sender, address(this), _tokenSupply));
         require(_token.approve(ICO, _tokenSupply));
-        IIBCO(ICO).initIBCO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide);
+        IIBCO(ICO).initIBCO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide, msg.sender);
         emit IBCODeployed(msg.sender, address(ICO), templateAddress);
     }
 

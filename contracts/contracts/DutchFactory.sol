@@ -23,7 +23,7 @@ contract DutchFactory is Ownable, CloneFactory {
 //templateAddress = address of ICO template to be replicated
 //newAddress = address for the new ICO template
     address public templateAddress;
-
+    event DutchDeployed(address indexed owner, address indexed addr, address ICOaddress);
 ////(could change this to constructor instead, thoughts?)
 //function initFactory{
 //  initialise owner
@@ -85,7 +85,7 @@ contract DutchFactory is Ownable, CloneFactory {
         require(IERC20(_token).transferFrom(msg.sender, address(this), _tokenSupply));
         require(IERC20(_token).approve(ICO, _tokenSupply));
         IDutchAuction(ICO).initDutchAuction(address(this), _token, _tokenSupply, _startDate, _endDate, _paymentCurrency, _startPrice, _minimumPrice, _wallet);
-
+        emit DutchDeployed(msg.sender, address(ICO), templateAddress);
     }
 
 
