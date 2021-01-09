@@ -39,7 +39,7 @@ contract IBCOTemplate is Ownable {
     uint256 public MINIMAL_PROVIDE_AMOUNT;
     uint256 public totalProvided = 0;
     bool private initialised;
-    mapping(address => uint) public provided;
+    mapping(address => uint256) public provided;
     IERC20 public token;
 
     function initIBCO(
@@ -51,18 +51,18 @@ contract IBCOTemplate is Ownable {
         uint256 _minimalProvide,
         address _newOwner)
     external {
-        require(!initialised);
-        require(_endDate > _startDate);
-        require(_minimalProvide > 0);
+        require(!initialised, "contract already initialised");
+        require(_endDate > _startDate, "end date cannot be before start date");
+        require(_minimalProvide > 0, "the minimum raise amount must be greater than 0");
 
         token = _token;
         TOTAL_DISTRIBUTE_AMOUNT = _totalSupply;
         START = _startDate;
         END = _endDate;
         MINIMAL_PROVIDE_AMOUNT = _minimalProvide;
+        initialised = true;
         transferOwnership(_newOwner);
-        token.safeTransferFrom(_funder, address(this), _totalSupply);
-        initialised = true;}
+        token.safeTransferFrom(_funder, address(this), _totalSupply);}
 
 
     receive() external payable {
@@ -116,32 +116,45 @@ contract IBCOTemplate is Ownable {
     }
 }
 
-
-//// This connects to the ICO contract templates, will potentially have a seperate factory for each ICO type, alternatively, one factory can contain all of the templateAddresses in a list. The ICO templates will be used from elsewhere and adapted if necessary, links to certain contracts have been provided.
-//// The pseudocode is written such that it could apply to any ICO type. emits havent been included yet, interfaces will be taken from ICO contracts.
-
+//inspired by BokkyPooBahsFixedSupplyTokenFactory.sol
 
 contract DynPoolFactory is Ownable, CloneFactory {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-    address public templateAddress;
-    event IBCODeployed(address indexed owner, address indexed addr, address ICOaddress);
+    // state variable declarations
 
-//    constructor(address template) public{
-//        templateAddress = template;
-//    }
+    address public newAddress;
+    uint256 public minimumFee = 1e17;
+    mapping(address => bool) public isProduct;
+    address[] public products;
 
-    function setIBCOTemplate(address _templateAddress) external onlyOwner {
-        templateAddress = _templateAddress;
+    // events
+    event IBCODeployed(address indexed owner, address indexed addr, IERC20 indexed token, uint256 tokenSupply, uint256 startDate, uint256 endDate, uint256 minimalProvide);
+    event MinimumFeeUpdated(uint256 oldFee, uint256 newFee);
+    event FactoryDeprecated(address _newAddress);
+
+    // utility functions
+    function setMinimumFee(uint256 _minimumFee) external onlyOwner {
+        emit MinimumFeeUpdated(minimumFee, _minimumFee);
+        minimumFee = _minimumFee;
     }
 
-////params for dutch auction  (thinking of using this one [dutchswap](https://github.com/deepyr/DutchSwap/blob/master/contracts/DutchSwapAuction.sol), (not audited) but may change to another after further review
+    function numberOfProducts() public view returns (uint256){
+        return products.length;
+    }
 
-////params for [Hegic linear IBCO](https://github.com/hegic/initial-bonding-curve-offering/blob/master/contracts/InitialOffering/HegicInitialOffering.sol) (will need to modify the IBCO contract slightly to utilise the replication, will alter such that it has an init function that passes the variables into the contract)
+    function deprecateFactory(address _newAddress) external onlyOwner {
+        require(newAddress == address(0), "new factory address is already owned");
+        emit FactoryDeprecated(_newAddress);
+        newAddress = _newAddress;
+    }
 
-//// need to have a look at reentrancy
-//
+    function transferAnyERC20Token(address tokenAddress, uint256 tokens) public onlyOwner returns (bool success) {
+        return IERC20(tokenAddress).transfer(owner(), tokens);
+    }
+
+    // deployment function, run this to deploy an IBCO. NEED TO CHECK THIS FUNCTION FOR REENTRANCY
     function deployIBCO(
         IERC20 _token,
         uint256 _tokenSupply,
@@ -149,16 +162,19 @@ contract DynPoolFactory is Ownable, CloneFactory {
         uint256 _endDate,
         uint256 _minimalProvide) public payable returns (IBCOTemplate ICO)
     {
+        require(msg.value >= minimumFee, "Fee to launch contract is insufficient");
+        require(_tokenSupply > 0, "No tokens submitted");
+        require(_endDate > _startDate, "End date cannot be before the start date");
         ICO = new IBCOTemplate();
-        require(_token.transferFrom(msg.sender, address(this), _tokenSupply));
-        require(_token.approve(address(ICO), _tokenSupply));
+        require(_token.transferFrom(msg.sender, address(this), _tokenSupply), "token transfer to factory failed");
+        require(_token.approve(address(ICO), _tokenSupply), "token approval unsuccessful");
         IBCOTemplate(ICO).initIBCO(address(this), _token, _tokenSupply, _startDate, _endDate, _minimalProvide, msg.sender);
-        emit IBCODeployed(msg.sender, address(ICO), templateAddress);
-    }
-
-
-    function transferAnyERC20Token(address tokenAddress, uint256 tokens) public onlyOwner returns (bool success) {
-        return IERC20(tokenAddress).transfer(owner(), tokens);
+        isProduct[address(ICO)] = true;
+        products.push(address(ICO));
+        emit IBCODeployed(msg.sender, address(ICO), _token, _tokenSupply, _startDate, _endDate, _minimalProvide);
+        if (msg.value > 0){
+            payable(owner()).transfer(msg.value);
+        }
     }
 
     receive () external payable {
