@@ -10,6 +10,7 @@ const AnimatedDiv = styled.div`
   font-family: 'Roboto', sans-serif;
   font-size: 2rem;
   text-align: justify;
+  color: black;
 `
 
 const H2 = styled.h2`
@@ -18,7 +19,7 @@ const H2 = styled.h2`
   text-align: center;
 `
 
-const Landing = (props) => {
+const Landing = ({ setPage, navigate }) => {
   return (
     <div
       style={{
@@ -28,13 +29,15 @@ const Landing = (props) => {
         height: '80%',
       }}
     >
-      <AnimatedDiv className='developer-panel'>
-        <H2>Developers</H2>
-        <div style={{ fontWeight: 300 }}>
-          Make your life easy, Set up a custom ICO from a variety of ICO styles and open your
-          project up to investment
-        </div>
-      </AnimatedDiv>
+      <a style={{ textDecoration: 'none' }} href='/developer' onClick={navigate}>
+        <AnimatedDiv className='developer-panel'>
+          <H2>Developers</H2>
+          <div style={{ fontWeight: 300 }}>
+            Make your life easy, Set up a custom ICO from a variety of ICO styles and open your
+            project up to investment
+          </div>
+        </AnimatedDiv>
+      </a>
       <AnimatedDiv className='investor-panel'>
         <H2>Investors</H2>
         <div style={{ fontWeight: 300 }}>
