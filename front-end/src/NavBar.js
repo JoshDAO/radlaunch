@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import farmer from './assets/RADlogo.svg'
+import { MetaMaskButton } from 'rimble-ui'
 
 const Nav = styled.nav`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   margin: auto;
-  border-bottom: 3px solid gray;
+  border-bottom: 3px solid rgb(113, 101, 215);
   margin-bottom: 3rem;
 `
 
@@ -49,7 +50,9 @@ const NavBar = (props) => {
           </a>
         </li>
         <li>
-          <WalletButton>Connect Wallet</WalletButton>
+          <MetaMaskButton style={{ backgroundColor: 'rgb(78, 63, 206)' }} size='small'>
+            Connect with MetaMask
+          </MetaMaskButton>
         </li>
       </Ul>
     </Nav>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ICOimg from '../../assets/ICO.jpg'
 
@@ -38,7 +39,9 @@ const SetUpIcoCard = (props) => {
       <img src={ICOimg} width='100%' />
       <H3>SET UP AN ICO</H3>
       <CardText>List a token for investment.</CardText>
-      <SetUpButton>Set Up</SetUpButton>
+      <Link to={'/SetUpIco'}>
+        <SetUpButton>Set Up</SetUpButton>
+      </Link>
     </CardDiv>
   )
 }
