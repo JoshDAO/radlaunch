@@ -37,7 +37,7 @@ const WalletButton = styled.button`
 const NavBar = (props) => {
   return (
     <Nav>
-      <img src={farmer} width={200} />
+      <img src={farmer} style={{ maxWidth: '300px' }} />
       <Ul>
         <li>
           <a style={{ textDecoration: 'none', color: 'black', fontSize: 30 }} href=''>
