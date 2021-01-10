@@ -1,6 +1,7 @@
 # ico-manager
 Jibran's Idea for the encode hackathon
 
+[Current frontend](https://thirsty-poitras-c58503.netlify.app/developer)
 ## ICO Management Tool - Encode Hack idea
 
 ## Introduction
