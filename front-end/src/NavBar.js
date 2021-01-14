@@ -25,13 +25,10 @@ const WalletButton = styled.button`
   font-family: 'Questrial', sans-serif;
   font-size: 24px;
 `
-const H1 = styled.h1`
-  font-size: 48px;
-  font-family: 'Questrial', sans-serif;
-  font-weight: 400;
+const H1Div = styled.div`
+  text-align: center;
   border-radius: 0px 0px 70px 70px;
   height: 150px;
-  line-height: 110px;
   width: 100%;
   margin: 0;
   background: linear-gradient(
@@ -42,12 +39,23 @@ const H1 = styled.h1`
     rgba(220, 27, 27, 0.5) 100%
   );
 `
+
+const H1 = styled.h1`
+  display: inline-block;
+  font-size: 48px;
+  font-family: 'Questrial', sans-serif;
+  font-weight: 400;
+  vertical-align: middle;
+  line-height: normal;
+`
 const NavBar = (props) => {
   return (
     <div width='100%'>
       <img src={logo} style={{ width: '650px', margin: 'auto' }} />
       <WalletButton>Connect Wallet</WalletButton>
-      <H1>Reliable, Secure and Permissionless launches for pioneering projects </H1>
+      <H1Div>
+        <H1>Reliable, Secure and Permissionless launches for pioneering projects</H1>
+      </H1Div>
     </div>
   )
 }
