@@ -13,33 +13,41 @@ const Nav = styled.nav`
   margin-bottom: 3rem;
 `
 
-const Ul = styled.ul`
-  display: flex;
-  justify-content: space-evenly;
-  width: 70%;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  color: black;
-  text-decoration: none;
-  list-style-type: none;
-  font-size: 30px;
-`
-
 const WalletButton = styled.button`
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
+  position: absolute;
+  top: 4.5%;
+  left: 75%;
+  background: #ffffff;
+  border: 2px solid #4e3fce;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 0.7rem 1.2rem;
+  font-family: 'Questrial', sans-serif;
   font-size: 24px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 100;
-  background-color: HSL(271, 85%, 50%);
-  color: white;
 `
-
+const H1 = styled.h1`
+  font-size: 48px;
+  font-family: 'Questrial', sans-serif;
+  font-weight: 400;
+  border-radius: 0px 0px 70px 70px;
+  height: 150px;
+  line-height: 110px;
+  width: 100%;
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 148, 255, 0) 69.27%,
+    rgba(0, 148, 255, 0.5) 73.96%,
+    rgba(78, 63, 206, 0.5) 83.33%,
+    rgba(220, 27, 27, 0.5) 100%
+  );
+`
 const NavBar = (props) => {
   return (
-    <div>
-      <img src={logo} style={{ width: '650px' }} />
-      <WalletButton>{props.web3Provider ? 'Connect Wallet' : 'Log in with portis'}</WalletButton>
+    <div width='100%'>
+      <img src={logo} style={{ width: '650px', margin: 'auto' }} />
+      <WalletButton>Connect Wallet</WalletButton>
+      <H1>Reliable, Secure and Permissionless launches for pioneering projects </H1>
     </div>
   )
 }
