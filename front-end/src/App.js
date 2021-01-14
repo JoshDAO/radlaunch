@@ -10,7 +10,17 @@ import IbcoSetupForm from './developers/IbcoSetupForm'
 
 function App() {
   return (
-    <div style={{ width: '100%', margin: 'auto', textAlign: 'center' }} className='App'>
+    <div
+      style={{
+        width: '100%',
+        margin: 'auto',
+        height: window.innerHeight,
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      className='App'
+    >
       <NavBar />
       <Router>
         <Switch>

@@ -42,7 +42,7 @@ const H1Div = styled.div`
 
 const H1 = styled.h1`
   display: inline-block;
-  font-size: 36px;
+  font-size: 2.2rem;
   font-family: 'Questrial', sans-serif;
   font-weight: 400;
   vertical-align: middle;
