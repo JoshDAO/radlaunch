@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import developersImage from './assets/developersAndFounders.svg'
 import './landing.css'
 
 const AnimatedDiv = styled.div`
@@ -33,11 +35,8 @@ const Landing = (props) => {
     >
       <Link to={'/developer'} style={{ textDecoration: 'none', width: '50%' }}>
         <AnimatedDiv className='developer-panel'>
+          <img src={developersImage} />
           <H2>Developers</H2>
-          <div style={{ fontWeight: 300, padding: '3rem' }}>
-            Make your life easy, Set up a custom ICO from a variety of ICO styles and open your
-            project up to investment
-          </div>
         </AnimatedDiv>
       </Link>
       <Link to={'/investor'} style={{ textDecoration: 'none', width: '50%' }}>
