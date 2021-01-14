@@ -24,6 +24,11 @@ const H2 = styled.h2`
   margin-top: 5rem;
 `
 
+const Img = styled.img`
+  width: 15rem;
+  margin: 0 auto;
+`
+
 const Landing = (props) => {
   const [investorHover, setInvestorHover] = useState(false)
   const [developerHover, setDeveloperHover] = useState(false)
@@ -45,7 +50,7 @@ const Landing = (props) => {
         onMouseLeave={() => setDeveloperHover(false)}
       >
         <AnimatedDiv className='developer-panel'>
-          <img src={developersImage} />
+          <Img src={developersImage} />
           {developerHover ? (
             <DeveloperHoverText show={true} />
           ) : (
@@ -61,7 +66,7 @@ const Landing = (props) => {
         onMouseLeave={() => setInvestorHover(false)}
       >
         <AnimatedDiv className='investor-panel'>
-          <img src={investorsImage} />
+          <Img src={investorsImage} />
           {investorHover ? <InvestorHoverText show={true} /> : <InvestorHoverText show={false} />}
           <H2>Investors</H2>
         </AnimatedDiv>
