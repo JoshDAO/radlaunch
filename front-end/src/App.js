@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Web3 from 'web3'
 
 import NavBar from './NavBar'
 import Landing from './Landing'

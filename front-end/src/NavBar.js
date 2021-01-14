@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import farmer from './assets/RADlogo.svg'
+import logo from './assets/logo.svg'
 import { MetaMaskButton } from 'rimble-ui'
 
 const Nav = styled.nav`
   display: flex;
+  width: 1920px;
   flex-direction: row;
   justify-content: space-evenly;
   margin: auto;
@@ -36,26 +37,10 @@ const WalletButton = styled.button`
 
 const NavBar = (props) => {
   return (
-    <Nav>
-      <img src={farmer} style={{ maxWidth: '300px' }} />
-      <Ul>
-        <li>
-          <a style={{ textDecoration: 'none', color: 'black', fontSize: 30 }} href=''>
-            How does it work?
-          </a>
-        </li>
-        <li>
-          <a style={{ textDecoration: 'none', color: 'black', fontSize: 30 }} href=''>
-            Docs
-          </a>
-        </li>
-        <li>
-          <MetaMaskButton style={{ backgroundColor: 'rgb(78, 63, 206)' }} size='small'>
-            Connect with MetaMask
-          </MetaMaskButton>
-        </li>
-      </Ul>
-    </Nav>
+    <div>
+      <img src={logo} style={{ width: '650px' }} />
+      <WalletButton>{props.web3Provider ? 'Connect Wallet' : 'Log in with portis'}</WalletButton>
+    </div>
   )
 }
 
