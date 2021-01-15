@@ -44,27 +44,34 @@ const WalletButton = styled.button`
 const NavBar = (props) => {
     const {web3Loading, getweb3} = Wallet_model ();
     const [myWeb3, setMyWeb3] = useState ();
-    const portis = new Portis('f93ee87a-6e6b-4c92-a394-ef5e494c82f6', 'rinkeby');
-    const web3 = new Web3(portis.provider);
+    // const portis = new Portis('f93ee87a-6e6b-4c92-a394-ef5e494c82f6', 'rinkeby');
+
 async function connectWallet() {
+    if (myWeb3 === undefined){
     await getweb3 ().then ((response) => {
         setMyWeb3 (response);
-        response.eth.getAccounts ().then ((result) => {
-        console.log (result)
-        });
-    });
-};
 
-function getAcc(){
-web3.eth.getAccounts((error, accounts) => {
-  console.log(accounts);
-});}
+        response.eth.getAccounts ().then ((result) => {console.log (result)});
+
+    });}
+}
+
+// function getAcc(){
+//     if (myWeb3 === undefined){
+//         const web3 = new Web3(portis.provider)
+//         setMyWeb3(web3);
+//         web3.eth.getAccounts((error, accounts) => {
+//         console.log(accounts);});
+//
+//     }
+//
+// }
 
   return (
     <div>
       <img src={logo} style={{ width: '650px' }} />
         {web3Loading? <WalletButton disabled>Loading...</WalletButton>: <WalletButton onClick = {connectWallet}>Connect Wallet</WalletButton> }
-        {/*<WalletButton onClick = {getAcc()}>Portis</WalletButton>*/}
+        {/*<WalletButton onClick = {getAcc}>Log in with Portis</WalletButton>*/}
     </div>
   )
 }
