@@ -6,6 +6,7 @@ import developersImage from './assets/developersAndFounders.svg'
 import investorsImage from './assets/investorsImage.svg'
 import DeveloperIndex from './developers/DeveloperIndex'
 import './landing.css'
+import NavBar from './NavBar'
 
 const AnimatedDiv = styled.div`
   display: flex;
@@ -33,45 +34,48 @@ const Landing = (props) => {
   const [investorHover, setInvestorHover] = useState(false)
   const [developerHover, setDeveloperHover] = useState(false)
   return (
-    <div
-      style={{
-        display: 'flex',
-        margin: 'auto',
-        justifyContent: 'space-evenly',
-        height: '100%',
-        flex: '0 1 auto',
-        width: '100%',
-      }}
-    >
-      <Link
-        to={'/developer'}
-        style={{ textDecoration: 'none', width: '50%' }}
-        onMouseEnter={() => setDeveloperHover(true)}
-        onMouseLeave={() => setDeveloperHover(false)}
+    <>
+      <NavBar titleText={'Reliable, Secure and Permissionless launches for pioneering projects'} />
+      <div
+        style={{
+          display: 'flex',
+          margin: 'auto',
+          justifyContent: 'space-evenly',
+          height: '100%',
+          flex: '0 1 auto',
+          width: '100%',
+        }}
       >
-        <AnimatedDiv className='developer-panel'>
-          <Img src={developersImage} />
-          {developerHover ? (
-            <DeveloperHoverText show={true} />
-          ) : (
-            <DeveloperHoverText show={false} />
-          )}
-          <H2>Developers and Founders</H2>
-        </AnimatedDiv>
-      </Link>
-      <Link
-        to={'/investor'}
-        style={{ textDecoration: 'none', width: '50%' }}
-        onMouseEnter={() => setInvestorHover(true)}
-        onMouseLeave={() => setInvestorHover(false)}
-      >
-        <AnimatedDiv className='investor-panel'>
-          <Img src={investorsImage} />
-          {investorHover ? <InvestorHoverText show={true} /> : <InvestorHoverText show={false} />}
-          <H2>Investors</H2>
-        </AnimatedDiv>
-      </Link>
-    </div>
+        <Link
+          to={'/developer'}
+          style={{ textDecoration: 'none', width: '50%' }}
+          onMouseEnter={() => setDeveloperHover(true)}
+          onMouseLeave={() => setDeveloperHover(false)}
+        >
+          <AnimatedDiv className='developer-panel'>
+            <Img src={developersImage} />
+            {developerHover ? (
+              <DeveloperHoverText show={true} />
+            ) : (
+              <DeveloperHoverText show={false} />
+            )}
+            <H2>Developers and Founders</H2>
+          </AnimatedDiv>
+        </Link>
+        <Link
+          to={'/investor'}
+          style={{ textDecoration: 'none', width: '50%' }}
+          onMouseEnter={() => setInvestorHover(true)}
+          onMouseLeave={() => setInvestorHover(false)}
+        >
+          <AnimatedDiv className='investor-panel'>
+            <Img src={investorsImage} />
+            {investorHover ? <InvestorHoverText show={true} /> : <InvestorHoverText show={false} />}
+            <H2>Investors</H2>
+          </AnimatedDiv>
+        </Link>
+      </div>
+    </>
   )
 }
 
