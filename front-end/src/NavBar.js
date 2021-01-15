@@ -86,7 +86,7 @@ const NavBar = ({ imgSource, titleText }) => {
 
   return (
     <div>
-      <img src={logo} style={{ width: '650px' }} />
+      <img src={logo} style={{ width: '500px' }} />
       {web3Loading ? (
         <WalletButton disabled>Loading...</WalletButton>
       ) : (

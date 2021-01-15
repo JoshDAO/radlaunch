@@ -10,6 +10,7 @@ const H2 = styled.h2`
   text-align: left;
   font-size: 3rem;
   display: inline-block;
+  margin: 2rem 0;
 `
 
 const LaunchButton = styled.button`
@@ -21,7 +22,7 @@ const LaunchButton = styled.button`
   box-sizing: border-box;
   border-radius: 2rem;
   width: 25rem;
-  height: 5rem;
+  height: 4rem;
   margin-top: 1.5rem;
 `
 
