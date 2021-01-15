@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import icoImage from '../assets/ICO.jpg'
 import styled from 'styled-components'
 import SetUpIcoCard from './cards/SetUpIco'
@@ -23,7 +24,7 @@ const LaunchButton = styled.button`
   border-radius: 2rem;
   width: 25rem;
   height: 4rem;
-  margin-top: 1.5rem;
+  cursor: pointer;
 `
 
 const HeaderDiv = styled.div`
@@ -43,9 +44,20 @@ const DeveloperIndex = (props) => {
       <main style={{ padding: '0 10%' }}>
         <HeaderDiv>
           <H2>My Launches</H2>
-          <LaunchButton>Launch a New Project</LaunchButton>
+          <Link
+            to={'/setUpIco'}
+            style={{
+              textDecoration: 'none',
+              height: '4rem',
+              marginTop: '1.5rem',
+            }}
+          >
+            <LaunchButton>Launch a New Project</LaunchButton>
+          </Link>
         </HeaderDiv>
-        <SetUpIcoCard />
+        <div style={{ padding: '2rem 2% 0 2%' }}>
+          <SetUpIcoCard />
+        </div>
       </main>
     </div>
   )
