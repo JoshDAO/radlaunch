@@ -1,11 +1,41 @@
 .developer-panel:hover {
-  background-color: hsl(271, 85%, 50%);
-  color: white;
-  transition: 0.5s;
+  background-color: #e6ddff;
+  transition: 0.7s;
 }
 
 .investor-panel:hover {
-  background-color: hsl(343, 94%, 35%);
-  color: white;
+  background-color: #e6ddff;
+  transition: 0.7s;
+}
+
+.hover-text {
+  font-family: 'Questrial', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  width: 60%;
+  height: 0px;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
   transition: 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  margin: 0 auto;
+  margin-top: 3rem;
+}
+
+.hover-text.show {
+  text-align: center;
+  margin: 5rem auto;
+  height: calc(170px - 15vw);
+  opacity: 1;
+  visibility: visible;
+}
+
+.hover-text.show.dev-text {
+  text-align: center;
+  margin: 5rem auto;
+  height: calc(160px - 4vw);
+  opacity: 1;
+  visibility: visible;
 }
