@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import logo from './assets/logo.svg'
+import Portis from '@portis/web3'
+import Web3 from 'web3'
+import { useEffect, useState } from 'react'
 import { MetaMaskButton } from 'rimble-ui'
+import Wallet_model from './Wallet_model'
 
 const Nav = styled.nav`
   display: flex;
@@ -50,13 +54,42 @@ const H1 = styled.h1`
   line-height: normal;
 `
 const NavBar = (props) => {
+  const { web3Loading, getweb3 } = Wallet_model()
+  const [myWeb3, setMyWeb3] = useState()
+  // const portis = new Portis('f93ee87a-6e6b-4c92-a394-ef5e494c82f6', 'rinkeby');
+
+  async function connectWallet() {
+    if (myWeb3 === undefined) {
+      await getweb3().then((response) => {
+        setMyWeb3(response)
+
+        response.eth.getAccounts().then((result) => {
+          console.log(result)
+        })
+      })
+    }
+  }
+
+  // function getAcc(){
+  //     if (myWeb3 === undefined){
+  //         const web3 = new Web3(portis.provider)
+  //         setMyWeb3(web3);
+  //         web3.eth.getAccounts((error, accounts) => {
+  //         console.log(accounts);});
+  //
+  //     }
+  //
+  // }
+
   return (
-    <div width='100%'>
-      <img src={logo} style={{ width: '500px', margin: 'auto' }} />
-      <WalletButton>Connect Wallet</WalletButton>
-      <H1Div>
-        <H1>Reliable, Secure and Permissionless launches for pioneering projects</H1>
-      </H1Div>
+    <div>
+      <img src={logo} style={{ width: '650px' }} />
+      {web3Loading ? (
+        <WalletButton disabled>Loading...</WalletButton>
+      ) : (
+        <WalletButton onClick={connectWallet}>Connect Wallet</WalletButton>
+      )}
+      {/*<WalletButton onClick = {getAcc}>Log in with Portis</WalletButton>*/}
     </div>
   )
 }
