@@ -11,7 +11,14 @@ import IbcoSetupForm from './developers/IbcoSetupForm'
 function App() {
   return (
     <div
-      style={{ width: '60%', margin: 'auto', height: '100vh', textAlign: 'center' }}
+      style={{
+        width: '100%',
+        margin: 'auto',
+        height: window.innerHeight,
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
       className='App'
     >
       <NavBar />
