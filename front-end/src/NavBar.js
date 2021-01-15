@@ -90,6 +90,9 @@ const NavBar = (props) => {
         <WalletButton onClick={connectWallet}>Connect Wallet</WalletButton>
       )}
       {/*<WalletButton onClick = {getAcc}>Log in with Portis</WalletButton>*/}
+      <H1Div>
+        <H1>Reliable, Secure and Permissionless launches for pioneering projects</H1>
+      </H1Div>
     </div>
   )
 }
