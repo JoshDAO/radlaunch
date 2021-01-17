@@ -124,9 +124,10 @@ const Td = styled.td`
   font-family: 'Questrial', sans-serif;
   font-size: 1rem;
   font-weight: 400;
-  padding: 0.8rem;
+  padding: 0.2rem;
 `
 const Tr = styled.tr`
+  height: 3rem;
   border-top: 1px solid #e6ddff;
   &:first-of-type {
     border: none;
@@ -228,7 +229,7 @@ const IcoDashboard = (props) => {
               <Tr>
                 <Td>Holders:</Td>
               </Tr>
-              <Tr>
+              <Tr style={{ height: '9rem' }}>
                 <Td>
                   Launch type: Dynamic swap pool
                   <br />
