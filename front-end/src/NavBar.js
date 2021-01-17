@@ -53,7 +53,10 @@ const H1 = styled.h1`
   margin-top: 0.5rem;
   line-height: normal;
 `
-const NavBar = (props) => {
+
+const NavbarImg = styled.img``
+
+const NavBar = ({ imgSource, titleText }) => {
   const { web3Loading, getweb3 } = Wallet_model()
   const [myWeb3, setMyWeb3] = useState()
   // const portis = new Portis('f93ee87a-6e6b-4c92-a394-ef5e494c82f6', 'rinkeby');
@@ -83,13 +86,23 @@ const NavBar = (props) => {
 
   return (
     <div>
-      <img src={logo} style={{ width: '650px' }} />
+      <img src={logo} style={{ width: '500px' }} />
       {web3Loading ? (
         <WalletButton disabled>Loading...</WalletButton>
       ) : (
         <WalletButton onClick={connectWallet}>Connect Wallet</WalletButton>
       )}
       {/*<WalletButton onClick = {getAcc}>Log in with Portis</WalletButton>*/}
+      <H1Div>
+        {imgSource ? (
+          <NavbarImg
+            height='50%'
+            style={{ position: 'relative', top: '10%', paddingRight: '1.5rem' }}
+            src={imgSource}
+          />
+        ) : null}
+        <H1>{titleText}</H1>
+      </H1Div>
     </div>
   )
 }

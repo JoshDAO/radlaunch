@@ -21,7 +21,6 @@ function App() {
       }}
       className='App'
     >
-      <NavBar />
       <Router>
         <Switch>
           <Route exact path='/developer'>
