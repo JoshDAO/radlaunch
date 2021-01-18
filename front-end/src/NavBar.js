@@ -6,6 +6,7 @@ import Web3 from 'web3'
 import { useEffect, useState } from 'react'
 import { MetaMaskButton } from 'rimble-ui'
 import Wallet_model from './Wallet_model'
+import map from "./artifacts/deployments/map.json"
 
 const Nav = styled.nav`
   display: flex;
@@ -59,30 +60,77 @@ const NavbarImg = styled.img``
 const NavBar = ({ imgSource, titleText }) => {
   const { web3Loading, getweb3 } = Wallet_model()
   const [myWeb3, setMyWeb3] = useState()
-  // const portis = new Portis('f93ee87a-6e6b-4c92-a394-ef5e494c82f6', 'rinkeby');
+  const [contract, setContract] = useState()
+  const [accounts, setAccount] = useState()
+  const [chainId, setChainId] = useState()
+  const [dynInput, setDynInput] = useState()
 
   async function connectWallet() {
     if (myWeb3 === undefined) {
       await getweb3().then((response) => {
         setMyWeb3(response)
-
         response.eth.getAccounts().then((result) => {
           console.log(result)
+            setAccount(result)
         })
+
+        response.eth.getChainId().then((answer) =>{
+            console.log(answer)
+              setChainId(answer)
+        })
+
       })
+        await loadInitialContracts
     }
+
+  }
+  async function loadInitialContracts() {
+      // if (chainId <= 42){
+      //     return
+      // }
+
+        const dyn = await loadContract("dev", "DynPoolFactory")
+      
+        setContract(dyn)
   }
 
-  // function getAcc(){
-  //     if (myWeb3 === undefined){
-  //         const web3 = new Web3(portis.provider)
-  //         setMyWeb3(web3);
-  //         web3.eth.getAccounts((error, accounts) => {
-  //         console.log(accounts);});
-  //
-  //     }
-  //
-  // }
+  async function loadContract(chain, contractName) {
+        // Load a deployed contract instance into a web3 contract object
+        // const {web3} = this.state
+
+        // Get the address of the most recent deployment from the deployment map
+        let address
+        try {
+            address = map[chain][contractName][0]
+        } catch (e) {
+            console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+            return undefined
+        }
+
+        // Load the artifact with the specified address
+        let contractArtifact
+        try {
+            contractArtifact = await import(`./artifacts/deployments/${chain}/${address}.json`)
+        } catch (e) {
+            console.log(`Failed to load contract artifact "./artifacts/deployments/${chain}/${address}.json"`)
+            return undefined
+        }
+
+        return new myWeb3.eth.Contract(contractArtifact.abi, address)
+  }
+
+  async function deployICO(e) {
+        e.preventDefault()
+        const value = parseInt(dynInput)
+        if (isNaN(value)) {
+            alert("invalid value")
+            return
+        }
+        await contract.methods.deployIBCO(0xF104A50668c3b1026E8f9B0d9D404faF8E42e642, 100e18, 1611532800,1613032800 ,5e18).send({from: accounts[0]})
+            .on('receipt', async () => {
+                console.log("xxxx")
+            })
+    }
 
   return (
     <div>
@@ -92,7 +140,7 @@ const NavBar = ({ imgSource, titleText }) => {
       ) : (
         <WalletButton onClick={connectWallet}>Connect Wallet</WalletButton>
       )}
-      {/*<WalletButton onClick = {getAcc}>Log in with Portis</WalletButton>*/}
+      <WalletButton onClick = {deployICO}>Launch</WalletButton>
       <H1Div>
         {imgSource ? (
           <NavbarImg
