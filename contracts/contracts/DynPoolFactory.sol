@@ -125,7 +125,7 @@ contract DynPoolFactory is Ownable, CloneFactory {
     // state variable declarations
 
     address public newAddress;
-    uint256 public minimumFee = 1e17;
+    uint256 public minimumFee = 0;
     mapping(address => bool) public isProduct;
     address[] public products;
 
