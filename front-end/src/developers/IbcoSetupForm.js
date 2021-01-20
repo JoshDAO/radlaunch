@@ -16,6 +16,7 @@ const TypeButton = styled.button`
   height: 5rem;
   cursor: pointer;
   margin: 1rem 2rem 1rem 0;
+  padding: 1rem;
 `
 
 const IbcoSetupForm = (props) => {
