@@ -45,7 +45,7 @@ const DeveloperIndex = (props) => {
         <HeaderDiv>
           <H2>My Launches</H2>
           <Link
-            to={'/setUpIco'}
+            to={'/IbcoSetup'}
             style={{
               textDecoration: 'none',
               height: '4rem',
