@@ -7,8 +7,9 @@ dependencies:
 project_structure:
   build: ../front-end/src/artifacts
 networks:
-  default: development
-  development:
-    cmd_settings:
-      mnemonic: hill law jazz limb penalty escape public dish stand bracket blue jar
-dev_deployment_artifacts: true
+  default: kovan
+  default_contract_owner: true
+#  development:
+#    cmd_settings:
+#      mnemonic: hill law jazz limb penalty escape public dish stand bracket blue jar
+#dev_deployment_artifacts: true

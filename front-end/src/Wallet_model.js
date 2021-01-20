@@ -35,7 +35,7 @@ export default function Wallet_model(){
             };
 
             web3Modal = new Web3Modal({
-                network:'rinkeby',
+                network:'kovan',
                 cacheProvider: true,
                 providerOptions,
             });
