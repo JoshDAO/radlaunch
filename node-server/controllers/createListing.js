@@ -26,7 +26,7 @@ createListing = async (req, res) => {
     .save()
     .then((listing) => {
       console.log(listing)
-      return res.status(200)
+      return res.status(200).json({ status: 'ok' })
     })
     .catch((error) => {
       return res.status(400).json({
