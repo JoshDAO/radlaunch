@@ -2,6 +2,22 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Form, Input, Field, Button, Text } from 'rimble-ui'
 import NavBar from '../NavBar'
+
+const TypeButton = styled.button`
+  font-family: 'Questrial', sans-serif;
+  font-weight: 400;
+  font-size: 1.2rem;
+  text-align: left;
+  background: #e6ddff;
+  border: 2px solid #4e3fce;
+  box-sizing: border-box;
+  border-radius: 2rem;
+  width: 15rem;
+  height: 5rem;
+  cursor: pointer;
+  margin: 1rem 2rem 1rem 0;
+`
+
 const IbcoSetupForm = (props) => {
   const [submitted, setSubmitted] = useState(false)
   const [validated, setValidated] = useState(false)
@@ -73,8 +89,16 @@ const IbcoSetupForm = (props) => {
   }
 
   return (
-    <>
+    <div style={{ paddingBottom: '2rem' }}>
       <NavBar titleText={'Type'} />
+      <div
+        style={{ width: '70%', margin: '0 auto', justifyContent: 'flex-start', display: 'flex' }}
+      >
+        <TypeButton>Dynamic Swap Pool / IBCO Public</TypeButton>
+        <TypeButton style={{ backgroundColor: 'white' }}>
+          Dynamic Swap Pool / IBCO Private Whitelist
+        </TypeButton>
+      </div>
       <Form
         style={{
           border: '1px solid #4E3FCE',
@@ -85,7 +109,7 @@ const IbcoSetupForm = (props) => {
           fontWeight: 400,
           fontSize: '1rem',
           width: '70%',
-          margin: 'auto',
+          margin: '0 auto',
           padding: '2rem 0',
         }}
         onSubmit={handleSubmit}
@@ -250,7 +274,7 @@ const IbcoSetupForm = (props) => {
           Review and Submit ICO for listing
         </Button>
       </Form>
-    </>
+    </div>
   )
 }
 
