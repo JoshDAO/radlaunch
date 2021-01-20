@@ -89,8 +89,8 @@ const NavBar = ({ imgSource, titleText }) => {
       //     return
       // }
 
-        const dyn = await loadContract("dev", "DynPoolFactory")
-        const token = await loadContract("dev", "ERCToken")
+        const dyn = await loadContract("42", "DynPoolFactory")
+        const token = await loadContract("42", "ERCToken")
 
         setContract(dyn)
         setTokenContract(token)
@@ -131,8 +131,9 @@ const NavBar = ({ imgSource, titleText }) => {
         // }
         let supply = myWeb3.utils.toWei('100', 'ether')
         let minimalProv = myWeb3.utils.toWei('5', 'ether')
+        let value = myWeb3.utils.toWei('0.1', 'ether')
         await tokenContract.methods.increaseAllowance(contract.options.address, supply).send({from: accounts[0]})
-        await contract.methods.deployIBCO("0xF104A50668c3b1026E8f9B0d9D404faF8E42e642", supply, 1611532800,1613032800 ,minimalProv).send({from: accounts[0]})
+        await contract.methods.deployIBCO("0x30dAad61baBB3EB50D6aB9575fB8ead5072e0dD8", supply, 1611532800,1613032800 ,minimalProv).send({from: accounts[0], value:value})
             .on('receipt', async () => {
             })
         setContract(contract)
