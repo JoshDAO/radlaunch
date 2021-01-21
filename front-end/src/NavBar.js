@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { MetaMaskButton } from 'rimble-ui'
 import Wallet_model from './Wallet_model'
 import map from "./artifacts/deployments/map.json"
+import template from "./artifacts/contracts/IBCOTemplate.json"
 
 const Nav = styled.nav`
   display: flex;
@@ -65,6 +66,7 @@ const NavBar = ({ imgSource, titleText }) => {
   const [accounts, setAccount] = useState()
   const [chainId, setChainId] = useState()
   const [dynInput, setDynInput] = useState()
+  const [template, setTemplate] = useState()
 
   async function connectWallet() {
     if (myWeb3 === undefined) {
@@ -92,8 +94,11 @@ const NavBar = ({ imgSource, titleText }) => {
         const dyn = await loadContract("42", "DynPoolFactory")
         const token = await loadContract("42", "ERCToken")
 
+
         setContract(dyn)
         setTokenContract(token)
+
+
   }
 
   async function loadContract(chain, contractName) {
@@ -122,6 +127,34 @@ const NavBar = ({ imgSource, titleText }) => {
         return new myWeb3.eth.Contract(contractArtifact.abi, address)
   }
 
+
+  async function loadTemplate(chain, contractName) {
+        // Load a deployed contract instance into a web3 contract object
+        // const {web3} = this.state
+
+        // Get the address of the most recent deployment from the deployment map
+        let address
+        try {
+            address = map[chain][contractName][0]
+        } catch (e) {
+            console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+            return undefined
+        }
+
+        // Load the artifact with the specified address
+        let contractArtifact
+        try {
+            contractArtifact = await import(`./artifacts/deployments/${chain}/${address}.json`)
+        } catch (e) {
+            console.log(`Failed to load contract artifact "./artifacts/deployments/${chain}/${address}.json"`)
+            return undefined
+        }
+        console.log(contractArtifact)
+
+        return new myWeb3.eth.Contract(contractArtifact.abi, "0x3072A4ad44C12CfBf42DDC9cd37307327Fb57F19")
+  }
+
+
   async function deployICO(e) {
         e.preventDefault()
         // const value = parseInt(dynInput)
@@ -130,18 +163,47 @@ const NavBar = ({ imgSource, titleText }) => {
         //     return
         // }
         let supply = myWeb3.utils.toWei('100', 'ether')
-        let minimalProv = myWeb3.utils.toWei('5', 'ether')
+        let minimalProv = myWeb3.utils.toWei('0.5', 'ether')
         let value = myWeb3.utils.toWei('0.1', 'ether')
         await tokenContract.methods.increaseAllowance(contract.options.address, supply).send({from: accounts[0]})
-        await contract.methods.deployIBCO("0x30dAad61baBB3EB50D6aB9575fB8ead5072e0dD8", supply, 1611532800,1613032800 ,minimalProv).send({from: accounts[0], value:value})
+        await contract.methods.deployIBCO("0xE754870e821c5BE488C9C48B4ff707978D4fEd2C", supply, 1611196800,1611232800 ,minimalProv).send({from: accounts[0], value:value})
             .on('receipt', async () => {
             })
-        setContract(contract)
+
   }
   async function events(){
       await contract.getPastEvents("IBCODeployed", {fromBlock: 1}).then((response) => {
           console.log(response)
       })
+      const loadedTemplate = await loadTemplate("42", "IBCOTemplate")
+      setTemplate(loadedTemplate)
+  }
+
+  async function claim(){
+
+      await template.methods.claim().send({from:accounts[0]})
+      .on('receipt', async () => {
+      })
+
+  }
+
+    async function numProviders(){
+
+      await template.methods.numberOfProviders().send({from:accounts[0]})
+      .on('receipt', async () => {
+      })
+
+  }
+
+    async function contribute(){
+      await myWeb3.eth.sendTransaction({
+          from:accounts[0],
+          to:template.options.address,
+          value:myWeb3.utils.toWei('0.1', 'ether')
+      })
+      .on('receipt', async () => {
+      })
+
   }
 
   return (
@@ -165,7 +227,11 @@ const NavBar = ({ imgSource, titleText }) => {
             src={imgSource}
           />
         ) : null}
+        <button onClick = {claim}>Claim call</button>
+          <button onClick = {contribute}>Contribute</button>
+          <button onClick = {numProviders}>Number of Providers</button>
         <H1>{titleText}</H1>
+
       </H1Div>
     </div>
   )
