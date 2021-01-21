@@ -1,30 +1,9 @@
 pragma solidity 0.6.12;
 
-/**
- * SPDX-License-Identifier: GPL-3.0-or-later
- * Hegic
- * Copyright (C) 2020 Hegic Protocol
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "./utils/CloneFactory.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IIBCO.sol";
 
 contract IBCOTemplate is Ownable {
     using SafeERC20 for IERC20;
@@ -40,6 +19,7 @@ contract IBCOTemplate is Ownable {
     uint256 public totalProvided = 0;
     bool private initialised;
     mapping(address => uint256) public provided;
+    address[] public providers;
     IERC20 public token;
 
     function initIBCO(
@@ -70,7 +50,12 @@ contract IBCOTemplate is Ownable {
         require(block.timestamp <= END, "The offering has already ended");
         totalProvided += msg.value;
         provided[msg.sender] += msg.value;
+        providers.push(msg.sender);
         emit Received(msg.sender, msg.value);
+    }
+
+    function numberOfProviders() public view returns (uint256){
+        return providers.length;
     }
 
     function claim() external {
@@ -118,23 +103,19 @@ contract IBCOTemplate is Ownable {
 
 //inspired by BokkyPooBahsFixedSupplyTokenFactory.sol
 
-contract DynPoolFactory is Ownable, CloneFactory {
+contract DynPoolFactory is Ownable{
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
-
-    // state variable declarations
 
     address public newAddress;
     uint256 public minimumFee = 1e17;
     mapping(address => bool) public isProduct;
     address[] public products;
 
-    // events
     event IBCODeployed(address indexed owner, address indexed addr, IERC20 indexed token, uint256 tokenSupply, uint256 startDate, uint256 endDate, uint256 minimalProvide);
     event MinimumFeeUpdated(uint256 oldFee, uint256 newFee);
     event FactoryDeprecated(address _newAddress);
 
-    // utility functions
     function setMinimumFee(uint256 _minimumFee) external onlyOwner {
         emit MinimumFeeUpdated(minimumFee, _minimumFee);
         minimumFee = _minimumFee;
@@ -154,7 +135,6 @@ contract DynPoolFactory is Ownable, CloneFactory {
         return IERC20(tokenAddress).transfer(owner(), tokens);
     }
 
-    // deployment function, run this to deploy an IBCO. NEED TO CHECK THIS FUNCTION FOR REENTRANCY
     function deployIBCO(
         IERC20 _token,
         uint256 _tokenSupply,

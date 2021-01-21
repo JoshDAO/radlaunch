@@ -1,0 +1,55 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_funder",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IERC20",
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_endDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minimalProvide",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "initIBCO",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "contractName": "IIBCO",
+  "offset": [
+    417,
+    953
+  ],
+  "sha1": "1145dd95b966573c0269de12c01c169af214d963",
+  "source": "pragma solidity ^0.6.9;\n\n// ----------------------------------------------------------------------------\n// ERC Token Standard #20 Interface\n// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md\n// ----------------------------------------------------------------------------\nimport \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/SafeERC20.sol\";\n\ninterface IIBCO {\n\n    function initIBCO (\n            address _funder,\n            IERC20 _token,\n            uint256 _tokenSupply,\n            uint256 _startDate,\n            uint256 _endDate,\n            uint256 _minimalProvide,\n            address _newOwner\n        ) external ;\n//    function tokensClaimed(address user) external view returns (uint256);\n//    function tokenSupply() external view returns(uint256);\n//    function wallet() external view returns(address);\n//    function endDate() external view returns(uint256);\n\n\n}",
+  "type": "interface"
+}

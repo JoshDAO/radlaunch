@@ -1,0 +1,15 @@
+{
+  "42": {
+    "DynPoolFactory": [
+      "0xAcAEeCef3aa90Fb37F5A44F6229B9904263e16ba",
+      "0x5afF1eD966853c193163672A7c34b393eBA23750"
+    ],
+    "ERCToken": [
+      "0xE754870e821c5BE488C9C48B4ff707978D4fEd2C",
+      "0x30dAad61baBB3EB50D6aB9575fB8ead5072e0dD8"
+    ],
+    "IBCOTemplate": [
+      "0xa7cfC7fDdCCd582fc3d185cb281A388E6674F4FB"
+    ]
+  }
+}
