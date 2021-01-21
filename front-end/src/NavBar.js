@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import logo from './assets/logo.svg'
 import Portis from '@portis/web3'
@@ -86,7 +87,9 @@ const NavBar = ({ imgSource, titleText }) => {
 
   return (
     <div>
-      <img src={logo} style={{ width: '500px' }} />
+      <Link to={'/'}>
+        <img src={logo} style={{ width: '500px' }} />
+      </Link>
       {web3Loading ? (
         <WalletButton disabled>Loading...</WalletButton>
       ) : (
