@@ -1,7 +1,15 @@
-# https://eth-brownie.readthedocs.io/en/v1.10.3/config.html#exclude_paths
 compiler:
   solc:
     remappings:
       - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@3.3.0"
 dependencies:
     - OpenZeppelin/openzeppelin-contracts@3.3.0
+project_structure:
+  build: ../front-end/src/artifacts
+networks:
+  default: kovan
+  default_contract_owner: true
+#  development:
+#    cmd_settings:
+#      mnemonic: hill law jazz limb penalty escape public dish stand bracket blue jar
+#dev_deployment_artifacts: true

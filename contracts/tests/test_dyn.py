@@ -121,6 +121,7 @@ def test_claim_eth_after_offering_not_enough_provided(alt_token, dyn_alt_owners_
     assert dyn_alt_owners_contract.balance() == 0
     assert accounts[account_main].balance() == owners_eth_balance
     assert alt_token.balanceOf(accounts[account_main]) == 1000000e18
+    assert dyn_alt_owners_contract.numberOfProviders({"from":accounts[account_main]}) == number_of_investors
     with brownie.reverts():
         dyn_alt_owners_contract.withdrawProvidedETH({'from': accounts[account_main]})
 
