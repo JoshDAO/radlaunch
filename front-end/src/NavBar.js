@@ -99,13 +99,6 @@ const NavBar = ({
       .on('receipt', async () => {})
   }
 
-  async function numProviders() {
-    await template.methods
-      .numberOfProviders()
-      .send({ from: accounts[0] })
-      .on('receipt', async () => {})
-  }
-
   async function contribute() {
     await myWeb3.eth
       .sendTransaction({

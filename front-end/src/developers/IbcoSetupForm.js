@@ -121,6 +121,34 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     return dyn
   }
 
+  async function loadTemplate(chain, contractName, addr) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, addr)
+  }
+
   async function loadContract(chain, contractName) {
     // Load a deployed contract instance into a web3 contract object
     // const {web3} = this.state
@@ -149,34 +177,6 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     return new myWeb3.eth.Contract(contractArtifact.abi, address)
   }
 
-    async function loadTemplate(chain, contractName, addr) {
-    // Load a deployed contract instance into a web3 contract object
-    // const {web3} = this.state
-
-    // Get the address of the most recent deployment from the deployment map
-    let address
-    try {
-      address = map[chain][contractName][0]
-    } catch (e) {
-      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
-      return undefined
-    }
-
-    // Load the artifact with the specified address
-    let contractArtifact
-    try {
-      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
-    } catch (e) {
-      console.log(
-        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
-      )
-      return undefined
-    }
-    console.log(contractArtifact)
-
-    return new myWeb3.eth.Contract(contractArtifact.abi, addr)
-  }
-
   async function deployICO(factory, tokenContract) {
     // const value = parseInt(dynInput)
     // if (isNaN(value)) {
@@ -195,8 +195,6 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
       .send({ from: accounts[0], value: value })
       .on('receipt', async () => {}) // see what this returns and edit
   }
-
-
 
   return (
     <div style={{ paddingBottom: '2rem' }}>

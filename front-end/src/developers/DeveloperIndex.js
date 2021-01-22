@@ -244,22 +244,122 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
     })
   }
 
+  async function loadInitialTemplate(addr, contract) {
+    // if (chainId <= 42){
+    //     return
+    // }
+
+    const token = await loadTemplate('42', contract, addr)
+    return token
+  }
+
+  async function loadTemplate(chain, contractName, addr) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, addr)
+  }
+
+  async function getExtraICOdata(template) {
+    const numberOfProviders = await template.methods
+      .numberOfProviders()
+      .call()
+      .then((result) => result)
+    const amountRaised = await template.methods
+      .totalProvided()
+      .call()
+      .then((result) => result)
+    const yourContribution = await template.methods
+      .provided(accounts[0])
+      .call()
+      .then((result) => result)
+
+    return {
+      numberOfProviders,
+      amountRaised,
+      yourContribution,
+    }
+  }
+
+  async function getExtraTokendata(template) {
+    const name = await template.methods
+      .name()
+      .call()
+      .then((result) => result)
+    const symbol = await template.methods
+      .symbol()
+      .call()
+      .then((result) => result)
+    const totalSupply = await template.methods
+      .totalSupply()
+      .call()
+      .then((result) => result)
+
+    return {
+      name,
+      symbol,
+      totalSupply,
+    }
+  }
+
+  async function withdrawToken(template) {
+    await template.methods
+      .withdrawToken()
+      .send({ from: accounts[0] })
+      .on('receipt', async () => {})
+  }
+
+  async function withdrawProvidedETH(template) {
+    await template.methods
+      .withdrawProvidedETH()
+      .send({ from: accounts[0] })
+      .on('receipt', async () => {})
+  }
+  async function withdrawUnclaimedToken(template) {
+    await template.methods
+      .withdrawUnclaimedToken()
+      .send({ from: accounts[0] })
+      .on('receipt', async () => {})
+  }
+
   useEffect(async () => {
     if (myWeb3 === undefined || accounts === undefined) {
       return
     } else {
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
-      console.log(eventsArray)
-      console.log(accounts[0])
-      eventsArray.forEach((event) => {
-        console.log(event.returnValues['0'])
-        console.log(accounts[0] === event.returnValues['0'])
-        if (event['returnValues']['0'] === accounts[0]) {
-          setLaunchedICOs((launchedICOs) => launchedICOs.concat([event.returnValues]))
-        }
-      })
-      console.log('x')
+
+      eventsArray
+        .filter((event) => event['returnValues']['0'] === accounts[0])
+        .forEach(async (event) => {
+          const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
+          const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
+          //const numberOfProviders = await numProviders(ICOContract)
+
+          console.log(await getExtraICOdata(ICOContract))
+          console.log(await getExtraTokendata(tokenContract))
+        })
     }
   }, [myWeb3, accounts])
 
@@ -315,10 +415,10 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                 <Td>Token name:</Td>
               </Tr>
               <Tr>
-                <Td>Total token supply:</Td>
+                <Td>Token Symbol</Td>
               </Tr>
               <Tr>
-                <Td>Holders:</Td>
+                <Td>Total token supply:</Td>
               </Tr>
               <Tr style={{ height: '9rem' }}>
                 <Td>
