@@ -90,9 +90,9 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     e.preventDefault()
     setSubmitted(true)
     validateForm()
-    await loadInitialFactory()
-    await loadInitialToken(tokenAddress)
-    await deployICO()
+    const factory = await loadInitialFactory()
+    const token = await loadInitialToken(tokenAddress)
+    await deployICO(factory, token)
   }
 
   // blockchain code /////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +108,7 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     const token = await loadTemplate('42', 'ERCToken', addr)
     console.log('token:  ,', token)
     setTokenContract(token)
+    return token
   }
 
   async function loadInitialFactory() {
@@ -117,6 +118,7 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
 
     const dyn = await loadContract('42', 'DynPoolFactory')
     setFactory(dyn)
+    return dyn
   }
 
   async function loadContract(chain, contractName) {
@@ -147,26 +149,7 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     return new myWeb3.eth.Contract(contractArtifact.abi, address)
   }
 
-  async function deployICO() {
-    // const value = parseInt(dynInput)
-    // if (isNaN(value)) {
-    //     alert("invalid value")
-    //     return
-    // }
-    let supply = myWeb3.utils.toWei(tokenSupply.toString(), 'ether')
-    let minimalProv = myWeb3.utils.toWei(minimumThreshold.toString(), 'ether')
-    let value = myWeb3.utils.toWei('0.1', 'ether')
-    // loadInitialToken(tokenAddress)
-    await tokenContract.methods
-      .increaseAllowance(factory.options.address, supply)
-      .send({ from: accounts[0] })
-    await factory.methods
-      .deployIBCO(tokenAddress, supply, startDate, endDate, minimalProv)
-      .send({ from: accounts[0], value: value })
-      .on('receipt', async () => {}) // see what this returns and edit
-  }
-
-  async function loadTemplate(chain, contractName, addr) {
+    async function loadTemplate(chain, contractName, addr) {
     // Load a deployed contract instance into a web3 contract object
     // const {web3} = this.state
 
@@ -193,6 +176,27 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
 
     return new myWeb3.eth.Contract(contractArtifact.abi, addr)
   }
+
+  async function deployICO(factory, tokenContract) {
+    // const value = parseInt(dynInput)
+    // if (isNaN(value)) {
+    //     alert("invalid value")
+    //     return
+    // }
+    let supply = myWeb3.utils.toWei(tokenSupply.toString(), 'ether')
+    let minimalProv = myWeb3.utils.toWei(minimumThreshold.toString(), 'ether')
+    let value = myWeb3.utils.toWei('0.1', 'ether')
+    await tokenContract.methods
+      .increaseAllowance(factory.options.address, supply)
+      .send({ from: accounts[0] })
+    console.log(startDate)
+    await factory.methods
+      .deployIBCO(tokenAddress, supply, Date.parse(startDate), Date.parse(endDate), minimalProv)
+      .send({ from: accounts[0], value: value })
+      .on('receipt', async () => {}) // see what this returns and edit
+  }
+
+
 
   return (
     <div style={{ paddingBottom: '2rem' }}>
