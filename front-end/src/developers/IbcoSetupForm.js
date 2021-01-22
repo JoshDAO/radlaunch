@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Form, Input, Field, Button, Text } from 'rimble-ui'
 import NavBar from '../NavBar'
+import Web3 from 'web3'
+import map from '../artifacts/deployments/map.json'
+import template from '../artifacts/contracts/IBCOTemplate.json'
 
 const TypeButton = styled.button`
   font-family: 'Questrial', sans-serif;
@@ -19,7 +22,7 @@ const TypeButton = styled.button`
   padding: 1rem;
 `
 
-const IbcoSetupForm = (props) => {
+const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setChainId }) => {
   const [submitted, setSubmitted] = useState(false)
   const [validated, setValidated] = useState(false)
   const [startDateInFuture, setStartDateInFuture] = useState(true)
@@ -83,15 +86,125 @@ const IbcoSetupForm = (props) => {
     e.target.parentNode.classList.add('was-validated')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitted(true)
     validateForm()
+    await loadInitialFactory()
+    await loadInitialToken(tokenAddress)
+    await deployICO()
+  }
+
+  // blockchain code /////////////////////////////////////////////////////////////////////////////////////
+
+  const [factory, setFactory] = useState()
+  const [tokenContract, setTokenContract] = useState()
+
+  async function loadInitialToken(addr) {
+    // if (chainId <= 42){
+    //     return
+    // }
+
+    const token = await loadTemplate('42', 'ERCToken', addr)
+    console.log('token:  ,', token)
+    setTokenContract(token)
+  }
+
+  async function loadInitialFactory() {
+    // if (chainId <= 42){
+    //     return
+    // }
+
+    const dyn = await loadContract('42', 'DynPoolFactory')
+    setFactory(dyn)
+  }
+
+  async function loadContract(chain, contractName) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, address)
+  }
+
+  async function deployICO() {
+    // const value = parseInt(dynInput)
+    // if (isNaN(value)) {
+    //     alert("invalid value")
+    //     return
+    // }
+    let supply = myWeb3.utils.toWei(tokenSupply.toString(), 'ether')
+    let minimalProv = myWeb3.utils.toWei(minimumThreshold.toString(), 'ether')
+    let value = myWeb3.utils.toWei('0.1', 'ether')
+    // loadInitialToken(tokenAddress)
+    await tokenContract.methods
+      .increaseAllowance(factory.options.address, supply)
+      .send({ from: accounts[0] })
+    await factory.methods
+      .deployIBCO(tokenAddress, supply, startDate, endDate, minimalProv)
+      .send({ from: accounts[0], value: value })
+      .on('receipt', async () => {}) // see what this returns and edit
+  }
+
+  async function loadTemplate(chain, contractName, addr) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, addr)
   }
 
   return (
     <div style={{ paddingBottom: '2rem' }}>
-      <NavBar titleText={'Type'} />
+      <NavBar
+        titleText={'Type'}
+        myWeb3={myWeb3}
+        setMyWeb3={setMyWeb3}
+        accounts={accounts}
+        setAccounts={setAccounts}
+        chainId={chainId}
+        setChainId={setChainId}
+      />
       <div
         style={{ width: '70%', margin: '0 auto', justifyContent: 'flex-start', display: 'flex' }}
       >
@@ -271,7 +384,17 @@ const IbcoSetupForm = (props) => {
             </Field>
           </div>
         </div>
-        <Button type='submit' width='70%' style={{ margin: 'auto', marginTop: '2rem' }}>
+        <Button
+          type='submit'
+          width='70%'
+          style={{
+            margin: 'auto',
+            marginTop: '2rem',
+            fontFamily: "'Questrial', sans-serif",
+            fontWeight: 400,
+            fontSize: '1rem',
+          }}
+        >
           Review and Submit ICO for listing
         </Button>
       </Form>

@@ -30,12 +30,29 @@ const Img = styled.img`
   margin: 0 auto;
 `
 
-const Landing = (props) => {
+const Landing = ({
+  imgSource,
+  titleText,
+  myWeb3,
+  setMyWeb3,
+  accounts,
+  setAccounts,
+  chainId,
+  setChainId,
+}) => {
   const [investorHover, setInvestorHover] = useState(false)
   const [developerHover, setDeveloperHover] = useState(false)
   return (
     <>
-      <NavBar titleText={'Reliable, Secure and Permissionless launches for pioneering projects'} />
+      <NavBar
+        titleText={'Reliable, Secure and Permissionless launches for pioneering projects'}
+        myWeb3={myWeb3}
+        setMyWeb3={setMyWeb3}
+        accounts={accounts}
+        setAccounts={setAccounts}
+        chainId={chainId}
+        setChainId={setChainId}
+      />
       <div
         style={{
           display: 'flex',

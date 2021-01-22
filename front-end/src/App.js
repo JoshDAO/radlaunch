@@ -9,6 +9,10 @@ import SelectICO from './developers/SelectIco'
 import IbcoSetupForm from './developers/IbcoSetupForm'
 
 function App() {
+  const [myWeb3, setMyWeb3] = useState()
+  const [accounts, setAccounts] = useState()
+  const [chainId, setChainId] = useState()
+
   return (
     <div
       style={{
@@ -24,16 +28,37 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/developer'>
-            <DeveloperIndex />
+            <DeveloperIndex
+              myWeb3={myWeb3}
+              setMyWeb3={setMyWeb3}
+              accounts={accounts}
+              setAccounts={setAccounts}
+              chainId={chainId}
+              setChainId={setChainId}
+            />
           </Route>
           <Route exact path='/'>
-            <Landing />
+            <Landing
+              myWeb3={myWeb3}
+              setMyWeb3={setMyWeb3}
+              accounts={accounts}
+              setAccounts={setAccounts}
+              chainId={chainId}
+              setChainId={setChainId}
+            />
           </Route>
           <Route exact path='/SetUpIco'>
             <SelectICO />
           </Route>
           <Route exact path='/IbcoSetup'>
-            <IbcoSetupForm />
+            <IbcoSetupForm
+              myWeb3={myWeb3}
+              setMyWeb3={setMyWeb3}
+              accounts={accounts}
+              setAccounts={setAccounts}
+              chainId={chainId}
+              setChainId={setChainId}
+            />
           </Route>
         </Switch>
       </Router>

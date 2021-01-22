@@ -34,12 +34,27 @@ const HeaderDiv = styled.div`
   padding: 0 2%;
 `
 
-const DeveloperIndex = (props) => {
+const DeveloperIndex = ({
+  imgSource,
+  titleText,
+  myWeb3,
+  setMyWeb3,
+  accounts,
+  setAccounts,
+  chainId,
+  setChainId,
+}) => {
   return (
     <div>
       <NavBar
         imgSource={developersImage}
         titleText={'Developers - Create and Manage your project launches'}
+        myWeb3={myWeb3}
+        setMyWeb3={setMyWeb3}
+        accounts={accounts}
+        setAccounts={setAccounts}
+        chainId={chainId}
+        setChainId={setChainId}
       />
       <main style={{ padding: '0 10%' }}>
         <HeaderDiv>

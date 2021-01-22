@@ -59,13 +59,18 @@ const H1 = styled.h1`
 
 const NavbarImg = styled.img``
 
-const NavBar = ({ imgSource, titleText }) => {
+const NavBar = ({
+  imgSource,
+  titleText,
+  myWeb3,
+  setMyWeb3,
+  accounts,
+  setAccounts,
+  chainId,
+  setChainId,
+}) => {
   const { web3Loading, getweb3 } = Wallet_model()
-  const [myWeb3, setMyWeb3] = useState()
-  const [contract, setContract] = useState()
-  const [tokenContract, setTokenContract] = useState()
-  const [accounts, setAccount] = useState()
-  const [chainId, setChainId] = useState()
+
   const [dynInput, setDynInput] = useState()
   const [template, setTemplate] = useState()
 
@@ -75,7 +80,7 @@ const NavBar = ({ imgSource, titleText }) => {
         setMyWeb3(response)
         response.eth.getAccounts().then((result) => {
           console.log(result)
-          setAccount(result)
+          setAccounts(result)
         })
 
         response.eth.getChainId().then((answer) => {
@@ -86,108 +91,14 @@ const NavBar = ({ imgSource, titleText }) => {
       })
     }
   }
-  async function loadInitialContracts() {
-    // if (chainId <= 42){
-    //     return
-    // }
 
-    const dyn = await loadContract('42', 'DynPoolFactory')
-    const token = await loadContract('42', 'ERCToken')
-
-    setContract(dyn)
-    setTokenContract(token)
-  }
-
-  async function loadContract(chain, contractName) {
-    // Load a deployed contract instance into a web3 contract object
-    // const {web3} = this.state
-
-    // Get the address of the most recent deployment from the deployment map
-    let address
-    try {
-      address = map[chain][contractName][0]
-    } catch (e) {
-      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
-      return undefined
-    }
-
-    // Load the artifact with the specified address
-    let contractArtifact
-    try {
-      contractArtifact = await import(`./artifacts/deployments/${chain}/${address}.json`)
-    } catch (e) {
-      console.log(
-        `Failed to load contract artifact "./artifacts/deployments/${chain}/${address}.json"`,
-      )
-      return undefined
-    }
-    console.log(contractArtifact)
-
-    return new myWeb3.eth.Contract(contractArtifact.abi, address)
-  }
-
-  async function loadTemplate(chain, contractName) {
-    // Load a deployed contract instance into a web3 contract object
-    // const {web3} = this.state
-
-    // Get the address of the most recent deployment from the deployment map
-    let address
-    try {
-      address = map[chain][contractName][0]
-    } catch (e) {
-      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
-      return undefined
-    }
-
-    // Load the artifact with the specified address
-    let contractArtifact
-    try {
-      contractArtifact = await import(`./artifacts/deployments/${chain}/${address}.json`)
-    } catch (e) {
-      console.log(
-        `Failed to load contract artifact "./artifacts/deployments/${chain}/${address}.json"`,
-      )
-      return undefined
-    }
-    console.log(contractArtifact)
-
-    return new myWeb3.eth.Contract(
-      contractArtifact.abi,
-      '0x3072A4ad44C12CfBf42DDC9cd37307327Fb57F19',
-    )
-  }
-
-  async function deployICO(e) {
-    e.preventDefault()
-    // const value = parseInt(dynInput)
-    // if (isNaN(value)) {
-    //     alert("invalid value")
-    //     return
-    // }
-    let supply = myWeb3.utils.toWei('100', 'ether')
-    let minimalProv = myWeb3.utils.toWei('0.5', 'ether')
-    let value = myWeb3.utils.toWei('0.1', 'ether')
-    await tokenContract.methods
-      .increaseAllowance(contract.options.address, supply)
-      .send({ from: accounts[0] })
-    await contract.methods
-      .deployIBCO(
-        '0xE754870e821c5BE488C9C48B4ff707978D4fEd2C',
-        supply,
-        1611196800,
-        1611232800,
-        minimalProv,
-      )
-      .send({ from: accounts[0], value: value })
-      .on('receipt', async () => {})
-  }
-  async function events() {
-    await contract.getPastEvents('IBCODeployed', { fromBlock: 1 }).then((response) => {
-      console.log(response)
-    })
-    const loadedTemplate = await loadTemplate('42', 'IBCOTemplate')
-    setTemplate(loadedTemplate)
-  }
+  // async function events() {
+  //   await contract.getPastEvents('IBCODeployed', { fromBlock: 1 }).then((response) => {
+  //     console.log(response)
+  //   })
+  //   const loadedTemplate = await loadTemplate('42', 'IBCOTemplate')
+  //   setTemplate(loadedTemplate)
+  // }
 
   async function claim() {
     await template.methods
@@ -215,7 +126,7 @@ const NavBar = ({ imgSource, titleText }) => {
 
   return (
     <div>
-      <button onClick={loadInitialContracts}>Load Contracts</button>
+      {/* <button onClick={loadInitialContracts}>Load Contracts</button> */}
       <Link to={'/'}>
         <img src={logo} style={{ width: '500px' }} />
       </Link>
@@ -224,10 +135,10 @@ const NavBar = ({ imgSource, titleText }) => {
       ) : (
         <WalletButton onClick={connectWallet}>Connect Wallet</WalletButton>
       )}
-      <WalletButton onClick={deployICO}>Launch</WalletButton>
+      {/* <WalletButton onClick={deployICO}>Launch</WalletButton> */}
 
       <H1Div>
-        <button onClick={events}>show events</button>
+        {/* <button onClick={events}>show events</button> */}
         {imgSource ? (
           <NavbarImg
             height='50%'
@@ -235,9 +146,9 @@ const NavBar = ({ imgSource, titleText }) => {
             src={imgSource}
           />
         ) : null}
-        <button onClick={claim}>Claim call</button>
+        {/* <button onClick={claim}>Claim call</button>
         <button onClick={contribute}>Contribute</button>
-        <button onClick={numProviders}>Number of Providers</button>
+        <button onClick={numProviders}>Number of Providers</button> */}
         <H1>{titleText}</H1>
       </H1Div>
     </div>
