@@ -1,4 +1,5 @@
-*/.eslintcache
-*/node_modules
-*/.env
+/front-end/.eslintcache
+/node-server/.eslintcache
+/*/node_modules
+/*/.env
 /front-end/build

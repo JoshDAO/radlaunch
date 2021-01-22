@@ -1,5 +1,9 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Web3 from 'web3'
 import styled from 'styled-components'
+
+import map from '../artifacts/deployments/map.json'
 import NavBar from '../NavBar'
 import developersImage from '../assets/developersAndFounders.svg'
 
@@ -71,7 +75,12 @@ const DeveloperIndex = ({
           </Link>
         </HeaderDiv>
         <div style={{ padding: '2rem 2% 0 2%' }}>
-          <IcoDashboard />
+          <IcoDashboard
+            myWeb3={myWeb3}
+            setMyWeb3={setMyWeb3}
+            accounts={accounts}
+            setAccounts={setAccounts}
+          />
         </div>
       </main>
     </div>
@@ -187,9 +196,76 @@ const AboutText = styled.p`
   font-size: 1.1rem;
 `
 
-const IcoDashboard = (props) => {
+const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
+  const [factory, setFactory] = useState()
+  const [tokenContract, setTokenContract] = useState()
+  const [launchedICOs, setLaunchedICOs] = useState([])
+
+  async function loadInitialFactory() {
+    // if (chainId <= 42){
+    //     return
+    // }
+    const dyn = await loadContract('42', 'DynPoolFactory')
+    setFactory(dyn)
+    return dyn
+  }
+
+  async function loadContract(chain, contractName) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, address)
+  }
+
+  async function events(factory) {
+    return await factory.getPastEvents('IBCODeployed', { fromBlock: 1 }).then((response) => {
+      return response
+    })
+  }
+
+  useEffect(async () => {
+    if (myWeb3 === undefined || accounts === undefined) {
+      return
+    } else {
+      const factory = await loadInitialFactory()
+      const eventsArray = await events(factory)
+      console.log(eventsArray)
+      console.log(accounts[0])
+      eventsArray.forEach((event) => {
+        console.log(event.returnValues['0'])
+        console.log(accounts[0] === event.returnValues['0'])
+        if (event['returnValues']['0'] === accounts[0]) {
+          setLaunchedICOs((launchedICOs) => launchedICOs.concat([event.returnValues]))
+        }
+      })
+      console.log('x')
+    }
+  }, [myWeb3, accounts])
+
   return (
     <>
+      {launchedICOs.length ? <div>{launchedICOs[0]['0']}</div> : null}
       <DashboardContainer>
         <Column1>
           <ProjectTitle>ICO Launch</ProjectTitle>

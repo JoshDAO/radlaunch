@@ -92,14 +92,6 @@ const NavBar = ({
     }
   }
 
-  // async function events() {
-  //   await contract.getPastEvents('IBCODeployed', { fromBlock: 1 }).then((response) => {
-  //     console.log(response)
-  //   })
-  //   const loadedTemplate = await loadTemplate('42', 'IBCOTemplate')
-  //   setTemplate(loadedTemplate)
-  // }
-
   async function claim() {
     await template.methods
       .claim()
