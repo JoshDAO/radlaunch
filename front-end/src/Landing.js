@@ -26,7 +26,7 @@ const H2 = styled.h2`
 `
 
 const Img = styled.img`
-  width: 15rem;
+  width: 13rem;
   margin: 0 auto;
 `
 
@@ -118,7 +118,7 @@ const DeveloperHoverText = ({ show }) => {
 
   return (
     <div className={componentClasses.join(' ')}>
-      Choose and launch from our secure fundraising contracts to launch your tokens, all you need is
+      Choose from our secure fundraising contracts to launch your tokens, all you need is
       an ERC20 Token and Ether.{' '}
     </div>
   )
