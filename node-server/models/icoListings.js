@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const IcoSchema = new Schema(
   {
     owner: { type: String, required: true }, //project owner's wallet
+    tokenAddress: { type: String, required: true },
     imageUrl: { type: String },
     projectDescription: { type: String },
   },
