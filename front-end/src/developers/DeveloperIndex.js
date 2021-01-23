@@ -355,10 +355,21 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
         .forEach(async (event) => {
           const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
           const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
-          //const numberOfProviders = await numProviders(ICOContract)
-
-          console.log(await getExtraICOdata(ICOContract))
-          console.log(await getExtraTokendata(tokenContract))
+          const extraIcoData = await getExtraICOdata(ICOContract)
+          const extraTokenData = await getExtraTokendata(tokenContract)
+          const projectData = [
+            {
+              ...extraIcoData,
+              ...extraTokenData,
+              contractAddress: event.returnValues['1'],
+              startDate: new Date(event.returnValues.startDate * 1000),
+              endDate: new Date(event.returnValues.endDate * 1000),
+              tokenSupply: event.returnValues.tokenSupply,
+              minimumRaiseAmount: event.returnValues.minimalProvide,
+              tokenAddress: event.returnValues['2'],
+            },
+          ]
+          setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
         })
     }
   }, [myWeb3, accounts])
