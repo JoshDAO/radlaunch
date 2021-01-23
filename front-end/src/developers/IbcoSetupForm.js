@@ -5,6 +5,7 @@ import NavBar from '../NavBar'
 import Web3 from 'web3'
 import map from '../artifacts/deployments/map.json'
 import template from '../artifacts/contracts/IBCOTemplate.json'
+import { icoSubmit } from '../utils/apiCalls'
 
 const TypeButton = styled.button`
   font-family: 'Questrial', sans-serif;
@@ -93,6 +94,7 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     const factory = await loadInitialFactory()
     const token = await loadInitialToken(tokenAddress)
     await deployICO(factory, token)
+    icoSubmit(accounts[0], projectDescription)
   }
 
   // blockchain code /////////////////////////////////////////////////////////////////////////////////////
