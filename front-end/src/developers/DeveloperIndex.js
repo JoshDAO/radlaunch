@@ -109,7 +109,7 @@ const Column1 = styled.div`
 `
 
 const Column2 = styled.div`
-  width: 20%;
+  width: 16%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -133,11 +133,11 @@ const Button = styled.button`
   padding: 0.7rem;
   width: 100%;
   font-family: 'Questrial', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1rem;
 `
 const Span = styled.span`
   font-family: 'Questrial', sans-serif;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   font-weight: 400;
   margin-top: 2rem;
   text-align: left;
@@ -156,9 +156,9 @@ const Table = styled.table`
 
 const Td = styled.td`
   font-family: 'Questrial', sans-serif;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
-  padding: 0.2rem;
+  padding: 0.3rem;
   word-break: break-word;
 `
 const Tr = styled.tr`
@@ -197,7 +197,7 @@ const EditButton = styled.button`
   border-radius: 4px;
   font-family: 'Questrial', sans-serif;
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1rem;
   height: 2.5rem;
   margin: 0.7rem 0 0 2rem;
   width: 6rem;
@@ -424,30 +424,30 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                   <Table>
                     <Tr>
                       <Td>
-                        Contract address: <br /> {ico.contractAddress}
+                        Contract address: <br /> <b>{ico.contractAddress}</b>
                       </Td>
                     </Tr>
                     <Tr>
                       <Td>
                         Start/end date:
-                        <br /> {new Date(ico.startDate).toString().substr(4, 20)} to{' '}
-                        {new Date(ico.endDate).toString().substr(4, 24)}
+                        <br /> <b>{new Date(ico.startDate).toString().substr(4, 20)} to{' '}
+                        {new Date(ico.endDate).toString().substr(4, 24)}</b>
                       </Td>
                     </Tr>
                     <Tr>
-                      <Td>Tokens for sale: {ico.tokenSupply / 1e18}</Td>
+                      <Td>Tokens for sale: <b>{ico.tokenSupply / 1e18}</b></Td>
                     </Tr>
                     <Tr>
-                      <Td>Amount raised: {ico.amountRaised / 1e18}</Td>
+                      <Td>Amount raised: <b>{ico.amountRaised / 1e18}</b></Td>
                     </Tr>
                     <Tr>
-                      <Td>Number of investors: {ico.numberOfProviders}</Td>
+                      <Td>Number of investors: <b>{ico.numberOfProviders}</b></Td>
                     </Tr>
                     <Tr>
-                      <Td>Minimum raise amount: {ico.minimumRaiseAmount / 1e18}</Td>
+                      <Td>Minimum raise amount: <b>{ico.minimumRaiseAmount / 1e18}</b></Td>
                     </Tr>
                     <Tr>
-                      <Td>Your contribution: {ico.yourContribution / 1e18}</Td>
+                      <Td>Your contribution: <b>{ico.yourContribution / 1e18}</b></Td>
                     </Tr>
                   </Table>
                 </TableContainer>
@@ -459,17 +459,17 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                       <Td>
                         Token address:
                         <br />
-                        {ico.tokenAddress}
+                        <b>{ico.tokenAddress}</b>
                       </Td>
                     </Tr>
                     <Tr>
-                      <Td>Token name: {ico.name}</Td>
+                      <Td>Token name: <b>{ico.name}</b></Td>
                     </Tr>
                     <Tr>
-                      <Td>Token Symbol: {ico.symbol}</Td>
+                      <Td>Token Symbol: <b>{ico.symbol}</b></Td>
                     </Tr>
                     <Tr>
-                      <Td>Total token supply: {ico.totalSupply / 1e18}</Td>
+                      <Td>Total token supply: <b>{ico.totalSupply / 1e18}</b></Td>
                     </Tr>
                     <Tr style={{ height: '9rem' }}>
                       <Td>

@@ -113,7 +113,7 @@ const NavBar = ({
     <div>
       {/* <button onClick={loadInitialContracts}>Load Contracts</button> */}
       <Link to={'/'}>
-        <img src={logo} style={{ width: '500px' }} />
+        <img src={logo} style={{ width: '400px' }} />
       </Link>
       {web3Loading ? (
         <WalletButton disabled>Loading...</WalletButton>
@@ -127,10 +127,8 @@ const NavBar = ({
             : 'Connect Wallet'}
         </WalletButton>
       )}
-      {/* <WalletButton onClick={deployICO}>Launch</WalletButton> */}
 
       <H1Div>
-        {/* <button onClick={events}>show events</button> */}
         {imgSource ? (
           <NavbarImg
             height='50%'
@@ -138,9 +136,6 @@ const NavBar = ({
             src={imgSource}
           />
         ) : null}
-        {/* <button onClick={claim}>Claim call</button>
-        <button onClick={contribute}>Contribute</button>
-        <button onClick={numProviders}>Number of Providers</button> */}
         <H1>{titleText}</H1>
       </H1Div>
     </div>
