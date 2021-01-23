@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import map from '../artifacts/deployments/map.json'
 import NavBar from '../NavBar'
 import developersImage from '../assets/developersAndFounders.svg'
+import { fetchDatabaseIcoData } from '../utils/apiCalls'
 
 import Keanu from '../assets/keanu.svg'
 
@@ -361,7 +362,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
     } else {
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
-
+      const databaseData = await fetchDatabaseIcoData(accounts[0])
       eventsArray
         .filter((event) => event['returnValues']['0'] === accounts[0])
         .forEach(async (event) => {

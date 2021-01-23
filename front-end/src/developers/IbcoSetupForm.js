@@ -94,7 +94,7 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     const factory = await loadInitialFactory()
     const token = await loadInitialToken(tokenAddress)
     await deployICO(factory, token)
-    icoSubmit(accounts[0], projectDescription)
+    await icoSubmit(accounts[0], projectDescription, tokenAddress)
   }
 
   // blockchain code /////////////////////////////////////////////////////////////////////////////////////
