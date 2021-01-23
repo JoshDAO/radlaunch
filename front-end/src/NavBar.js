@@ -118,7 +118,14 @@ const NavBar = ({
       {web3Loading ? (
         <WalletButton disabled>Loading...</WalletButton>
       ) : (
-        <WalletButton onClick={connectWallet}>Connect Wallet</WalletButton>
+        <WalletButton onClick={connectWallet}>
+          {accounts
+            ? accounts[0]
+                .substr(0, 5)
+                .concat('...')
+                .concat(accounts[0].substring(accounts[0].length - 4))
+            : 'Connect Wallet'}
+        </WalletButton>
       )}
       {/* <WalletButton onClick={deployICO}>Launch</WalletButton> */}
 

@@ -100,7 +100,7 @@ const ProjectTitle = styled.h3`
 `
 
 const Column1 = styled.div`
-  width: 20%;
+  width: 16%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -108,6 +108,15 @@ const Column1 = styled.div`
 `
 
 const Column2 = styled.div`
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 1rem;
+  padding: 0 1rem;
+`
+
+const Column3 = styled.div`
   width: 30%;
   display: flex;
   flex-direction: column;
@@ -134,7 +143,7 @@ const Span = styled.span`
 `
 
 const ProjectImage = styled.img`
-  width: 80%;
+  width: 100%;
 `
 
 const Table = styled.table`
@@ -149,6 +158,7 @@ const Td = styled.td`
   font-size: 1rem;
   font-weight: 400;
   padding: 0.2rem;
+  word-break: break-word;
 `
 const Tr = styled.tr`
   height: 3rem;
@@ -165,10 +175,10 @@ const TableContainer = styled.div`
 `
 
 const AboutSection = styled.div`
-  border-top: 1px solid #4e3fce;
   margin-top: 2rem;
-  padding-bottom: 4rem;
-  border-bottom: 3px solid black;
+  margin-bottom: 4rem;
+  border-bottom: 3px solid #4e3fce;
+  padding-bottom: 2rem;
 `
 
 const AboutTitle = styled.h4`
@@ -364,8 +374,8 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               ...extraIcoData,
               ...extraTokenData,
               contractAddress: event.returnValues['1'],
-              startDate: new Date(event.returnValues.startDate * 1000).toString().substr(4, 20),
-              endDate: new Date(event.returnValues.endDate * 1000).toString().substr(4, 24),
+              startDate: event.returnValues.startDate * 1000,
+              endDate: event.returnValues.endDate * 1000,
               tokenSupply: event.returnValues.tokenSupply,
               minimumRaiseAmount: event.returnValues.minimalProvide,
               tokenAddress: event.returnValues['2'],
@@ -385,16 +395,30 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
             <DashboardContainer>
               <Column1>
                 <ProjectTitle>{ico.name}</ProjectTitle>
-                <ProjectImage src={Keanu} />
+                <ProjectImage src={'https://i.imgur.com/dRnvRZZ.jpg'} />
               </Column1>
-              <Column1>
+              <Column2>
                 <Button>View on Etherscan</Button>
                 <Span>Verified status: Verified</Span>
                 <Span>Access: Public</Span>
-                <Button style={{ marginTop: '2rem' }}>Abort Launch</Button>
-                <Span>Please note: launches can only be aborted before the start date.</Span>
-              </Column1>
-              <Column2>
+                <Button
+                  style={{ marginTop: '2rem' }}
+                  disabled={Date.now() < ico.endDate}
+                  onClick={async () => {
+                    const ICOContract = await loadInitialTemplate(
+                      ico.contractAddress,
+                      'IBCOTemplate',
+                    )
+                    ico.amountRaised < ico.minimumRaiseAmount
+                      ? withdrawToken(ICOContract)
+                      : withdrawProvidedETH(ICOContract)
+                  }}
+                >
+                  {ico.amountRaised < ico.minimumRaiseAmount ? 'Withdraw Tokens' : 'Withdraw ETH'}
+                </Button>
+                <Span>Please note: Withdrawals can only be made once the ICO has ended.</Span>
+              </Column2>
+              <Column3>
                 <TableContainer>
                   <Table>
                     <Tr>
@@ -405,7 +429,8 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                     <Tr>
                       <Td>
                         Start/end date:
-                        <br /> {ico.startDate} to {ico.endDate}
+                        <br /> {new Date(ico.startDate).toString().substr(4, 20)} to{' '}
+                        {new Date(ico.endDate).toString().substr(4, 24)}
                       </Td>
                     </Tr>
                     <Tr>
@@ -425,8 +450,8 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                     </Tr>
                   </Table>
                 </TableContainer>
-              </Column2>
-              <Column2>
+              </Column3>
+              <Column3>
                 <TableContainer>
                   <Table>
                     <Tr>
@@ -458,7 +483,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                     </Tr>
                   </Table>
                 </TableContainer>
-              </Column2>
+              </Column3>
             </DashboardContainer>
             <AboutSection>
               <div style={{ display: 'flex' }}>
@@ -477,7 +502,16 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
           </>
         ))
       ) : (
-        <div>conect ur wallet m8</div>
+        <div
+          style={{
+            fontSize: '4rem',
+            fontFamily: "'Questrial', sans-serif",
+            fontWeight: 400,
+            paddingTop: '3rem',
+          }}
+        >
+          {accounts ? 'You have no ICOs launched' : 'conect ur wallet m8'}
+        </div>
       )}
     </>
   )
