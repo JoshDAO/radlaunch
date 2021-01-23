@@ -191,7 +191,13 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
       .send({ from: accounts[0] })
     console.log(startDate)
     await factory.methods
-      .deployIBCO(tokenAddress, supply, Date.parse(startDate), Date.parse(endDate), minimalProv)
+      .deployIBCO(
+        tokenAddress,
+        supply,
+        Date.parse(startDate) / 1000,
+        Date.parse(endDate) / 1000,
+        minimalProv,
+      )
       .send({ from: accounts[0], value: value })
       .on('receipt', async () => {}) // see what this returns and edit
   }

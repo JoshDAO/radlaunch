@@ -167,6 +167,8 @@ const TableContainer = styled.div`
 const AboutSection = styled.div`
   border-top: 1px solid #4e3fce;
   margin-top: 2rem;
+  padding-bottom: 4rem;
+  border-bottom: 3px solid black;
 `
 
 const AboutTitle = styled.h4`
@@ -362,13 +364,14 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               ...extraIcoData,
               ...extraTokenData,
               contractAddress: event.returnValues['1'],
-              startDate: new Date(event.returnValues.startDate * 1000),
-              endDate: new Date(event.returnValues.endDate * 1000),
+              startDate: new Date(event.returnValues.startDate * 1000).toString().substr(4, 20),
+              endDate: new Date(event.returnValues.endDate * 1000).toString().substr(4, 24),
               tokenSupply: event.returnValues.tokenSupply,
               minimumRaiseAmount: event.returnValues.minimalProvide,
               tokenAddress: event.returnValues['2'],
             },
           ]
+          console.log(projectData)
           setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
         })
     }
@@ -376,90 +379,106 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
 
   return (
     <>
-      {launchedICOs.length ? <div>{launchedICOs[0]['0']}</div> : null}
-      <DashboardContainer>
-        <Column1>
-          <ProjectTitle>ICO Launch</ProjectTitle>
-          <ProjectImage src={Keanu} />
-        </Column1>
-        <Column1>
-          <Button>View on Etherscan</Button>
-          <Span>Verified status: Verified</Span>
-          <Span>Access: Public</Span>
-          <Button style={{ marginTop: '2rem' }}>Abort Launch</Button>
-          <Span>Please note: launches can only be aborted before the start date.</Span>
-        </Column1>
-        <Column2>
-          <TableContainer>
-            <Table>
-              <Tr>
-                <Td>Contract address:</Td>
-              </Tr>
-              <Tr>
-                <Td>Start/end date:</Td>
-              </Tr>
-              <Tr>
-                <Td>Tokens for sale:</Td>
-              </Tr>
-              <Tr>
-                <Td>Amount raised:</Td>
-              </Tr>
-              <Tr>
-                <Td>Number of investors:</Td>
-              </Tr>
-              <Tr>
-                <Td>Minimum raise amount:</Td>
-              </Tr>
-              <Tr>
-                <Td>Your contribution:</Td>
-              </Tr>
-            </Table>
-          </TableContainer>
-        </Column2>
-        <Column2>
-          <TableContainer>
-            <Table>
-              <Tr>
-                <Td>Token address:</Td>
-              </Tr>
-              <Tr>
-                <Td>Token name:</Td>
-              </Tr>
-              <Tr>
-                <Td>Token Symbol</Td>
-              </Tr>
-              <Tr>
-                <Td>Total token supply:</Td>
-              </Tr>
-              <Tr style={{ height: '9rem' }}>
-                <Td>
-                  Launch type: Dynamic swap pool
-                  <br />
-                  <br />
-                  In this type of launch if the amount raised is above the minimum raise amount. You
-                  will be allocated a percentage of the tokens for sale equivalent to your
-                  percentage contribution of the Amount raised. If the minimum raise amount is not
-                  reached you can reclaim your ETH.{' '}
-                </Td>
-              </Tr>
-            </Table>
-          </TableContainer>
-        </Column2>
-      </DashboardContainer>
-      <AboutSection>
-        <div style={{ display: 'flex' }}>
-          <AboutTitle>About the Project:</AboutTitle>
-          <EditButton>Edit</EditButton>
-        </div>
-        <AboutText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </AboutText>
-      </AboutSection>
+      {launchedICOs.length ? (
+        launchedICOs.map((ico) => (
+          <>
+            <DashboardContainer>
+              <Column1>
+                <ProjectTitle>{ico.name}</ProjectTitle>
+                <ProjectImage src={Keanu} />
+              </Column1>
+              <Column1>
+                <Button>View on Etherscan</Button>
+                <Span>Verified status: Verified</Span>
+                <Span>Access: Public</Span>
+                <Button style={{ marginTop: '2rem' }}>Abort Launch</Button>
+                <Span>Please note: launches can only be aborted before the start date.</Span>
+              </Column1>
+              <Column2>
+                <TableContainer>
+                  <Table>
+                    <Tr>
+                      <Td>
+                        Contract address: <br /> {ico.contractAddress}
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>
+                        Start/end date:
+                        <br /> {ico.startDate} to {ico.endDate}
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Tokens for sale: {ico.tokenSupply / 1e18}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Amount raised: {ico.amountRaised / 1e18}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Number of investors: {ico.numberOfProviders}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Minimum raise amount: {ico.minimumRaiseAmount / 1e18}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Your contribution: {ico.yourContribution / 1e18}</Td>
+                    </Tr>
+                  </Table>
+                </TableContainer>
+              </Column2>
+              <Column2>
+                <TableContainer>
+                  <Table>
+                    <Tr>
+                      <Td>
+                        Token address:
+                        <br />
+                        {ico.tokenAddress}
+                      </Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Token name: {ico.name}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Token Symbol: {ico.symbol}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Total token supply: {ico.totalSupply / 1e18}</Td>
+                    </Tr>
+                    <Tr style={{ height: '9rem' }}>
+                      <Td>
+                        Launch type: Dynamic swap pool
+                        <br />
+                        <br />
+                        In this type of launch if the amount raised is above the minimum raise
+                        amount. You will be allocated a percentage of the tokens for sale equivalent
+                        to your percentage contribution of the Amount raised. If the minimum raise
+                        amount is not reached you can reclaim your ETH.{' '}
+                      </Td>
+                    </Tr>
+                  </Table>
+                </TableContainer>
+              </Column2>
+            </DashboardContainer>
+            <AboutSection>
+              <div style={{ display: 'flex' }}>
+                <AboutTitle>About the Project:</AboutTitle>
+                <EditButton>Edit</EditButton>
+              </div>
+              <AboutText>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+              </AboutText>
+            </AboutSection>
+          </>
+        ))
+      ) : (
+        <div>conect ur wallet m8</div>
+      )}
     </>
   )
 }
