@@ -5,9 +5,10 @@ updateDescription = async (req, res) => {
   const tokenAddress = req.body.tokenAddress
   const description = req.body.projectDescription
 
-  let listing = await IcoSchema.updateOne(
+  let listing = await IcoSchema.findOneAndUpdate(
     { tokenAddress: tokenAddress, owner: owner },
     { $set: { projectDescription: description } },
+    { new: true },
   )
   if (!listing) {
     return res.status(400).json({
@@ -15,7 +16,7 @@ updateDescription = async (req, res) => {
       success: false,
     })
   }
-  return res.status(200).json({ status: 'ico updated' })
+  return res.status(200).json({ listing })
 }
 
 updateImage = async (req, res) => {

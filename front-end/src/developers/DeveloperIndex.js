@@ -572,7 +572,6 @@ const ImageContainer = ({ imageUrl, accounts, tokenAddress }) => {
           onSubmit={async (event) => {
             event.preventDefault()
             const result = await updateIcoImage(accounts, tokenAddress, inputBox)
-            console.group('result:   ', result.listing.imageUrl)
             setImgUrl(result.listing.imageUrl)
           }}
         >
@@ -629,6 +628,7 @@ const AboutArea = ({ projectDescription, accounts, tokenAddress }) => {
             if (editOpen) {
               console.log('sent  ', accounts, tokenAddress, inputBox)
               const result = await updateProjectDescription(accounts, tokenAddress, inputBox)
+              console.log('result:   ', result)
               setProjDescription(result.listing.projectDescription)
             }
             setEditOpen(!editOpen)
