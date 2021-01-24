@@ -527,11 +527,11 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               </Column3>
             </DashboardContainer>
             <AboutSection>
-              <div style={{ display: 'flex' }}>
-                <AboutTitle>About the Project:</AboutTitle>
-                <EditButton>Edit</EditButton>
-              </div>
-              <AboutText>{ico.projectDescription}</AboutText>
+              <AboutArea
+                projectDescription={ico.projectDescription}
+                tokenAddress={ico.tokenAddress}
+                accounts={accounts[0]}
+              />
             </AboutSection>
           </>
         ))
@@ -602,6 +602,59 @@ const ImageContainer = ({ imageUrl, accounts, tokenAddress }) => {
           ></Input>
           <Button type='submit'>Upload your logo</Button>
         </form>
+      )}
+    </>
+  )
+}
+
+const AboutArea = ({ projectDescription, accounts, tokenAddress }) => {
+  const [projDescription, setProjDescription] = useState(projectDescription)
+  const [inputBox, setInputBox] = useState(projectDescription)
+  const [editOpen, setEditOpen] = useState(false)
+
+  const handleProjectDescriptionInput = (e) => {
+    setInputBox(e.target.value)
+    validateInput(e)
+  }
+  const validateInput = (e) => {
+    e.target.parentNode.classList.add('was-validated')
+  }
+
+  return (
+    <>
+      <div style={{ display: 'flex' }}>
+        <AboutTitle>About the Project:</AboutTitle>
+        <EditButton
+          onClick={async () => {
+            if (editOpen) {
+              console.log('sent  ', accounts, tokenAddress, inputBox)
+              const result = await updateProjectDescription(accounts, tokenAddress, inputBox)
+              setProjDescription(result.listing.projectDescription)
+            }
+            setEditOpen(!editOpen)
+          }}
+        >
+          {editOpen ? 'Submit' : 'Edit'}
+        </EditButton>
+      </div>
+      {editOpen ? (
+        <form>
+          <Input
+            id='image-url'
+            type='text'
+            required={true}
+            onChange={handleProjectDescriptionInput}
+            value={inputBox}
+            style={{
+              width: '100%',
+              marginTop: '0.5rem',
+              marginBottom: '1rem',
+              height: '2rem',
+            }}
+          ></Input>
+        </form>
+      ) : (
+        <AboutText>{projDescription}</AboutText>
       )}
     </>
   )

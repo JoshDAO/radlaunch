@@ -58,9 +58,10 @@ export function updateIcoImage(owner, tokenAddress, imageUrl) {
 }
 
 export function updateProjectDescription(owner, tokenAddress, projectDescription) {
-  return fetch(`https://ico-manager.herokuapp.com/api/update-image`, {
+  return fetch(`https://ico-manager.herokuapp.com/api/update-descripton`, {
     method: 'PUT',
     body: JSON.stringify({ owner, tokenAddress, projectDescription }),
+    headers: { 'content-type': 'application/json' },
   })
     .then((response) => {
       if (!response.ok) {
