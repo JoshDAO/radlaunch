@@ -41,6 +41,7 @@ export function updateIcoImage(owner, tokenAddress, imageUrl) {
   return fetch(`https://ico-manager.herokuapp.com/api/update-image`, {
     method: 'PUT',
     body: JSON.stringify({ owner, tokenAddress, imageUrl }),
+    headers: { 'content-type': 'application/json' },
   })
     .then((response) => {
       if (!response.ok) {

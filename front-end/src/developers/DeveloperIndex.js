@@ -413,43 +413,11 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
             <DashboardContainer>
               <Column1>
                 <ProjectTitle>{ico.name}</ProjectTitle>
-                {ico.imageUrl ? (
-                  <ProjectImage src={ico.imageUrl} />
-                ) : (
-                  <form
-                    style={{ border: '2px solid #e6ddff', padding: '1rem' }}
-                    onSubmit={async (event) => {
-                      event.preventDefault()
-                      console.log(await updateIcoImage(accounts[0], ico.tokenAddress, imageUrl))
-                    }}
-                  >
-                    <label
-                      for='address-input'
-                      style={{
-                        marginBottom: '0.8rem',
-                        fontFamily: "'Questrial', sans-serif",
-                        fontWeight: 400,
-                        fontSize: '1rem',
-                      }}
-                    >
-                      Enter hosted image url:
-                    </label>
-                    <Input
-                      id='image-url'
-                      type='text'
-                      required={true}
-                      onChange={handleImageUrlInput}
-                      value={imageUrl}
-                      style={{
-                        width: '100%',
-                        marginTop: '0.5rem',
-                        marginBottom: '1rem',
-                        height: '2rem',
-                      }}
-                    ></Input>
-                    <Button type='submit'>Upload your logo</Button>
-                  </form>
-                )}
+                <ImageContainer
+                  imageUrl={ico.imageUrl}
+                  accounts={accounts[0]}
+                  tokenAddress={ico.tokenAddress}
+                />
               </Column1>
               <Column2>
                 <Button>View on Etherscan</Button>
@@ -583,4 +551,59 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
   )
 }
 
+const ImageContainer = ({ imageUrl, accounts, tokenAddress }) => {
+  const [imgUrl, setImgUrl] = useState(imageUrl)
+  const [inputBox, setInputBox] = useState('')
+  const handleImageUrlInput = (e) => {
+    setInputBox(e.target.value)
+    validateInput(e)
+  }
+  const validateInput = (e) => {
+    e.target.parentNode.classList.add('was-validated')
+  }
+
+  return (
+    <>
+      {imgUrl ? (
+        <ProjectImage src={imgUrl} />
+      ) : (
+        <form
+          style={{ border: '2px solid #e6ddff', padding: '1rem' }}
+          onSubmit={async (event) => {
+            event.preventDefault()
+            const result = await updateIcoImage(accounts, tokenAddress, inputBox)
+            console.group('result:   ', result.listing.imageUrl)
+            setImgUrl(result.listing.imageUrl)
+          }}
+        >
+          <label
+            for='address-input'
+            style={{
+              marginBottom: '0.8rem',
+              fontFamily: "'Questrial', sans-serif",
+              fontWeight: 400,
+              fontSize: '1rem',
+            }}
+          >
+            Enter hosted image url:
+          </label>
+          <Input
+            id='image-url'
+            type='text'
+            required={true}
+            onChange={handleImageUrlInput}
+            value={inputBox}
+            style={{
+              width: '100%',
+              marginTop: '0.5rem',
+              marginBottom: '1rem',
+              height: '2rem',
+            }}
+          ></Input>
+          <Button type='submit'>Upload your logo</Button>
+        </form>
+      )}
+    </>
+  )
+}
 export default DeveloperIndex
