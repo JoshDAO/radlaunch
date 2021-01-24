@@ -26,7 +26,7 @@ updateImage = async (req, res) => {
   let listing = await IcoSchema.findOneAndUpdate(
     { tokenAddress: tokenAddress, owner: owner },
     { $set: { imageUrl: imageUrl } },
-    { returnOriginal: false },
+    { new: true },
   )
   if (!listing) {
     return res.status(400).json({
