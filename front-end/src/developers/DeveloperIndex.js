@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Web3 from 'web3'
 import styled from 'styled-components'
+import { Input } from 'rimble-ui'
 
 import map from '../artifacts/deployments/map.json'
 import NavBar from '../NavBar'
 import developersImage from '../assets/developersAndFounders.svg'
-import { fetchDatabaseIcoData } from '../utils/apiCalls'
+import { fetchDatabaseIcoData, updateIcoImage, updateProjectDescription } from '../utils/apiCalls'
 
 import Keanu from '../assets/keanu.svg'
 
@@ -394,6 +395,16 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
     }
   }, [myWeb3, accounts])
 
+  // ---------- form handling -------------
+  const [imageUrl, setImageUrl] = useState('')
+
+  const handleImageUrlInput = (e) => {
+    setImageUrl(e.target.value)
+    validateInput(e)
+  }
+  const validateInput = (e) => {
+    e.target.parentNode.classList.add('was-validated')
+  }
   return (
     <>
       {launchedICOs.length ? (
@@ -402,7 +413,43 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
             <DashboardContainer>
               <Column1>
                 <ProjectTitle>{ico.name}</ProjectTitle>
-                <ProjectImage src={'https://i.imgur.com/dRnvRZZ.jpg'} />
+                {ico.imageUrl ? (
+                  <ProjectImage src={ico.imageUrl} />
+                ) : (
+                  <form
+                    style={{ border: '2px solid #e6ddff', padding: '1rem' }}
+                    onSubmit={async (event) => {
+                      event.preventDefault()
+                      console.log(await updateIcoImage(accounts[0], ico.tokenAddress, imageUrl))
+                    }}
+                  >
+                    <label
+                      for='address-input'
+                      style={{
+                        marginBottom: '0.8rem',
+                        fontFamily: "'Questrial', sans-serif",
+                        fontWeight: 400,
+                        fontSize: '1rem',
+                      }}
+                    >
+                      Enter hosted image url:
+                    </label>
+                    <Input
+                      id='image-url'
+                      type='text'
+                      required={true}
+                      onChange={handleImageUrlInput}
+                      value={imageUrl}
+                      style={{
+                        width: '100%',
+                        marginTop: '0.5rem',
+                        marginBottom: '1rem',
+                        height: '2rem',
+                      }}
+                    ></Input>
+                    <Button type='submit'>Upload your logo</Button>
+                  </form>
+                )}
               </Column1>
               <Column2>
                 <Button>View on Etherscan</Button>

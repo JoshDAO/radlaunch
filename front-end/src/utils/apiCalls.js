@@ -35,3 +35,42 @@ export function fetchDatabaseIcoData(owner) {
       throw new Error(error)
     })
 }
+
+export function updateIcoImage(owner, tokenAddress, imageUrl) {
+  console.log('boop:  ', owner, tokenAddress, imageUrl)
+  return fetch(`https://ico-manager.herokuapp.com/api/update-image`, {
+    method: 'PUT',
+    body: JSON.stringify({ owner, tokenAddress, imageUrl }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        const error = new Error('HTTP Error!')
+        error.status = response.status
+        throw error
+      } else {
+        return response.json()
+      }
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
+}
+
+export function updateProjectDescription(owner, tokenAddress, projectDescription) {
+  return fetch(`https://ico-manager.herokuapp.com/api/update-image`, {
+    method: 'PUT',
+    body: JSON.stringify({ owner, tokenAddress, projectDescription }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        const error = new Error('HTTP Error!')
+        error.status = response.status
+        throw error
+      } else {
+        return response.json()
+      }
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
+}

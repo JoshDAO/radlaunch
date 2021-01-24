@@ -23,9 +23,10 @@ updateImage = async (req, res) => {
   const tokenAddress = req.body.tokenAddress
   const imageUrl = req.body.imageUrl
 
-  let listing = await IcoSchema.updateOne(
+  let listing = await IcoSchema.findOneAndUpdate(
     { tokenAddress: tokenAddress, owner: owner },
     { $set: { imageUrl: imageUrl } },
+    { returnOriginal: false },
   )
   if (!listing) {
     return res.status(400).json({
@@ -33,7 +34,7 @@ updateImage = async (req, res) => {
       success: false,
     })
   }
-  return res.status(200).json({ status: 'ico updated' })
+  return res.status(200).json({ listing })
 }
 
 module.exports = { updateDescription, updateImage }
