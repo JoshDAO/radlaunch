@@ -366,6 +366,10 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
       eventsArray
         .filter((event) => event['returnValues']['0'] === accounts[0])
         .forEach(async (event) => {
+          const dbData = databaseData.data.filter(
+            (ico) => ico.tokenAddress === event.returnValues['2'],
+          )
+          console.log('dbdata:  ', dbData)
           const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
           const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
           const extraIcoData = await getExtraICOdata(ICOContract)
@@ -380,6 +384,8 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               tokenSupply: event.returnValues.tokenSupply,
               minimumRaiseAmount: event.returnValues.minimalProvide,
               tokenAddress: event.returnValues['2'],
+              imageUrl: dbData[0].imageUrl,
+              projectDescription: dbData[0].projectDescription,
             },
           ]
           console.log(projectData)
@@ -430,24 +436,37 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                     <Tr>
                       <Td>
                         Start/end date:
-                        <br /> <b>{new Date(ico.startDate).toString().substr(4, 20)} to{' '}
-                        {new Date(ico.endDate).toString().substr(4, 24)}</b>
+                        <br />{' '}
+                        <b>
+                          {new Date(ico.startDate).toString().substr(4, 20)} to{' '}
+                          {new Date(ico.endDate).toString().substr(4, 24)}
+                        </b>
                       </Td>
                     </Tr>
                     <Tr>
-                      <Td>Tokens for sale: <b>{ico.tokenSupply / 1e18}</b></Td>
+                      <Td>
+                        Tokens for sale: <b>{ico.tokenSupply / 1e18}</b>
+                      </Td>
                     </Tr>
                     <Tr>
-                      <Td>Amount raised: <b>{ico.amountRaised / 1e18}</b></Td>
+                      <Td>
+                        Amount raised: <b>{ico.amountRaised / 1e18}</b>
+                      </Td>
                     </Tr>
                     <Tr>
-                      <Td>Number of investors: <b>{ico.numberOfProviders}</b></Td>
+                      <Td>
+                        Number of investors: <b>{ico.numberOfProviders}</b>
+                      </Td>
                     </Tr>
                     <Tr>
-                      <Td>Minimum raise amount: <b>{ico.minimumRaiseAmount / 1e18}</b></Td>
+                      <Td>
+                        Minimum raise amount: <b>{ico.minimumRaiseAmount / 1e18}</b>
+                      </Td>
                     </Tr>
                     <Tr>
-                      <Td>Your contribution: <b>{ico.yourContribution / 1e18}</b></Td>
+                      <Td>
+                        Your contribution: <b>{ico.yourContribution / 1e18}</b>
+                      </Td>
                     </Tr>
                   </Table>
                 </TableContainer>
@@ -463,13 +482,19 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                       </Td>
                     </Tr>
                     <Tr>
-                      <Td>Token name: <b>{ico.name}</b></Td>
+                      <Td>
+                        Token name: <b>{ico.name}</b>
+                      </Td>
                     </Tr>
                     <Tr>
-                      <Td>Token Symbol: <b>{ico.symbol}</b></Td>
+                      <Td>
+                        Token Symbol: <b>{ico.symbol}</b>
+                      </Td>
                     </Tr>
                     <Tr>
-                      <Td>Total token supply: <b>{ico.totalSupply / 1e18}</b></Td>
+                      <Td>
+                        Total token supply: <b>{ico.totalSupply / 1e18}</b>
+                      </Td>
                     </Tr>
                     <Tr style={{ height: '9rem' }}>
                       <Td>
@@ -491,14 +516,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                 <AboutTitle>About the Project:</AboutTitle>
                 <EditButton>Edit</EditButton>
               </div>
-              <AboutText>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
-              </AboutText>
+              <AboutText>{ico.projectDescription}</AboutText>
             </AboutSection>
           </>
         ))
