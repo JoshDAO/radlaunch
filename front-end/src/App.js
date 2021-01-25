@@ -5,6 +5,7 @@ import Web3 from 'web3'
 import NavBar from './NavBar'
 import Landing from './Landing'
 import DeveloperIndex from './developers/DeveloperIndex'
+import InvestorIndex from './investors/Index'
 import SelectICO from './developers/SelectIco'
 import IbcoSetupForm from './developers/IbcoSetupForm'
 
@@ -52,6 +53,16 @@ function App() {
           </Route>
           <Route exact path='/IbcoSetup'>
             <IbcoSetupForm
+              myWeb3={myWeb3}
+              setMyWeb3={setMyWeb3}
+              accounts={accounts}
+              setAccounts={setAccounts}
+              chainId={chainId}
+              setChainId={setChainId}
+            />
+          </Route>
+          <Route exact path='/investor'>
+            <InvestorIndex
               myWeb3={myWeb3}
               setMyWeb3={setMyWeb3}
               accounts={accounts}
