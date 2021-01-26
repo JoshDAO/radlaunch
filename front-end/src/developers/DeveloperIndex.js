@@ -387,6 +387,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               tokenAddress: event.returnValues['2'],
               imageUrl: dbData[0].imageUrl,
               projectDescription: dbData[0].projectDescription,
+              etherscanLink: "https://kovan.etherscan.io/address/" + event.returnValues['1']
             },
           ]
           console.log(projectData)
@@ -405,6 +406,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
   const validateInput = (e) => {
     e.target.parentNode.classList.add('was-validated')
   }
+
   return (
     <>
       {launchedICOs.length ? (
@@ -420,7 +422,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                 />
               </Column1>
               <Column2>
-                <Button>View on Etherscan</Button>
+                <Button><a href={ico.etherscanLink} target='_blank'>View on Etherscan</a></Button>
                 <Span>Verified status: Verified</Span>
                 <Span>Access: Public</Span>
                 <Button
