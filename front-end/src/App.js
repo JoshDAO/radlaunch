@@ -71,6 +71,9 @@ function App() {
               setChainId={setChainId}
             />
           </Route>
+          <Route exact path='/lalala'>
+            <div>winner</div>
+          </Route>
         </Switch>
       </Router>
     </div>

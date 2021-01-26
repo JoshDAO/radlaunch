@@ -1,12 +1,47 @@
 import React, { useEffect, useState } from 'react'
-import { Table } from 'antd'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import './icoTable.css'
 import 'react-tabulator/lib/styles.css' // required styles
 import 'react-tabulator/lib/css/tabulator.min.css' // theme
-import { ReactTabulator } from 'react-tabulator'
+import { ReactTabulator, reactFormatter } from 'react-tabulator' // for React 15.x
 import map from '../artifacts/deployments/map'
 import { fetchDatabaseIcoData } from '../utils/apiCalls'
 import Web3 from 'web3'
+
+const Table = styled.table`
+  width: 100%;
+  text-align: left;
+  border-spacing: 0;
+  border-collapse: collapse;
+`
+
+const Td = styled.td`
+  font-family: 'Questrial', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 0.3rem;
+  word-break: break-word;
+  border-right: 1px solid #e6ddff;
+`
+const Tr = styled.tr`
+  height: 3rem;
+  border-top: 1px solid #e6ddff;
+  &:first-of-type {
+    border: none;
+  }
+`
+
+const Thead = styled.thead`
+  border-bottom: 1px solid #e6ddff;
+`
+
+const TableContainer = styled.div`
+  border: 1px solid #e6ddff;
+  border-radius: 10px;
+  width: 80%;
+  margin: 2rem auto 0 auto;
+`
 
 const IcoTable = ({ myWeb3, accounts }) => {
   const [factory, setFactory] = useState()
@@ -189,11 +224,59 @@ const IcoTable = ({ myWeb3, accounts }) => {
   // ]
 
   return (
-    <ReactTabulator
-      style={{ width: '80%', margin: ' 1rem auto' }}
-      columns={columns}
-      data={launchedICOs}
-    />
+    <>
+      <TableContainer>
+        <Table>
+          <Thead>
+            <Tr>
+              <Td>Name</Td>
+              <Td>Status</Td>
+              <Td>Launch Type</Td>
+              <Td>Amount Raised (ETH)</Td>
+              <Td>Start Date GMT</Td>
+              <Td>End Date GMT</Td>
+              <Td style={{ width: '10rem', borderRight: 'none' }}></Td>
+            </Tr>
+          </Thead>
+          <tbody>
+            {launchedICOs.map((ico) => {
+              return (
+                <Tr>
+                  <Td>{ico.name}</Td>
+                  <Td>{ico.status}</Td>
+                  <Td>{ico.type}</Td>
+                  <Td>{ico.amountRaised}</Td>
+                  <Td>{ico.startDate}</Td>
+                  <Td>{ico.endDate}</Td>
+                  <Td>
+                    <IcoLink />
+                  </Td>
+                </Tr>
+              )
+            })}
+          </tbody>
+        </Table>
+      </TableContainer>
+    </>
+  )
+}
+
+const Button = styled.button`
+  background: #ffffff;
+  border: 2px solid #4e3fce;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 0.7rem;
+  width: 100%;
+  font-family: 'Questrial', sans-serif;
+  font-size: 1rem;
+`
+
+const IcoLink = (props) => {
+  return (
+    <Link to={`/investor/lalala}`}>
+      <Button>View Launch</Button>
+    </Link>
   )
 }
 
