@@ -4,6 +4,10 @@
   font-weight: 400;
 }
 
+.tabulator-header {
+  border-bottom: 1px solid #e6ddff !important;
+}
+
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable {
   background-color: #fff;
 }
@@ -21,4 +25,25 @@
   .tabulator-arrow {
   border-bottom: 6px solid #e6ddff !important;
   color: #e6ddff !important;
+}
+
+.tabulator {
+  border: 1px solid #e6ddff !important;
+  border-radius: 10px;
+  background-color: none !important;
+}
+
+.tabulator-row .tabulator-cell {
+  border-right: 1px solid #e6ddff !important;
+}
+.tabulator-row .tabulator-cell:last-child {
+  border-right: none !important;
+}
+
+.tabulator .tabulator-header .tabulator-col {
+  border-right: 1px solid #e6ddff !important;
+}
+
+.tabulator .tabulator-header .tabulator-col:last-child {
+  border-right: none !important;
 }

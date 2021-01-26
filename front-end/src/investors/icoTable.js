@@ -7,9 +7,9 @@ import { ReactTabulator } from 'react-tabulator'
 
 const icoTable = (props) => {
   const columns = [
-    { title: 'Name', field: 'name', width: 150 },
+    { title: 'Name', field: 'name', align: 'center' },
     { title: 'Status', field: 'status', align: 'center' },
-    { title: 'Type', field: 'type' },
+    { title: 'Type', field: 'type', align: 'center' },
     { title: 'Amount Raised', field: 'amountRaised', align: 'center' },
     { title: 'Start Date', field: 'startDate', align: 'center' },
     { title: 'End Date', field: 'endDate', align: 'center' },
