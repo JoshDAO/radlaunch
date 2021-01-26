@@ -1,7 +1,7 @@
 .tabulator-headers {
   font-family: 'Questrial', sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .tabulator-header {
@@ -10,11 +10,15 @@
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable {
   background-color: #fff;
+  padding: 1rem 0.2rem;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .tabulator-col-title {
   text-align: center;
-  padding-left: 25px;
+  /* padding-left: 25px; */
 }
 
 .tabulator
@@ -33,8 +37,20 @@
   background-color: none !important;
 }
 
+.tabulator-row {
+  background-color: #fff !important;
+  border-top: 1px solid #e6ddff !important;
+}
+
 .tabulator-row .tabulator-cell {
   border-right: 1px solid #e6ddff !important;
+  font-size: 1.2rem !important;
+  font-family: 'Questrial', sans-serif !important;
+  font-weight: 400 !important;
+  padding: 2.3rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  text-align: center !important;
 }
 .tabulator-row .tabulator-cell:last-child {
   border-right: none !important;
@@ -46,4 +62,8 @@
 
 .tabulator .tabulator-header .tabulator-col:last-child {
   border-right: none !important;
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+  padding-right: 10px;
 }

@@ -160,7 +160,7 @@ const IcoTable = ({ myWeb3, accounts }) => {
   const columns = [
     { title: 'Name', field: 'name', align: 'center' },
     { title: 'Status', field: 'status', align: 'center' },
-    { title: 'Launch Type', field: 'type' },
+    { title: 'Launch Type', field: 'type', align: 'center' },
     { title: 'Amount Raised (ETH)', field: 'amountRaised', align: 'center' },
     { title: 'Start Date GMT', field: 'startDate', align: 'center' },
     { title: 'End Date GMT', field: 'endDate', align: 'center' },
