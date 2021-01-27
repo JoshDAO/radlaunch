@@ -8,6 +8,7 @@ import DeveloperIndex from './developers/DeveloperIndex'
 import InvestorIndex from './investors/Index'
 import SelectICO from './developers/SelectIco'
 import IbcoSetupForm from './developers/IbcoSetupForm'
+import IndividualListing from './investors/individualListing'
 
 function App() {
   const [myWeb3, setMyWeb3] = useState()
@@ -71,8 +72,15 @@ function App() {
               setChainId={setChainId}
             />
           </Route>
-          <Route exact path='/lalala'>
-            <div>winner</div>
+          <Route exact path='/investor/:address'>
+            <IndividualListing
+              myWeb3={myWeb3}
+              setMyWeb3={setMyWeb3}
+              accounts={accounts}
+              setAccounts={setAccounts}
+              chainId={chainId}
+              setChainId={setChainId}
+            />
           </Route>
         </Switch>
       </Router>

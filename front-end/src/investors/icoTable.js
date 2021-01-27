@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import './icoTable.css'
 import 'react-tabulator/lib/styles.css' // required styles
 import 'react-tabulator/lib/css/tabulator.min.css' // theme
 import map from '../artifacts/deployments/map'
@@ -167,7 +166,6 @@ const IcoTable = ({ myWeb3, accounts }) => {
         const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
         const amountRaised = await getExtraICOdata(ICOContract)
         const name = await getExtraTokendata(tokenContract)
-        console.log(event.returnValues.startDate)
         const projectData = [
           {
             ...name,
@@ -181,9 +179,10 @@ const IcoTable = ({ myWeb3, accounts }) => {
               amountRaised,
               event.returnValues.minimalProvide,
             ),
+            contractAddress: event.returnValues['1'],
           },
         ]
-        console.log(projectData)
+        console.log('projectData:  ', projectData)
         setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
       })
     }
@@ -246,7 +245,7 @@ const IcoTable = ({ myWeb3, accounts }) => {
                   <Td>{ico.startDate}</Td>
                   <Td>{ico.endDate}</Td>
                   <Td>
-                    <IcoLink />
+                    <IcoLink url={ico.contractAddress} />
                   </Td>
                 </Tr>
               )
@@ -271,7 +270,7 @@ const Button = styled.button`
 
 const IcoLink = (props) => {
   return (
-    <Link to={`/investor/lalala}`}>
+    <Link to={`/investor/${props.url}`}>
       <Button>View Launch</Button>
     </Link>
   )
