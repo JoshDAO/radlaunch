@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom'
 import './icoTable.css'
 import 'react-tabulator/lib/styles.css' // required styles
 import 'react-tabulator/lib/css/tabulator.min.css' // theme
-import { ReactTabulator, reactFormatter } from 'react-tabulator' // for React 15.x
 import map from '../artifacts/deployments/map'
-import { fetchDatabaseIcoData } from '../utils/apiCalls'
-import Web3 from 'web3'
 
 const Table = styled.table`
   width: 100%;

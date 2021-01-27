@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Web3 from 'web3'
 import styled from 'styled-components'
 import { Input } from 'rimble-ui'
 
@@ -8,8 +7,6 @@ import map from '../artifacts/deployments/map.json'
 import NavBar from '../NavBar'
 import developersImage from '../assets/developersAndFounders.svg'
 import { fetchDatabaseIcoData, updateIcoImage, updateProjectDescription } from '../utils/apiCalls'
-
-import Keanu from '../assets/keanu.svg'
 
 const H2 = styled.h2`
   font-family: 'Questrial', sans-serif;
@@ -210,6 +207,13 @@ const AboutText = styled.p`
   font-size: 1.1rem;
 `
 
+const GraphContainer = styled.div`
+  height: 20rem; //change this for graph size
+  width: 40rem;
+  margin: 2rem auto;
+  background-color: salmon;
+`
+
 const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
   const [factory, setFactory] = useState()
   const [tokenContract, setTokenContract] = useState()
@@ -387,7 +391,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               tokenAddress: event.returnValues['2'],
               imageUrl: dbData[0].imageUrl,
               projectDescription: dbData[0].projectDescription,
-              etherscanLink: "https://kovan.etherscan.io/address/" + event.returnValues['1']
+              etherscanLink: 'https://kovan.etherscan.io/address/' + event.returnValues['1'],
             },
           ]
           console.log(projectData)
@@ -422,7 +426,11 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                 />
               </Column1>
               <Column2>
-                <Button><a href={ico.etherscanLink} target='_blank'>View on Etherscan</a></Button>
+                <Button>
+                  <a href={ico.etherscanLink} target='_blank'>
+                    View on Etherscan
+                  </a>
+                </Button>
                 <Span>Verified status: Verified</Span>
                 <Span>Access: Public</Span>
                 <Button
@@ -528,6 +536,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                 </TableContainer>
               </Column3>
             </DashboardContainer>
+            <GraphContainer></GraphContainer>
             <AboutSection>
               <AboutArea
                 projectDescription={ico.projectDescription}
