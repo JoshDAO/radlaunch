@@ -83,6 +83,7 @@ function App() {
               setAccounts={setAccounts}
               chainId={chainId}
               setChainId={setChainId}
+              launchedICOs={launchedICOs}
             />
           </Route>
         </Switch>
