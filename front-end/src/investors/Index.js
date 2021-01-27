@@ -4,7 +4,16 @@ import investorsImage from '../assets/investorsImage.svg'
 import IcoTable from './icoTable'
 import Web3 from 'web3'
 
-const InvestorIndex = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setChainId }) => {
+const InvestorIndex = ({
+  myWeb3,
+  setMyWeb3,
+  accounts,
+  setAccounts,
+  chainId,
+  setChainId,
+  launchedICOs,
+  setLaunchedICOs,
+}) => {
   return (
     <>
       <NavBar
@@ -17,13 +26,17 @@ const InvestorIndex = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
         chainId={chainId}
         setChainId={setChainId}
       />
-        {myWeb3 ?
-            (<IcoTable
-      myWeb3={myWeb3}
-      setMyWeb3={setMyWeb3}
-      accounts ={accounts}
-      setAccounts={setAccounts}/>) : (
-          <div
+      {myWeb3 ? (
+        <IcoTable
+          myWeb3={myWeb3}
+          setMyWeb3={setMyWeb3}
+          accounts={accounts}
+          setAccounts={setAccounts}
+          launchedICOs={launchedICOs}
+          setLaunchedICOs={setLaunchedICOs}
+        />
+      ) : (
+        <div
           style={{
             fontSize: '4rem',
             fontFamily: "'Questrial', sans-serif",
@@ -32,8 +45,8 @@ const InvestorIndex = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
           }}
         >
           conect ur wallet m8
-        </div>)}
-
+        </div>
+      )}
     </>
   )
 }

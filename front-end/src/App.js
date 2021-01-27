@@ -14,6 +14,7 @@ function App() {
   const [myWeb3, setMyWeb3] = useState()
   const [accounts, setAccounts] = useState()
   const [chainId, setChainId] = useState()
+  const [launchedICOs, setLaunchedICOs] = useState([])
 
   return (
     <div
@@ -70,6 +71,8 @@ function App() {
               setAccounts={setAccounts}
               chainId={chainId}
               setChainId={setChainId}
+              launchedICOs={launchedICOs}
+              setLaunchedICOs={setLaunchedICOs}
             />
           </Route>
           <Route exact path='/investor/:address'>
