@@ -9,13 +9,13 @@ createListing = async (req, res) => {
     })
   }
 
-  let listing = await IcoSchema.findOne({ tokenAddress: body.tokenAddress })
-  if (listing) {
-    return res.status(400).json({
-      message: 'Listing with that token address already exists',
-      success: false,
-    })
-  }
+  // let listing = await IcoSchema.findOne({ tokenAddress: body.tokenAddress })
+  // if (listing) {
+  //   return res.status(400).json({
+  //     message: 'Listing with that token address already exists',
+  //     success: false,
+  //   })
+  // }
 
   const newListing = new IcoSchema(body)
   if (!newListing) {

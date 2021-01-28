@@ -201,7 +201,9 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
         minimalProv,
       )
       .send({ from: accounts[0], value: value })
-      .on('receipt', async () => {}) // see what this returns and edit
+      .on('receipt', async (receipt) => {
+        console.log('receipt:  ', receipt)
+      }) // see what this returns and edit
   }
 
   return (

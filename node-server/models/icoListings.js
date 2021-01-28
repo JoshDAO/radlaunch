@@ -7,6 +7,7 @@ const IcoSchema = new Schema(
     tokenAddress: { type: String, required: true },
     imageUrl: { type: String },
     projectDescription: { type: String },
+    // contractAddress: { type: String, required: true },
   },
   { timestamps: true },
 )
