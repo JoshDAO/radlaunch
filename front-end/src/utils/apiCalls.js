@@ -1,7 +1,7 @@
-export function icoSubmit(owner, projectDescription, tokenAddress) {
+export function icoSubmit(owner, projectDescription, tokenAddress, contractAddress) {
   return fetch('https://ico-manager.herokuapp.com/api/create-listing', {
     method: 'POST',
-    body: JSON.stringify({ owner, projectDescription, tokenAddress }),
+    body: JSON.stringify({ owner, projectDescription, tokenAddress, contractAddress }),
     headers: { 'content-type': 'application/json' },
   })
     .then((response) => {
