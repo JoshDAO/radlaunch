@@ -1,4 +1,5 @@
-import React, { useState, useParams, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import NavBar from '../NavBar'
 import investorsImage from '../assets/investorsImage.svg'
 import styled from 'styled-components'
@@ -264,11 +265,13 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
     } else {
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
+      console.log('eventsArray:  ', eventsArray)
       const databaseData = await fetchDatabaseInvestorData(address)
       console.log('database Data:  ', databaseData)
       eventsArray
         .filter((event) => event['returnValues']['1'] === address)
         .forEach(async (event) => {
+          console.log('event: ', event)
           const dbData = databaseData.data.filter(
             (ico) => ico.contractAddress === event.returnValues['1'],
           )
@@ -307,147 +310,153 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
 
   return (
     <>
-      <NavBar
-        imgSource={investorsImage}
-        titleText={'Investors - Participate in project launches'}
-        myWeb3={myWeb3}
-        setMyWeb3={setMyWeb3}
-        accounts={accounts}
-        setAccounts={setAccounts}
-        chainId={chainId}
-        setChainId={setChainId}
-      />
-      <DashboardContainer>
-        <Column1>
-          <ProjectTitle>{launchedICOs[0].name}</ProjectTitle>
-          <ProjectImage src={launchedICOs[0].imageUrl} />
-        </Column1>
-        <Column2>
-          <Button>
-            <a href={launchedICOs[0].etherscanLink} target='_blank'>
-              View on Etherscan
-            </a>
-          </Button>
-          <Span>Verified status: Verified</Span>
-          <Span>Access: Public</Span>
-          {Date.now() < launchedICOs[0].endDate && Date.now() > launchedICOs[0].startDate ? (
-            <ContributeContainer
-              myWeb3={myWeb3}
-              accounts={accounts[0]}
-              template={async () => {
-                await loadInitialTemplate(launchedICOs[0].contractAddress)
-              }}
-            />
-          ) : Date.now() > launchedICOs[0].endDate ? (
-            <Button
-              style={{ marginTop: '2rem' }}
-              disabled={Date.now() < launchedICOs[0].endDate}
-              onClick={async () => {
-                const ICOContract = await loadInitialTemplate(
-                  launchedICOs[0].contractAddress,
-                  'IBCOTemplate',
-                )
-                claim(ICOContract)
-              }}
-            >
-              {launchedICOs[0].amountRaised >= launchedICOs[0].minimumRaiseAmount
-                ? 'Withdraw Tokens'
-                : 'Withdraw ETH'}
-            </Button>
-          ) : (
-            <Span>Launch has not started yet. Come back at the start time.</Span>
-          )}
-        </Column2>
-        <Column3>
-          <TableContainer>
-            <Table>
-              <Tr>
-                <Td>
-                  Contract address: <br /> <b>{launchedICOs[0].contractAddress}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Start/end date:
-                  <br />{' '}
-                  <b>
-                    {new Date(launchedICOs[0].startDate).toString().substr(4, 20)} to{' '}
-                    {new Date(launchedICOs[0].endDate).toString().substr(4, 24)}
-                  </b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Tokens for sale: <b>{launchedICOs[0].tokenSupply / 1e18}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Amount raised: <b>{launchedICOs[0].amountRaised / 1e18}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Number of investors: <b>{launchedICOs[0].numberOfProviders}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Minimum raise amount: <b>{launchedICOs[0].minimumRaiseAmount / 1e18}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Your contribution: <b>{launchedICOs[0].yourContribution / 1e18}</b>
-                </Td>
-              </Tr>
-            </Table>
-          </TableContainer>
-        </Column3>
-        <Column3>
-          <TableContainer>
-            <Table>
-              <Tr>
-                <Td>
-                  Token address:
-                  <br />
-                  <b>{launchedICOs[0].tokenAddress}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Token name: <b>{launchedICOs[0].name}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Token Symbol: <b>{launchedICOs[0].symbol}</b>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  Total token supply: <b>{launchedICOs[0].totalSupply / 1e18}</b>
-                </Td>
-              </Tr>
-              <Tr style={{ height: '9rem' }}>
-                <Td>
-                  Launch type: Dynamic swap pool
-                  <br />
-                  <br />
-                  In this type of launch if the amount raised is above the minimum raise amount. You
-                  will be allocated a percentage of the tokens for sale equivalent to your
-                  percentage contribution of the Amount raised. If the minimum raise amount is not
-                  reached you can reclaim your ETH.{' '}
-                </Td>
-              </Tr>
-            </Table>
-          </TableContainer>
-        </Column3>
-      </DashboardContainer>
-      <GraphContainer></GraphContainer>
-      <AboutSection>
-        <div>{launchedICOs[0].projectDescription}</div>
-      </AboutSection>
+      {launchedICOs.length ? (
+        <>
+          <NavBar
+            imgSource={investorsImage}
+            titleText={'Investors - Participate in project launches'}
+            myWeb3={myWeb3}
+            setMyWeb3={setMyWeb3}
+            accounts={accounts}
+            setAccounts={setAccounts}
+            chainId={chainId}
+            setChainId={setChainId}
+          />
+          <DashboardContainer>
+            <Column1>
+              <ProjectTitle>{launchedICOs[0].name}</ProjectTitle>
+              <ProjectImage src={launchedICOs[0].imageUrl} />
+            </Column1>
+            <Column2>
+              <Button>
+                <a href={launchedICOs[0].etherscanLink} target='_blank'>
+                  View on Etherscan
+                </a>
+              </Button>
+              <Span>Verified status: Verified</Span>
+              <Span>Access: Public</Span>
+              {Date.now() < launchedICOs[0].endDate && Date.now() > launchedICOs[0].startDate ? (
+                <ContributeContainer
+                  myWeb3={myWeb3}
+                  accounts={accounts[0]}
+                  template={async () => {
+                    await loadInitialTemplate(launchedICOs[0].contractAddress)
+                  }}
+                />
+              ) : Date.now() > launchedICOs[0].endDate ? (
+                <Button
+                  style={{ marginTop: '2rem' }}
+                  disabled={Date.now() < launchedICOs[0].endDate}
+                  onClick={async () => {
+                    const ICOContract = await loadInitialTemplate(
+                      launchedICOs[0].contractAddress,
+                      'IBCOTemplate',
+                    )
+                    claim(ICOContract)
+                  }}
+                >
+                  {launchedICOs[0].amountRaised >= launchedICOs[0].minimumRaiseAmount
+                    ? 'Withdraw Tokens'
+                    : 'Withdraw ETH'}
+                </Button>
+              ) : (
+                <Span>Launch has not started yet. Come back at the start time.</Span>
+              )}
+            </Column2>
+            <Column3>
+              <TableContainer>
+                <Table>
+                  <Tr>
+                    <Td>
+                      Contract address: <br /> <b>{launchedICOs[0].contractAddress}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Start/end date:
+                      <br />{' '}
+                      <b>
+                        {new Date(launchedICOs[0].startDate).toString().substr(4, 20)} to{' '}
+                        {new Date(launchedICOs[0].endDate).toString().substr(4, 24)}
+                      </b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Tokens for sale: <b>{launchedICOs[0].tokenSupply / 1e18}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Amount raised: <b>{launchedICOs[0].amountRaised / 1e18}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Number of investors: <b>{launchedICOs[0].numberOfProviders}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Minimum raise amount: <b>{launchedICOs[0].minimumRaiseAmount / 1e18}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Your contribution: <b>{launchedICOs[0].yourContribution / 1e18}</b>
+                    </Td>
+                  </Tr>
+                </Table>
+              </TableContainer>
+            </Column3>
+            <Column3>
+              <TableContainer>
+                <Table>
+                  <Tr>
+                    <Td>
+                      Token address:
+                      <br />
+                      <b>{launchedICOs[0].tokenAddress}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Token name: <b>{launchedICOs[0].name}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Token Symbol: <b>{launchedICOs[0].symbol}</b>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      Total token supply: <b>{launchedICOs[0].totalSupply / 1e18}</b>
+                    </Td>
+                  </Tr>
+                  <Tr style={{ height: '9rem' }}>
+                    <Td>
+                      Launch type: Dynamic swap pool
+                      <br />
+                      <br />
+                      In this type of launch if the amount raised is above the minimum raise amount.
+                      You will be allocated a percentage of the tokens for sale equivalent to your
+                      percentage contribution of the Amount raised. If the minimum raise amount is
+                      not reached you can reclaim your ETH.{' '}
+                    </Td>
+                  </Tr>
+                </Table>
+              </TableContainer>
+            </Column3>
+          </DashboardContainer>
+          <GraphContainer></GraphContainer>
+          <AboutSection>
+            <div>{launchedICOs[0].projectDescription}</div>
+          </AboutSection>
+        </>
+      ) : (
+        <div>LOADING M8</div>
+      )}
     </>
   )
 }

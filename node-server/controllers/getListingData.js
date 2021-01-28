@@ -19,7 +19,7 @@ getListingsByContractAddress = async (req, res) => {
   const contractAddress = req.params.contractAddress
   console.log(owner)
 
-  await IcoSchema.findOne({ owner: owner }, (err, icos) => {
+  await IcoSchema.findOne({ contractAddress: contractAddress }, (err, icos) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }
