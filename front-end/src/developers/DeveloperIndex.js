@@ -368,6 +368,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
       const databaseData = await fetchDatabaseIcoData(accounts[0])
+      console.log('database Data:  ', databaseData)
       eventsArray
         .filter((event) => event['returnValues']['0'] === accounts[0])
         .forEach(async (event) => {

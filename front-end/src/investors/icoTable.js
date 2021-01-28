@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import 'react-tabulator/lib/styles.css' // required styles
 import 'react-tabulator/lib/css/tabulator.min.css' // theme
 import map from '../artifacts/deployments/map'
+import { fetchDatabaseIcoData } from '../utils/apiCalls'
 
 const Table = styled.table`
   width: 100%;
@@ -160,6 +161,7 @@ const IcoTable = ({ myWeb3, accounts, launchedICOs, setLaunchedICOs }) => {
     } else {
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
+      const databaseData = await fetchDatabaseIcoData(accounts[0])
       eventsArray.forEach(async (event) => {
         const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
         const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
