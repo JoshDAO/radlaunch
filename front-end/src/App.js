@@ -75,7 +75,7 @@ function App() {
               setLaunchedICOs={setLaunchedICOs}
             />
           </Route>
-          <Route exact path='/investor/:address'>
+          <Route path='/investor/:address'>
             <IndividualListing
               myWeb3={myWeb3}
               setMyWeb3={setMyWeb3}
