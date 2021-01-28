@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import NavBar from '../NavBar'
 import investorsImage from '../assets/investorsImage.svg'
 import styled from 'styled-components'
-import map from "../artifacts/deployments/map";
-import {updateIcoImage} from "../utils/apiCalls";
-import {Input} from "rimble-ui";
+import map from '../artifacts/deployments/map'
+import { updateIcoImage } from '../utils/apiCalls'
+import { Input } from 'rimble-ui'
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -134,18 +134,50 @@ const GraphContainer = styled.div`
   background-color: salmon;
 `
 
-const IndividualListing = ({
-  myWeb3,
-  setMyWeb3,
-  accounts,
-  setAccounts,
-  chainId,
-  setChainId,
-  launchedICOs,
-}) => {
-  const ico = launchedICOs[0]
+const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setChainId }) => {
+  const [launchedICOs, setLaunchedICOs] = useState([])
 
-    async function loadInitialTemplate(addr, contract) {
+  async function loadInitialFactory() {
+    const dyn = await loadContract('42', 'DynPoolFactory')
+    setFactory(dyn)
+    return dyn
+  }
+
+  async function loadContract(chain, contractName) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, address)
+  }
+
+  async function events(factory) {
+    return await factory.getPastEvents('IBCODeployed', { fromBlock: 1 }).then((response) => {
+      return response
+    })
+  }
+
+  async function loadInitialTemplate(addr, contract) {
     // if (chainId <= 42){
     //     return
     // }
@@ -182,6 +214,88 @@ const IndividualListing = ({
     return new myWeb3.eth.Contract(contractArtifact.abi, addr)
   }
 
+  async function getExtraICOdata(template) {
+    const numberOfProviders = await template.methods
+      .numberOfProviders()
+      .call()
+      .then((result) => result)
+    const amountRaised = await template.methods
+      .totalProvided()
+      .call()
+      .then((result) => result)
+    const yourContribution = await template.methods
+      .provided(accounts[0])
+      .call()
+      .then((result) => result)
+
+    return {
+      numberOfProviders,
+      amountRaised,
+      yourContribution,
+    }
+  }
+
+  async function getExtraTokendata(template) {
+    const name = await template.methods
+      .name()
+      .call()
+      .then((result) => result)
+    const symbol = await template.methods
+      .symbol()
+      .call()
+      .then((result) => result)
+    const totalSupply = await template.methods
+      .totalSupply()
+      .call()
+      .then((result) => result)
+
+    return {
+      name,
+      symbol,
+      totalSupply,
+    }
+  }
+
+  useEffect(async () => {
+    if (myWeb3 === undefined || accounts === undefined) {
+      return
+    } else {
+      const factory = await loadInitialFactory()
+      const eventsArray = await events(factory)
+      const databaseData = await fetchDatabaseIcoData(accounts[0])
+      console.log('database Data:  ', databaseData)
+      eventsArray
+        .filter((event) => event['returnValues']['0'] === accounts[0])
+        .forEach(async (event) => {
+          const dbData = databaseData.data.filter(
+            (ico) => ico.contractAddress === event.returnValues['1'],
+          )
+          console.log('dbdata:  ', dbData)
+          const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
+          const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
+          const extraIcoData = await getExtraICOdata(ICOContract)
+          const extraTokenData = await getExtraTokendata(tokenContract)
+          const projectData = [
+            {
+              ...extraIcoData,
+              ...extraTokenData,
+              contractAddress: event.returnValues['1'],
+              startDate: event.returnValues.startDate * 1000,
+              endDate: event.returnValues.endDate * 1000,
+              tokenSupply: event.returnValues.tokenSupply,
+              minimumRaiseAmount: event.returnValues.minimalProvide,
+              tokenAddress: event.returnValues['2'],
+              imageUrl: dbData[0].imageUrl || null,
+              projectDescription: dbData[0].projectDescription,
+              etherscanLink: 'https://kovan.etherscan.io/address/' + event.returnValues['1'],
+            },
+          ]
+          console.log(projectData)
+          setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
+        })
+    }
+  }, [myWeb3, accounts])
+
   async function claim(template) {
     await template.methods
       .claim()
@@ -214,29 +328,28 @@ const IndividualListing = ({
           </Button>
           <Span>Verified status: Verified</Span>
           <Span>Access: Public</Span>
-          {(Date.now() < ico.endDate && Date.now() > ico.startDate) ?
-              (<ContributeContainer
-                  myWeb3={myWeb3}
-                  accounts={accounts[0]}
-                  template={async () => {
-                    await loadInitialTemplate(ico.contractAddress)}}
-                />):
-                 ( Date.now() > ico.endDate ? (<Button
-                  style={{ marginTop: '2rem' }}
-                  disabled={Date.now() < ico.endDate}
-                  onClick={async () => {
-                    const ICOContract = await loadInitialTemplate(
-                      ico.contractAddress,
-                      'IBCOTemplate',
-                    )
-                    claim(ICOContract)
-                  }}
-                    >
-                  {ico.amountRaised >= ico.minimumRaiseAmount ? 'Withdraw Tokens' : 'Withdraw ETH'}
-                </Button>):(
-                <Span>Launch has not started yet. Come back at the start time.</Span>)
-                )
-          }
+          {Date.now() < ico.endDate && Date.now() > ico.startDate ? (
+            <ContributeContainer
+              myWeb3={myWeb3}
+              accounts={accounts[0]}
+              template={async () => {
+                await loadInitialTemplate(ico.contractAddress)
+              }}
+            />
+          ) : Date.now() > ico.endDate ? (
+            <Button
+              style={{ marginTop: '2rem' }}
+              disabled={Date.now() < ico.endDate}
+              onClick={async () => {
+                const ICOContract = await loadInitialTemplate(ico.contractAddress, 'IBCOTemplate')
+                claim(ICOContract)
+              }}
+            >
+              {ico.amountRaised >= ico.minimumRaiseAmount ? 'Withdraw Tokens' : 'Withdraw ETH'}
+            </Button>
+          ) : (
+            <Span>Launch has not started yet. Come back at the start time.</Span>
+          )}
         </Column2>
         <Column3>
           <TableContainer>
@@ -332,10 +445,10 @@ const IndividualListing = ({
   )
 }
 
-const ContributeContainer = ({myWeb3, accounts, template}) => {
+const ContributeContainer = ({ myWeb3, accounts, template }) => {
   const [inputBox, setInputBox] = useState('')
 
-    async function contribute(template) {
+  async function contribute(template) {
     await myWeb3.eth
       .sendTransaction({
         from: accounts[0],
@@ -344,46 +457,45 @@ const ContributeContainer = ({myWeb3, accounts, template}) => {
       })
       .on('receipt', async () => {})
   }
-    const handleInput = (e) => {
+  const handleInput = (e) => {
     setInputBox(e.target.value)
   }
 
   return (
     <>
-        <form
-          style={{ border: '2px solid #e6ddff', padding: '1rem' }}
-          onSubmit={async (event) => {
-            event.preventDefault()
-            const result = await contribute(template)
+      <form
+        style={{ border: '2px solid #e6ddff', padding: '1rem' }}
+        onSubmit={async (event) => {
+          event.preventDefault()
+          const result = await contribute(template)
+        }}
+      >
+        <label
+          for='contr-amount'
+          style={{
+            marginBottom: '0.8rem',
+            fontFamily: "'Questrial', sans-serif",
+            fontWeight: 400,
+            fontSize: '1rem',
           }}
         >
-          <label
-            for='contr-amount'
-            style={{
-              marginBottom: '0.8rem',
-              fontFamily: "'Questrial', sans-serif",
-              fontWeight: 400,
-              fontSize: '1rem',
-            }}
-          >
-            Contribute ETH
-          </label>
-          <Input
-            id='contr-amount'
-            type='number'
-            required={true}
-            onChange={handleInput}
-            value={inputBox}
-            style={{
-              width: '100%',
-              marginTop: '0.5rem',
-              marginBottom: '1rem',
-              height: '2rem',
-            }}
-          ></Input>
-          <Button type='submit'>Contribute</Button>
-        </form>
-
+          Contribute ETH
+        </label>
+        <Input
+          id='contr-amount'
+          type='number'
+          required={true}
+          onChange={handleInput}
+          value={inputBox}
+          style={{
+            width: '100%',
+            marginTop: '0.5rem',
+            marginBottom: '1rem',
+            height: '2rem',
+          }}
+        ></Input>
+        <Button type='submit'>Contribute</Button>
+      </form>
     </>
   )
 }

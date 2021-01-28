@@ -373,7 +373,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
         .filter((event) => event['returnValues']['0'] === accounts[0])
         .forEach(async (event) => {
           const dbData = databaseData.data.filter(
-            (ico) => ico.tokenAddress === event.returnValues['2'],
+            (ico) => ico.contractAddress === event.returnValues['1'],
           )
           console.log('dbdata:  ', dbData)
           const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
@@ -390,7 +390,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               tokenSupply: event.returnValues.tokenSupply,
               minimumRaiseAmount: event.returnValues.minimalProvide,
               tokenAddress: event.returnValues['2'],
-              imageUrl: dbData[0].imageUrl,
+              imageUrl: dbData[0].imageUrl || null,
               projectDescription: dbData[0].projectDescription,
               etherscanLink: 'https://kovan.etherscan.io/address/' + event.returnValues['1'],
             },
