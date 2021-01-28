@@ -6,7 +6,7 @@ export function icoSubmit(owner, projectDescription, tokenAddress, contractAddre
   })
     .then((response) => {
       if (!response.ok) {
-        const error = new Error('HTTP Error!')
+        const error = new Error(response.json())
         error.status = response.status
         throw error
       } else {
