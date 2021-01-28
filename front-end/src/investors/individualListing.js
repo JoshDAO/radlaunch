@@ -139,7 +139,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
   const [launchedICOs, setLaunchedICOs] = useState([])
 
   let { address } = useParams()
-  console.log('address:   ', address)
+  console.log(typeof address)
 
   async function loadInitialFactory() {
     const dyn = await loadContract('42', 'DynPoolFactory')

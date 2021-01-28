@@ -2,7 +2,6 @@ const IcoSchema = require('../models/icoListings')
 
 getListingsByOwner = async (req, res) => {
   const owner = req.params.owner
-  console.log(owner)
 
   await IcoSchema.find({ owner: owner }, (err, icos) => {
     if (err) {
@@ -17,9 +16,8 @@ getListingsByOwner = async (req, res) => {
 
 getListingsByContractAddress = async (req, res) => {
   const contractAddress = req.params.contractAddress
-  console.log(owner)
 
-  await IcoSchema.findOne({ contractAddress: contractAddress }, (err, icos) => {
+  await IcoSchema.find({ contractAddress: contractAddress }, (err, icos) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }
