@@ -1,7 +1,10 @@
-import React from 'react'
+import React, {useState} from 'react'
 import NavBar from '../NavBar'
 import investorsImage from '../assets/investorsImage.svg'
 import styled from 'styled-components'
+import map from "../artifacts/deployments/map";
+import {updateIcoImage} from "../utils/apiCalls";
+import {Input} from "rimble-ui";
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -141,6 +144,51 @@ const IndividualListing = ({
   launchedICOs,
 }) => {
   const ico = launchedICOs[0]
+
+    async function loadInitialTemplate(addr, contract) {
+    // if (chainId <= 42){
+    //     return
+    // }
+
+    const token = await loadTemplate('42', contract, addr)
+    return token
+  }
+
+  async function loadTemplate(chain, contractName, addr) {
+    // Load a deployed contract instance into a web3 contract object
+    // const {web3} = this.state
+
+    // Get the address of the most recent deployment from the deployment map
+    let address
+    try {
+      address = map[chain][contractName][0]
+    } catch (e) {
+      console.log(`Couldn't find any deployed contract "${contractName}" on the chain "${chain}".`)
+      return undefined
+    }
+
+    // Load the artifact with the specified address
+    let contractArtifact
+    try {
+      contractArtifact = await import(`../artifacts/deployments/${chain}/${address}.json`)
+    } catch (e) {
+      console.log(
+        `Failed to load contract artifact "../artifacts/deployments/${chain}/${address}.json"`,
+      )
+      return undefined
+    }
+    console.log(contractArtifact)
+
+    return new myWeb3.eth.Contract(contractArtifact.abi, addr)
+  }
+
+  async function claim(template) {
+    await template.methods
+      .claim()
+      .send({ from: accounts[0] })
+      .on('receipt', async () => {})
+  }
+
   return (
     <>
       <NavBar
@@ -166,10 +214,29 @@ const IndividualListing = ({
           </Button>
           <Span>Verified status: Verified</Span>
           <Span>Access: Public</Span>
-          <Button>
-            {ico.amountRaised < ico.minimumRaiseAmount ? 'Withdraw Tokens' : 'Withdraw ETH'}
-          </Button>
-          <Span>Please note: Withdrawals can only be made once the ICO has ended.</Span>
+          {(Date.now() < ico.endDate && Date.now() > ico.startDate) ?
+              (<ContributeContainer
+                  myWeb3={myWeb3}
+                  accounts={accounts[0]}
+                  template={async () => {
+                    await loadInitialTemplate(ico.contractAddress)}}
+                />):
+                 ( Date.now() > ico.endDate ? (<Button
+                  style={{ marginTop: '2rem' }}
+                  disabled={Date.now() < ico.endDate}
+                  onClick={async () => {
+                    const ICOContract = await loadInitialTemplate(
+                      ico.contractAddress,
+                      'IBCOTemplate',
+                    )
+                    claim(ICOContract)
+                  }}
+                    >
+                  {ico.amountRaised >= ico.minimumRaiseAmount ? 'Withdraw Tokens' : 'Withdraw ETH'}
+                </Button>):(
+                <Span>Launch has not started yet. Come back at the start time.</Span>)
+                )
+          }
         </Column2>
         <Column3>
           <TableContainer>
@@ -265,4 +332,59 @@ const IndividualListing = ({
   )
 }
 
+const ContributeContainer = ({myWeb3, accounts, template}) => {
+  const [inputBox, setInputBox] = useState('')
+
+    async function contribute(template) {
+    await myWeb3.eth
+      .sendTransaction({
+        from: accounts[0],
+        to: template.options.address,
+        value: myWeb3.utils.toWei(inputBox, 'ether'),
+      })
+      .on('receipt', async () => {})
+  }
+    const handleInput = (e) => {
+    setInputBox(e.target.value)
+  }
+
+  return (
+    <>
+        <form
+          style={{ border: '2px solid #e6ddff', padding: '1rem' }}
+          onSubmit={async (event) => {
+            event.preventDefault()
+            const result = await contribute(template)
+          }}
+        >
+          <label
+            for='contr-amount'
+            style={{
+              marginBottom: '0.8rem',
+              fontFamily: "'Questrial', sans-serif",
+              fontWeight: 400,
+              fontSize: '1rem',
+            }}
+          >
+            Contribute ETH
+          </label>
+          <Input
+            id='contr-amount'
+            type='number'
+            required={true}
+            onChange={handleInput}
+            value={inputBox}
+            style={{
+              width: '100%',
+              marginTop: '0.5rem',
+              marginBottom: '1rem',
+              height: '2rem',
+            }}
+          ></Input>
+          <Button type='submit'>Contribute</Button>
+        </form>
+
+    </>
+  )
+}
 export default IndividualListing

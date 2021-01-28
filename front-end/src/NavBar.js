@@ -92,23 +92,6 @@ const NavBar = ({
     }
   }
 
-  async function claim() {
-    await template.methods
-      .claim()
-      .send({ from: accounts[0] })
-      .on('receipt', async () => {})
-  }
-
-  async function contribute() {
-    await myWeb3.eth
-      .sendTransaction({
-        from: accounts[0],
-        to: template.options.address,
-        value: myWeb3.utils.toWei('0.1', 'ether'),
-      })
-      .on('receipt', async () => {})
-  }
-
   return (
     <div>
       {/* <button onClick={loadInitialContracts}>Load Contracts</button> */}
