@@ -93,7 +93,9 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     validateForm()
     const factory = await loadInitialFactory()
     const token = await loadInitialToken(tokenAddress)
-    const contractAddress = await deployICO(factory, token)
+    const receipt = await deployICO(factory, token)
+    console.log('contract address   ', receipt.events.IBCODeployed.returnValues[1])
+    const contractAddress = receipt.events.IBCODeployed.returnValues[1]
     await icoSubmit(accounts[0], projectDescription, tokenAddress, contractAddress)
   }
 
@@ -202,7 +204,8 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
       )
       .send({ from: accounts[0], value: value })
       .on('receipt', async (receipt) => {
-        return receipt.events.IBCODeployed.address
+        console.log('receipt:   ', receipt)
+        return receipt
       })
   }
 
