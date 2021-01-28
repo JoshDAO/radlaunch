@@ -36,6 +36,24 @@ export function fetchDatabaseIcoData(owner) {
     })
 }
 
+export function fetchDatabaseInvestorData(contractAddress) {
+  return fetch(`https://ico-manager.herokuapp.com/api/address/${contractAddress}`, {
+    method: 'GET',
+  })
+    .then((response) => {
+      if (!response.ok) {
+        const error = new Error('HTTP Error!')
+        error.status = response.status
+        throw error
+      } else {
+        return response.json()
+      }
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
+}
+
 export function updateIcoImage(owner, tokenAddress, imageUrl) {
   console.log('boop:  ', owner, tokenAddress, imageUrl)
   return fetch(`https://ico-manager.herokuapp.com/api/update-image`, {
