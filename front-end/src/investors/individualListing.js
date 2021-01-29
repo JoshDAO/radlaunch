@@ -293,9 +293,11 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
               imageUrl: dbData[0].imageUrl || null,
               projectDescription: dbData[0].projectDescription,
               etherscanLink: 'https://kovan.etherscan.io/address/' + event.returnValues['1'],
+              ICOContract: ICOContract,
             },
           ]
           console.log(projectData)
+
           setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
         })
     }
@@ -310,18 +312,18 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
 
   return (
     <>
+      <NavBar
+        imgSource={investorsImage}
+        titleText={'Investors - Participate in project launches'}
+        myWeb3={myWeb3}
+        setMyWeb3={setMyWeb3}
+        accounts={accounts}
+        setAccounts={setAccounts}
+        chainId={chainId}
+        setChainId={setChainId}
+      />
       {launchedICOs.length ? (
         <>
-          <NavBar
-            imgSource={investorsImage}
-            titleText={'Investors - Participate in project launches'}
-            myWeb3={myWeb3}
-            setMyWeb3={setMyWeb3}
-            accounts={accounts}
-            setAccounts={setAccounts}
-            chainId={chainId}
-            setChainId={setChainId}
-          />
           <DashboardContainer>
             <Column1>
               <ProjectTitle>{launchedICOs[0].name}</ProjectTitle>
@@ -338,10 +340,9 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
               {Date.now() < launchedICOs[0].endDate && Date.now() > launchedICOs[0].startDate ? (
                 <ContributeContainer
                   myWeb3={myWeb3}
-                  accounts={accounts[0]}
-                  template={async () => {
-                    await loadInitialTemplate(launchedICOs[0].contractAddress)
-                  }}
+                  accounts={accounts}
+                  contractAddress={address}
+                  template={launchedICOs[0].ICOContract}
                 />
               ) : Date.now() > launchedICOs[0].endDate ? (
                 <Button
@@ -455,16 +456,18 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
           </AboutSection>
         </>
       ) : (
-        <div>LOADING M8</div>
+        <h1>CONECT UR WALLET M9</h1>
       )}
     </>
   )
 }
 
-const ContributeContainer = ({ myWeb3, accounts, template }) => {
+const ContributeContainer = ({ myWeb3, accounts, contractAddress, template }) => {
   const [inputBox, setInputBox] = useState('')
 
-  async function contribute(template) {
+  async function contribute() {
+    console.log('async accounts[0]:  ', accounts[0])
+    console.log('async address:  ', template.options.address)
     await myWeb3.eth
       .sendTransaction({
         from: accounts[0],
@@ -483,7 +486,7 @@ const ContributeContainer = ({ myWeb3, accounts, template }) => {
         style={{ border: '2px solid #e6ddff', padding: '1rem' }}
         onSubmit={async (event) => {
           event.preventDefault()
-          const result = await contribute(template)
+          const result = await contribute()
         }}
       >
         <label
