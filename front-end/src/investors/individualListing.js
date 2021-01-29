@@ -356,7 +356,9 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                     claim(ICOContract)
                   }}
                 >
-                  {launchedICOs[0].amountRaised >= launchedICOs[0].minimumRaiseAmount
+                  {console.log("launched ICOs amountRaised",launchedICOs[0].amountRaised)}
+                  {console.log("launched ICOs minimumRaiseAmount", launchedICOs[0].minimumRaiseAmount)}
+                  {parseInt(launchedICOs[0].amountRaised) >= parseInt(launchedICOs[0].minimumRaiseAmount)
                     ? 'Withdraw Tokens'
                     : 'Withdraw ETH'}
                 </Button>

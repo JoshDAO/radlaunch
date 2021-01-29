@@ -177,8 +177,8 @@ const IcoTable = ({ myWeb3, accounts, launchedICOs, setLaunchedICOs }) => {
             status: statusChecker(
               event.returnValues.startDate * 1000,
               event.returnValues.endDate * 1000,
-              amountRaised,
-              event.returnValues.minimalProvide,
+              parseInt(amountRaised),
+              parseInt(event.returnValues.minimalProvide),
             ),
             contractAddress: event.returnValues['1'],
           },
