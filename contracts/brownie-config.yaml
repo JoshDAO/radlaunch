@@ -7,7 +7,7 @@ dependencies:
 project_structure:
   build: ../front-end/src/artifacts
 networks:
-  default: kovan
+  default: bsc-testnet
   default_contract_owner: true
 #  development:
 #    cmd_settings:
