@@ -136,7 +136,7 @@ const GraphContainer = styled.div`
 `
 
 const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setChainId }) => {
-  const [launchedICOs, setLaunchedICOs] = useState([])
+  const [ICOs, setICOs] = useState([])
 
   let { address } = useParams()
   console.log(typeof address)
@@ -259,48 +259,52 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
     }
   }
 
-  useEffect(async () => {
-    if (myWeb3 === undefined || accounts === undefined) {
-      return
-    } else {
-      const factory = await loadInitialFactory()
-      const eventsArray = await events(factory)
-      console.log('eventsArray:  ', eventsArray)
-      const databaseData = await fetchDatabaseInvestorData(address)
-      console.log('database Data:  ', databaseData)
-      eventsArray
-        .filter((event) => event['returnValues']['1'] === address)
-        .forEach(async (event) => {
-          console.log('event: ', event)
-          const dbData = databaseData.data.filter(
-            (ico) => ico.contractAddress === event.returnValues['1'],
-          )
-          console.log('dbdata:  ', dbData)
-          const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
-          const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
-          const extraIcoData = await getExtraICOdata(ICOContract)
-          const extraTokenData = await getExtraTokendata(tokenContract)
-          const projectData = [
-            {
-              ...extraIcoData,
-              ...extraTokenData,
-              contractAddress: event.returnValues['1'],
-              startDate: event.returnValues.startDate * 1000,
-              endDate: event.returnValues.endDate * 1000,
-              tokenSupply: event.returnValues.tokenSupply,
-              minimumRaiseAmount: event.returnValues.minimalProvide,
-              tokenAddress: event.returnValues['2'],
-              imageUrl: dbData[0].imageUrl || null,
-              projectDescription: dbData[0].projectDescription,
-              etherscanLink: 'https://kovan.etherscan.io/address/' + event.returnValues['1'],
-              ICOContract: ICOContract,
-            },
-          ]
-          console.log(projectData)
+  useEffect(() => {
+    const func = async () => {
+      console.log('ICOs:   ', ICOs)
+      if (myWeb3 === undefined || accounts === undefined) {
+        return
+      } else {
+        const factory = await loadInitialFactory()
+        const eventsArray = await events(factory)
+        console.log('eventsArray:  ', eventsArray)
+        const databaseData = await fetchDatabaseInvestorData(address)
+        console.log('database Data:  ', databaseData)
+        eventsArray
+          .filter((event) => event['returnValues']['1'] === address)
+          .forEach(async (event) => {
+            console.log('event: ', event)
+            const dbData = databaseData.data.filter(
+              (ico) => ico.contractAddress === event.returnValues['1'],
+            )
+            console.log('dbdata:  ', dbData)
+            const tokenContract = await loadInitialTemplate(event.returnValues['2'], 'ERCToken')
+            const ICOContract = await loadInitialTemplate(event.returnValues['1'], 'IBCOTemplate')
+            const extraIcoData = await getExtraICOdata(ICOContract)
+            const extraTokenData = await getExtraTokendata(tokenContract)
+            const projectData = [
+              {
+                ...extraIcoData,
+                ...extraTokenData,
+                contractAddress: event.returnValues['1'],
+                startDate: event.returnValues.startDate * 1000,
+                endDate: event.returnValues.endDate * 1000,
+                tokenSupply: event.returnValues.tokenSupply,
+                minimumRaiseAmount: event.returnValues.minimalProvide,
+                tokenAddress: event.returnValues['2'],
+                imageUrl: dbData[0].imageUrl || null,
+                projectDescription: dbData[0].projectDescription,
+                etherscanLink: 'https://kovan.etherscan.io/address/' + event.returnValues['1'],
+                ICOContract: ICOContract,
+              },
+            ]
+            console.log(projectData)
 
-          setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
-        })
+            setICOs((ICOs) => ICOs.concat(projectData))
+          })
+      }
     }
+    func()
   }, [myWeb3, accounts])
 
   async function claim(template) {
@@ -322,17 +326,17 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
         chainId={chainId}
         setChainId={setChainId}
       />
-      {launchedICOs.length ? (
+      {ICOs.length ? (
         <div style={{ padding: '4rem 10% 0 10%' }}>
           <DashboardContainer>
             <Column1>
-              <ProjectTitle>{launchedICOs[0].name}</ProjectTitle>
-              <ProjectImage src={launchedICOs[0].imageUrl} />
+              <ProjectTitle>{ICOs[0].name}</ProjectTitle>
+              <ProjectImage src={ICOs[0].imageUrl} />
             </Column1>
             <Column2>
               <Button>
                 <a
-                  href={launchedICOs[0].etherscanLink}
+                  href={ICOs[0].etherscanLink}
                   style={{ textDecoration: 'none', color: 'black' }}
                   target='_blank'
                 >
@@ -341,32 +345,28 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
               </Button>
               <Span>Verified status: Verified</Span>
               <Span>Access: Public</Span>
-              {Date.now() < launchedICOs[0].endDate && Date.now() > launchedICOs[0].startDate ? (
+              {Date.now() < ICOs[0].endDate && Date.now() > ICOs[0].startDate ? (
                 <ContributeContainer
                   myWeb3={myWeb3}
                   accounts={accounts}
                   contractAddress={address}
-                  template={launchedICOs[0].ICOContract}
+                  template={ICOs[0].ICOContract}
                 />
-              ) : Date.now() > launchedICOs[0].endDate ? (
+              ) : Date.now() > ICOs[0].endDate ? (
                 <Button
                   style={{ marginTop: '2rem' }}
-                  disabled={Date.now() < launchedICOs[0].endDate}
+                  disabled={Date.now() < ICOs[0].endDate}
                   onClick={async () => {
                     const ICOContract = await loadInitialTemplate(
-                      launchedICOs[0].contractAddress,
+                      ICOs[0].contractAddress,
                       'IBCOTemplate',
                     )
                     claim(ICOContract)
                   }}
                 >
-                  {console.log('launched ICOs amountRaised', launchedICOs[0].amountRaised)}
-                  {console.log(
-                    'launched ICOs minimumRaiseAmount',
-                    launchedICOs[0].minimumRaiseAmount,
-                  )}
-                  {parseInt(launchedICOs[0].amountRaised) >=
-                  parseInt(launchedICOs[0].minimumRaiseAmount)
+                  {console.log('launched ICOs amountRaised', ICOs[0].amountRaised)}
+                  {console.log('launched ICOs minimumRaiseAmount', ICOs[0].minimumRaiseAmount)}
+                  {parseInt(ICOs[0].amountRaised) >= parseInt(ICOs[0].minimumRaiseAmount)
                     ? 'Withdraw Tokens'
                     : 'Withdraw ETH'}
                 </Button>
@@ -379,7 +379,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                 <Table>
                   <Tr>
                     <Td>
-                      Contract address: <br /> <b>{launchedICOs[0].contractAddress}</b>
+                      Contract address: <br /> <b>{ICOs[0].contractAddress}</b>
                     </Td>
                   </Tr>
                   <Tr>
@@ -387,34 +387,34 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                       Start/end date:
                       <br />{' '}
                       <b>
-                        {new Date(launchedICOs[0].startDate).toString().substr(4, 20)} to{' '}
-                        {new Date(launchedICOs[0].endDate).toString().substr(4, 24)}
+                        {new Date(ICOs[0].startDate).toString().substr(4, 20)} to{' '}
+                        {new Date(ICOs[0].endDate).toString().substr(4, 24)}
                       </b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Tokens for sale: <b>{launchedICOs[0].tokenSupply / 1e18}</b>
+                      Tokens for sale: <b>{ICOs[0].tokenSupply / 1e18}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Amount raised: <b>{launchedICOs[0].amountRaised / 1e18}</b>
+                      Amount raised: <b>{ICOs[0].amountRaised / 1e18}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Number of investors: <b>{launchedICOs[0].numberOfProviders}</b>
+                      Number of investors: <b>{ICOs[0].numberOfProviders}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Minimum raise amount: <b>{launchedICOs[0].minimumRaiseAmount / 1e18}</b>
+                      Minimum raise amount: <b>{ICOs[0].minimumRaiseAmount / 1e18}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Your contribution: <b>{launchedICOs[0].yourContribution / 1e18}</b>
+                      Your contribution: <b>{ICOs[0].yourContribution / 1e18}</b>
                     </Td>
                   </Tr>
                 </Table>
@@ -427,22 +427,22 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                     <Td>
                       Token address:
                       <br />
-                      <b>{launchedICOs[0].tokenAddress}</b>
+                      <b>{ICOs[0].tokenAddress}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Token name: <b>{launchedICOs[0].name}</b>
+                      Token name: <b>{ICOs[0].name}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Token Symbol: <b>{launchedICOs[0].symbol}</b>
+                      Token Symbol: <b>{ICOs[0].symbol}</b>
                     </Td>
                   </Tr>
                   <Tr>
                     <Td>
-                      Total token supply: <b>{launchedICOs[0].totalSupply / 1e18}</b>
+                      Total token supply: <b>{ICOs[0].totalSupply / 1e18}</b>
                     </Td>
                   </Tr>
                   <Tr style={{ height: '9rem' }}>
@@ -462,7 +462,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
           </DashboardContainer>
           <GraphContainer></GraphContainer>
           <AboutSection>
-            <AboutArea projectDescription={launchedICOs[0].projectDescription} />
+            <AboutArea projectDescription={ICOs[0].projectDescription} />
           </AboutSection>
         </div>
       ) : (
