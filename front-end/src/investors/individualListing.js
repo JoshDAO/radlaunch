@@ -323,7 +323,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
         setChainId={setChainId}
       />
       {launchedICOs.length ? (
-        <>
+        <div style={{ padding: '4rem 10% 0 10%' }}>
           <DashboardContainer>
             <Column1>
               <ProjectTitle>{launchedICOs[0].name}</ProjectTitle>
@@ -331,7 +331,11 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
             </Column1>
             <Column2>
               <Button>
-                <a href={launchedICOs[0].etherscanLink} target='_blank'>
+                <a
+                  href={launchedICOs[0].etherscanLink}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  target='_blank'
+                >
                   View on Etherscan
                 </a>
               </Button>
@@ -356,9 +360,13 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                     claim(ICOContract)
                   }}
                 >
-                  {console.log("launched ICOs amountRaised",launchedICOs[0].amountRaised)}
-                  {console.log("launched ICOs minimumRaiseAmount", launchedICOs[0].minimumRaiseAmount)}
-                  {parseInt(launchedICOs[0].amountRaised) >= parseInt(launchedICOs[0].minimumRaiseAmount)
+                  {console.log('launched ICOs amountRaised', launchedICOs[0].amountRaised)}
+                  {console.log(
+                    'launched ICOs minimumRaiseAmount',
+                    launchedICOs[0].minimumRaiseAmount,
+                  )}
+                  {parseInt(launchedICOs[0].amountRaised) >=
+                  parseInt(launchedICOs[0].minimumRaiseAmount)
                     ? 'Withdraw Tokens'
                     : 'Withdraw ETH'}
                 </Button>
@@ -454,9 +462,9 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
           </DashboardContainer>
           <GraphContainer></GraphContainer>
           <AboutSection>
-            <div>{launchedICOs[0].projectDescription}</div>
+            <AboutArea projectDescription={launchedICOs[0].projectDescription} />
           </AboutSection>
-        </>
+        </div>
       ) : (
         <h1>CONECT UR WALLET M9</h1>
       )}
@@ -520,4 +528,16 @@ const ContributeContainer = ({ myWeb3, accounts, contractAddress, template }) =>
     </>
   )
 }
+
+const AboutArea = ({ projectDescription }) => {
+  return (
+    <>
+      <div style={{ display: 'flex' }}>
+        <AboutTitle>About the Project:</AboutTitle>
+      </div>
+      <AboutText>{projectDescription}</AboutText>
+    </>
+  )
+}
+
 export default IndividualListing
