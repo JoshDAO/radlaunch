@@ -64,10 +64,8 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
     }
   }
   const handleMinimumThresholdInput = async (e) => {
-    await setMinimumThreshold(parseInt(e.target.value))
-    if (Number.isInteger(minimumThreshold)) {
-      validateInput(e)
-    }
+    await setMinimumThreshold(e.target.value)
+    validateInput(e)
   }
 
   const handleStartDateInput = (e) => {
@@ -224,9 +222,9 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
         style={{ width: '70%', margin: '0 auto', justifyContent: 'flex-start', display: 'flex' }}
       >
         <TypeButton>Dynamic Swap Pool / IBCO Public</TypeButton>
-        <TypeButton style={{ backgroundColor: 'white' }}>
+        {/* <TypeButton style={{ backgroundColor: 'white' }}>
           Dynamic Swap Pool / IBCO Private Whitelist
-        </TypeButton>
+        </TypeButton> */}
       </div>
       <Form
         style={{
@@ -338,10 +336,10 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
               </label>
               <Input
                 id='min-threshold'
-                type='text'
+                type='number'
                 required
                 onChange={handleMinimumThresholdInput}
-                value={minimumThreshold || ''}
+                value={minimumThreshold}
                 style={{ width: '100%' }}
               />
             </Field>
