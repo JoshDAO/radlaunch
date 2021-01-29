@@ -521,6 +521,7 @@ const ContributeContainer = ({ myWeb3, accounts, contractAddress, template }) =>
             marginTop: '0.5rem',
             marginBottom: '1rem',
             height: '2rem',
+            fontFamily: "'Questrial', sans-serif",
           }}
         ></Input>
         <Button type='submit'>Contribute</Button>

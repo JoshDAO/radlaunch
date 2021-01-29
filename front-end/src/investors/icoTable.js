@@ -20,6 +20,7 @@ const Td = styled.td`
   padding: 0.3rem;
   word-break: break-word;
   border-right: 1px solid #e6ddff;
+  text-align: center;
 `
 const Tr = styled.tr`
   height: 3rem;
@@ -31,6 +32,7 @@ const Tr = styled.tr`
 
 const Thead = styled.thead`
   border-bottom: 1px solid #e6ddff;
+  font-size: 1.5rem;
 `
 
 const TableContainer = styled.div`
@@ -197,12 +199,12 @@ const IcoTable = ({ myWeb3, accounts }) => {
           <Table>
             <Thead>
               <Tr>
-                <Td>Name</Td>
-                <Td>Status</Td>
-                <Td>Launch Type</Td>
-                <Td>Amount Raised (ETH)</Td>
-                <Td>Start Date GMT</Td>
-                <Td>End Date GMT</Td>
+                <Td style={{ fontSize: '1.3rem', textAlign: 'center' }}>Name</Td>
+                <Td style={{ fontSize: '1.3rem', textAlign: 'center' }}>Status</Td>
+                <Td style={{ fontSize: '1.3rem', textAlign: 'center' }}>Launch Type</Td>
+                <Td style={{ fontSize: '1.3rem', textAlign: 'center' }}>Amount Raised (ETH)</Td>
+                <Td style={{ fontSize: '1.3rem', textAlign: 'center' }}>Start Date GMT</Td>
+                <Td style={{ fontSize: '1.3rem', textAlign: 'center' }}>End Date GMT</Td>
                 <Td style={{ width: '10rem', borderRight: 'none' }}></Td>
               </Tr>
             </Thead>
