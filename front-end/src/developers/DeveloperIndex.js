@@ -442,12 +442,14 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                       ico.contractAddress,
                       'IBCOTemplate',
                     )
-                    ico.amountRaised < ico.minimumRaiseAmount
+                    parseInt(ico.amountRaised) < parseInt(ico.minimumRaiseAmount)
                       ? withdrawToken(ICOContract)
                       : withdrawProvidedETH(ICOContract)
                   }}
                 >
-                  {ico.amountRaised < ico.minimumRaiseAmount ? 'Withdraw Tokens' : 'Withdraw ETH'}
+                  {parseInt(ico.amountRaised) < parseInt(ico.minimumRaiseAmount)
+                    ? 'Withdraw Tokens'
+                    : 'Withdraw ETH'}
                 </Button>
                 <Span>Please note: Withdrawals can only be made once the ICO has ended.</Span>
               </Column2>
