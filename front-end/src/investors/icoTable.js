@@ -40,9 +40,10 @@ const TableContainer = styled.div`
   margin: 2rem auto 0 auto;
 `
 
-const IcoTable = ({ myWeb3, accounts, launchedICOs, setLaunchedICOs }) => {
+const IcoTable = ({ myWeb3, accounts }) => {
   const [factory, setFactory] = useState()
   const [tokenContract, setTokenContract] = useState()
+  const [launchedICOs, setLaunchedICOs] = useState([])
 
   async function loadInitialFactory() {
     // if (chainId <= 42){
@@ -191,38 +192,42 @@ const IcoTable = ({ myWeb3, accounts, launchedICOs, setLaunchedICOs }) => {
 
   return (
     <>
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Td>Name</Td>
-              <Td>Status</Td>
-              <Td>Launch Type</Td>
-              <Td>Amount Raised (ETH)</Td>
-              <Td>Start Date GMT</Td>
-              <Td>End Date GMT</Td>
-              <Td style={{ width: '10rem', borderRight: 'none' }}></Td>
-            </Tr>
-          </Thead>
-          <tbody>
-            {launchedICOs.map((ico) => {
-              return (
-                <Tr>
-                  <Td>{ico.name}</Td>
-                  <Td>{ico.status}</Td>
-                  <Td>{ico.type}</Td>
-                  <Td>{ico.amountRaised}</Td>
-                  <Td>{ico.startDate}</Td>
-                  <Td>{ico.endDate}</Td>
-                  <Td>
-                    <IcoLink url={ico.contractAddress} />
-                  </Td>
-                </Tr>
-              )
-            })}
-          </tbody>
-        </Table>
-      </TableContainer>
+      {launchedICOs.length ? (
+        <TableContainer>
+          <Table>
+            <Thead>
+              <Tr>
+                <Td>Name</Td>
+                <Td>Status</Td>
+                <Td>Launch Type</Td>
+                <Td>Amount Raised (ETH)</Td>
+                <Td>Start Date GMT</Td>
+                <Td>End Date GMT</Td>
+                <Td style={{ width: '10rem', borderRight: 'none' }}></Td>
+              </Tr>
+            </Thead>
+            <tbody>
+              {launchedICOs.map((ico) => {
+                return (
+                  <Tr>
+                    <Td>{ico.name}</Td>
+                    <Td>{ico.status}</Td>
+                    <Td>{ico.type}</Td>
+                    <Td>{ico.amountRaised}</Td>
+                    <Td>{ico.startDate}</Td>
+                    <Td>{ico.endDate}</Td>
+                    <Td>
+                      <IcoLink url={ico.contractAddress} />
+                    </Td>
+                  </Tr>
+                )
+              })}
+            </tbody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <h1>loading...</h1>
+      )}
     </>
   )
 }

@@ -14,6 +14,9 @@ const InvestorIndex = ({
   launchedICOs,
   setLaunchedICOs,
 }) => {
+  useEffect(() => {
+    console.log('ICOs    ', launchedICOs)
+  })
   return (
     <>
       <NavBar
@@ -32,8 +35,6 @@ const InvestorIndex = ({
           setMyWeb3={setMyWeb3}
           accounts={accounts}
           setAccounts={setAccounts}
-          launchedICOs={launchedICOs}
-          setLaunchedICOs={setLaunchedICOs}
         />
       ) : (
         <div
