@@ -17,7 +17,7 @@ const Nav = styled.nav`
   justify-content: space-evenly;
   margin: auto;
   border-bottom: 3px solid rgb(113, 101, 215);
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 `
 
 const WalletButton = styled.button`
@@ -53,7 +53,7 @@ const H1 = styled.h1`
   font-family: 'Questrial', sans-serif;
   font-weight: 400;
   vertical-align: middle;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   line-height: normal;
 `
 
@@ -96,7 +96,7 @@ const NavBar = ({
     <div>
       {/* <button onClick={loadInitialContracts}>Load Contracts</button> */}
       <Link to={'/'}>
-        <img src={logo} style={{ width: '400px' }} />
+        <img src={logo} style={{ width: '450px' }} />
       </Link>
       {web3Loading ? (
         <WalletButton disabled>Loading...</WalletButton>

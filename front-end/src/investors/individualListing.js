@@ -460,7 +460,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
               </TableContainer>
             </Column3>
           </DashboardContainer>
-          <GraphContainer></GraphContainer>
+          {/*<GraphContainer></GraphContainer>*/}
           <AboutSection>
             <AboutArea projectDescription={ICOs[0].projectDescription} />
           </AboutSection>

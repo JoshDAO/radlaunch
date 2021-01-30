@@ -539,7 +539,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                 </TableContainer>
               </Column3>
             </DashboardContainer>
-            <GraphContainer></GraphContainer>
+            {/*<GraphContainer></GraphContainer>*/}
             <AboutSection>
               <AboutArea
                 projectDescription={ico.projectDescription}
