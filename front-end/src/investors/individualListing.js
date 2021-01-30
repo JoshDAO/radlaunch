@@ -332,6 +332,26 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
             <Column1>
               <ProjectTitle>{ICOs[0].name}</ProjectTitle>
               <ProjectImage src={ICOs[0].imageUrl} />
+              <div
+                style={{
+                  marginTop: '1rem',
+                  fontFamily: "'Questrial', sans-serif",
+                  fontWeight: 700,
+                  textAlign: 'left',
+                  fontSize: '1.1rem',
+                  backgroundColor: 'rgba(230, 221, 255, 0.5)',
+                  padding: '0.5rem 0.3rem',
+                  width: '100%',
+                  borderRadius: '8px',
+                }}
+              >
+                Current price:{' '}
+                {parseFloat(ICOs[0].amountRaised / ICOs[0].tokenSupply)
+                  .toFixed(10)
+                  .toString()
+                  .replace(/(\.\d*?[1-9])0+$/g, '$1')}{' '}
+                ETH
+              </div>
             </Column1>
             <Column2>
               <Button>
