@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import logo from './assets/logo.svg'
+import ethLogo from './assets/ethLogo.svg'
 import Portis from '@portis/web3'
 import Web3 from 'web3'
 import { useEffect, useState } from 'react'
@@ -94,7 +95,7 @@ const NavBar = ({
 
   return (
     <div>
-      {/* <button onClick={loadInitialContracts}>Load Contracts</button> */}
+      <img src={ethLogo} style={{ width: '75px', position: 'absolute', top: '2.7%', left: '5%' }} />{' '}
       <Link to={'/'}>
         <img src={logo} style={{ width: '450px' }} />
       </Link>
@@ -110,7 +111,6 @@ const NavBar = ({
             : 'Connect Wallet'}
         </WalletButton>
       )}
-
       <H1Div>
         {imgSource ? (
           <NavbarImg
