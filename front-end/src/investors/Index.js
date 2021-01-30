@@ -3,8 +3,8 @@ import NavBar from '../NavBar'
 import investorsImage from '../assets/investorsImage.svg'
 import IcoTable from './icoTable'
 import Web3 from 'web3'
-import styled from "styled-components";
-import {Link} from "react-router-dom";
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const HeaderDiv = styled.div`
   border-bottom: 1px solid #4e3fce;
@@ -46,9 +46,9 @@ const InvestorIndex = ({
         chainId={chainId}
         setChainId={setChainId}
       />
-        <HeaderDiv>
-          <H2>All Launches</H2>
-        </HeaderDiv>
+      <HeaderDiv>
+        <H2>All Launches</H2>
+      </HeaderDiv>
       {myWeb3 ? (
         <IcoTable
           myWeb3={myWeb3}
@@ -65,7 +65,7 @@ const InvestorIndex = ({
             paddingTop: '3rem',
           }}
         >
-          conect ur wallet m8
+          Connect ur wallet m8
         </div>
       )}
     </>

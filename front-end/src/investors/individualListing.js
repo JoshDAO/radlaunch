@@ -394,7 +394,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                   </Tr>
                   <Tr>
                     <Td>
-                      Tokens for sale: <b>{ICOs[0].tokenSupply / 1e18}</b>
+                      Tokens for sale: <b>{(ICOs[0].tokenSupply / 1e18).toFixed()}</b>
                     </Td>
                   </Tr>
                   <Tr>
@@ -466,7 +466,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
           </AboutSection>
         </div>
       ) : (
-        <h1>CONECT UR WALLET M9</h1>
+        <h1>Connect ur wallet m8</h1>
       )}
     </>
   )
@@ -493,7 +493,7 @@ const ContributeContainer = ({ myWeb3, accounts, contractAddress, template }) =>
   return (
     <>
       <form
-        style={{ border: '2px solid #e6ddff', padding: '1rem' }}
+        style={{ padding: '1rem' }}
         onSubmit={async (event) => {
           event.preventDefault()
           const result = await contribute()

@@ -428,7 +428,11 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
               </Column1>
               <Column2>
                 <Button>
-                  <a href={ico.etherscanLink} target='_blank'>
+                  <a
+                    href={ico.etherscanLink}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                    target='_blank'
+                  >
                     View on Etherscan
                   </a>
                 </Button>
@@ -473,7 +477,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
                     </Tr>
                     <Tr>
                       <Td>
-                        Tokens for sale: <b>{ico.tokenSupply / 1e18}</b>
+                        Tokens for sale: <b>{(ico.tokenSupply / 1e18).toFixed()}</b>
                       </Td>
                     </Tr>
                     <Tr>
@@ -558,7 +562,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
             paddingTop: '3rem',
           }}
         >
-          {accounts ? 'You have no ICOs launched' : 'conect ur wallet m8'}
+          {accounts ? 'You have no ICOs launched' : 'Connect ur wallet m8'}
         </div>
       )}
     </>
