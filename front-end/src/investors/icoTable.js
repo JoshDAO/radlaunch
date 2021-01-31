@@ -46,6 +46,7 @@ const IcoTable = ({ myWeb3, accounts }) => {
   const [factory, setFactory] = useState()
   const [tokenContract, setTokenContract] = useState()
   const [launchedICOs, setLaunchedICOs] = useState([])
+  const [loaded, setLoaded] = useState(false)
 
   async function loadInitialFactory() {
     // if (chainId <= 42){
@@ -162,6 +163,7 @@ const IcoTable = ({ myWeb3, accounts }) => {
     if (myWeb3 === undefined || accounts === undefined) {
       return
     } else {
+      setTimeout(() => setLoaded(true), 5000)
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
       const databaseData = await fetchDatabaseIcoData(accounts[0])
@@ -187,6 +189,7 @@ const IcoTable = ({ myWeb3, accounts }) => {
           },
         ]
         console.log('projectData:  ', projectData)
+
         setLaunchedICOs((launchedICOs) => launchedICOs.concat(projectData))
       })
     }
@@ -227,6 +230,8 @@ const IcoTable = ({ myWeb3, accounts }) => {
             </tbody>
           </Table>
         </TableContainer>
+      ) : loaded ? (
+        <h1>Nothing to display. Ensure you are on the correct Ethereum network.</h1>
       ) : (
         <h1>loading...</h1>
       )}
