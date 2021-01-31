@@ -137,6 +137,7 @@ const GraphContainer = styled.div`
 
 const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setChainId }) => {
   const [ICOs, setICOs] = useState([])
+  const [loaded, setLoaded] = useState(false)
 
   let { address } = useParams()
   console.log(typeof address)
@@ -298,7 +299,7 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
                 ICOContract: ICOContract,
               },
             ]
-            console.log(projectData)
+            setLoaded(true)
 
             setICOs((ICOs) => ICOs.concat(projectData))
           })
@@ -326,7 +327,9 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
         chainId={chainId}
         setChainId={setChainId}
       />
-      {ICOs.length ? (
+      {!myWeb3 ? (
+        <h1>Connect your Wallet</h1>
+      ) : ICOs.length ? (
         <div style={{ padding: '4rem 10% 0 10%' }}>
           <DashboardContainer>
             <Column1>
@@ -485,8 +488,10 @@ const IndividualListing = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, 
             <AboutArea projectDescription={ICOs[0].projectDescription} />
           </AboutSection>
         </div>
+      ) : !loaded ? (
+        <h1>Loading...</h1>
       ) : (
-        <h1>Connect ur wallet m8</h1>
+        <h1>Nothing to display</h1>
       )}
     </>
   )
