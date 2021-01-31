@@ -218,6 +218,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
   const [factory, setFactory] = useState()
   const [tokenContract, setTokenContract] = useState()
   const [launchedICOs, setLaunchedICOs] = useState([])
+  const [loaded, setLoaded] = useState(false)
 
   async function loadInitialFactory() {
     // if (chainId <= 42){
@@ -365,6 +366,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
     if (myWeb3 === undefined || accounts === undefined) {
       return
     } else {
+      setTimeout(() => setLoaded(true), 5000)
       const factory = await loadInitialFactory()
       const eventsArray = await events(factory)
       const databaseData = await fetchDatabaseIcoData(accounts[0])
@@ -562,7 +564,7 @@ const IcoDashboard = ({ myWeb3, setMyWeb3, accounts, setAccounts }) => {
             paddingTop: '3rem',
           }}
         >
-          {accounts ? 'You have no ICOs launched' : 'Connect ur wallet m8'}
+          {!accounts ? 'Connect ur wallet m8' : loaded ? 'You have no ICOs launched' : 'Loading...'}
         </div>
       )}
     </>
