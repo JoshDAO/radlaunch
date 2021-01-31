@@ -352,16 +352,22 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
               width: '50%',
             }}
           >
-            <Text style={{ textAlign: 'left', padding: '1rem 3rem 2rem 3rem', fontSize: '1rem' }}>
-              How does this launch type work? This launch type deploys a dynamic swap pool contract.
-              In this kind of deployment the number of tokens to be sold are fixed, investors
-              participate by committing ETH, thus increasing the price of 1 token in a linear
-              fashion. At the end date the settlement price will be set, this price will be the same
-              for all investors, regardless of when they invested in the project. This discourages
-              any frontrunning and ensures that all investors are equal before a DEX launch for
-              example. This launch type requires a minimum investment threshold, if your pool
-              doesn’t reach that size then all investors are returned their investment and your
-              tokens are returned to you.
+            <Text style={{ textAlign: 'left', padding: '0rem 3rem 2rem 3rem', fontSize: '1rem' }}>
+              <strong>How does this launch type work? </strong>
+              <br />
+              <br />
+              This launch type deploys a dynamic swap pool contract. In this kind of deployment the
+              number of tokens to be sold are fixed, investors participate by committing ETH, thus
+              increasing the price of 1 token in a linear fashion. <br />
+              <br />
+              At the end date the settlement price will be set, this price will be the same for all
+              investors, regardless of when they invested in the project. This discourages any
+              frontrunning and ensures that all investors are equal before a DEX launch for example.
+              <br />
+              <br />
+              This launch type requires a minimum investment threshold, if your pool doesn’t reach
+              that size then all investors are returned their investment and your tokens are
+              returned to you.
             </Text>
             <Field
               style={{
@@ -381,14 +387,14 @@ const IbcoSetupForm = ({ myWeb3, setMyWeb3, accounts, setAccounts, chainId, setC
               </label>
               <textarea
                 id='project-description'
-                rows={4}
+                rows={2}
                 cols='20'
                 color='text'
                 class='Box__StyledBox-ha1bw0-0 Input__StyledInput-vwozih-0 hllauP erlOXA sc-bwzfXH sc-cXWtzU iofgdJ'
                 onChange={handleProjectDescriptionInput}
                 value={projectDescription}
                 style={{
-                  height: '11rem',
+                  height: '7rem',
                   width: '100%',
                   fontFamily: "'Questrial', sans-serif",
                   fontSize: '1rem',
